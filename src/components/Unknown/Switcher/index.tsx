@@ -4,18 +4,17 @@ import useStyles from './styles';
 
 type SwitcherProps = {
   value: string;
-  setValue: CallableFunction;
-  choices: [string, string];
+  onSwitch: CallableFunction;
+  options: string[];
 };
 
-const Switcher: React.FC<SwitcherProps> = ({ value, setValue, choices }) => {
-  const [firstValue, secondValue] = choices;
+const Switcher: React.FC<SwitcherProps> = ({ value, onSwitch, options }) => {
   const styles = useStyles();
   const handleSelect = (
     event: React.MouseEvent<HTMLElement>,
     newValue: string | null,
   ) => {
-    setValue(newValue);
+    onSwitch(newValue);
   };
   return (
     <ToggleButtonGroup
@@ -24,12 +23,13 @@ const Switcher: React.FC<SwitcherProps> = ({ value, setValue, choices }) => {
       onChange={handleSelect}
       exclusive
     >
-      <ToggleButton className={styles.switcherButton} value={firstValue}>
-        {firstValue}
-      </ToggleButton>
-      <ToggleButton className={styles.switcherButton} value={secondValue}>
-        {secondValue}
-      </ToggleButton>
+      {options.map((option) => {
+        return (
+          <ToggleButton className={styles.switcherButton} value={option}>
+            {option}
+          </ToggleButton>
+        );
+      })}
     </ToggleButtonGroup>
   );
 };

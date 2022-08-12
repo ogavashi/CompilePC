@@ -4,7 +4,7 @@ import Switcher from '.';
 const SwitcherExample: React.FC = () => {
   const [value, setValue] = useState<string>('AMD');
   return (
-    <Switcher value={value} setValue={setValue} choices={['AMD', 'Nvidia']} />
+    <Switcher value={value} onSwitch={setValue} options={['AMD', 'Nvidia']} />
   );
 };
 
