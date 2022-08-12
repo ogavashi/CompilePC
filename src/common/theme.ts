@@ -9,29 +9,35 @@ declare module '@mui/material/styles' {
   }
 }
 
-const theme = createTheme({
-  spacing: 10,
-});
+const theme = createTheme({});
+
+const colors = {
+  green: '#00B589',
+  black: '#1A1A1A',
+  grey: '#282828',
+  white: '#FFFFFF',
+  lightGrey: '#373737',
+};
 
 const defaultTheme = createTheme({
   palette: {
     primary: {
-      main: '#282828',
-      contrastText: '#00B589',
+      main: colors.grey,
+      contrastText: colors.green,
     },
     secondary: {
-      main: '#00B589',
-      contrastText: '#fff',
+      main: colors.green,
+      contrastText: colors.white,
     },
     background: {
-      default: '#1A1A1A',
+      default: colors.black,
     },
     text: {
-      primary: '#fff',
-      secondary: '#00B589',
+      primary: colors.white,
+      secondary: colors.green,
     },
 
-    backgroundGrey: '#282828',
+    backgroundGrey: colors.grey,
   },
   typography: {
     h1: {
@@ -46,12 +52,12 @@ const defaultTheme = createTheme({
     MuiInputBase: {
       styleOverrides: {
         root: {
-          backgroundColor: '#373737',
-          color: '#fff',
+          backgroundColor: colors.lightGrey,
+          color: colors.white,
           borderRadius: 10,
-          padding: theme.spacing(),
+          padding: theme.spacing(1),
           '&.Mui-focused': {
-            border: '1px solid #00B589',
+            border: `1px solid ${colors.green}`,
             '& .MuiOutlinedInput-notchedOutline': {
               border: 'none',
             },
