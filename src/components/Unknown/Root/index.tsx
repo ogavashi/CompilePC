@@ -1,3 +1,4 @@
+import { Button, InputBase } from '@mui/material';
 import React, { useEffect } from 'react';
 import {
   useFirebaseApp,
@@ -25,7 +26,17 @@ const Root: React.FC = () => {
 
   console.log(data);
 
-  return <div>root</div>;
+  return (
+    <div>
+      <Button color="primary" variant="contained">
+        Press Me
+      </Button>
+      <Button color="secondary" variant="contained">
+        Press Me
+      </Button>
+      <InputBase />
+    </div>
+  );
 };
 
 // eslint-disable-next-line jest/no-export
