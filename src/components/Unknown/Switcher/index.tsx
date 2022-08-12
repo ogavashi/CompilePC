@@ -23,13 +23,15 @@ const Switcher: React.FC<SwitcherProps> = ({ value, onSwitch, options }) => {
       onChange={handleSelect}
       exclusive
     >
-      {options.map((option) => {
-        return (
-          <ToggleButton className={styles.switcherButton} value={option}>
-            {option}
-          </ToggleButton>
-        );
-      })}
+      {options.map((option) => (
+        <ToggleButton
+          className={styles.switcherButton}
+          value={option}
+          key={option}
+        >
+          {option}
+        </ToggleButton>
+      ))}
     </ToggleButtonGroup>
   );
 };

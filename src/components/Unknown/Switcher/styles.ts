@@ -5,7 +5,7 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     switcherButton: {
       minWidth: 100,
-      borderRadius: `${theme.shape.borderRadius}px !important`,
+      borderRadius: 10,
     },
     toggleButtonGroup: {
       padding: theme.spacing(2),
