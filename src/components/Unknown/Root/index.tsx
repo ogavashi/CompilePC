@@ -6,7 +6,7 @@ import {
 } from 'reactfire';
 import { DEFAULT_REGION } from '../../../common/constants';
 import BuildPage from '../BuildPage';
-import Header from '../Header';
+import Layout from '../Layout';
 
 const Root: React.FC = () => {
   const functions = useFirebaseApp().functions(DEFAULT_REGION);
@@ -28,10 +28,9 @@ const Root: React.FC = () => {
   console.log(data);
 
   return (
-    <>
-      <Header />
+    <Layout>
       <BuildPage />
-    </>
+    </Layout>
   );
 };
 
