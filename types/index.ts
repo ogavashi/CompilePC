@@ -15,7 +15,7 @@ export type Product = {
 };
 
 // collection CPUs
-export type CPUs = Product & {
+export type CPU = Product & {
   series: string;
   codeName: string;
   socket: string;
@@ -36,7 +36,7 @@ export type CPUs = Product & {
 };
 
 // collection graphicsCards
-export type GraphicsCards = Product & {
+export type GraphicsCard = Product & {
   interface: string;
   GPUModel: string;
   memorySize: number;
@@ -71,7 +71,7 @@ type MotherboardFormFactor =
   | 'XL-ATX';
 
 // collection motherboards
-export type Motherboards = Product & {
+export type Motherboard = Product & {
   socket: string;
   formFactor: MotherboardFormFactor;
   powerPhases: number;
@@ -123,7 +123,7 @@ export type RAM = Product & {
 };
 
 // collection hardDrives
-export type HardDrives = Product & {
+export type HardDrive = Product & {
   placement: string;
   type: string;
   capacity: number;

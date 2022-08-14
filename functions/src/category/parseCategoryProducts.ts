@@ -1,6 +1,7 @@
 import * as functions from 'firebase-functions';
 import puppeteer from 'puppeteer-extra';
 import StealthPlugin from 'puppeteer-extra-plugin-stealth';
+import { CPU } from '../../../types';
 
 import {
   DEFAULT_REGION,
@@ -30,15 +31,17 @@ const parseComponentsData = functions
       await page.click("[data-lang='en']");
       await page.waitForTimeout(5000);
 
-      const links = await page.evaluate(async () =>
-        Array.from(document.querySelectorAll('.model-short-title'), (a) =>
-          a.getAttribute('href'),
-        ),
-      );
+      // const productLinks = await page.evaluate(async () =>
+      //   Array.from(document.querySelectorAll('.model-short-title'), (a) =>
+      //     a.getAttribute('href'),
+      //   ),
+      // );
 
-      const products: string[] = [];
+      const productLinks = ['/en/AMD-5600X-BOX.htm'];
 
-      for await (const link of links) {
+      const products: CPU[] = [];
+
+      for await (const link of productLinks) {
         if (!link) return;
 
         const productPage = await browser.newPage();
@@ -52,7 +55,9 @@ const parseComponentsData = functions
         products.push(product);
       }
 
-      console.log(products);
+      const [prod] = products;
+
+      console.log(prod);
 
       await browser.close();
     } catch (err) {
