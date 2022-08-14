@@ -5,7 +5,7 @@ import {
   useFirestoreCollectionData,
 } from 'reactfire';
 import { DEFAULT_REGION } from '../../../common/constants';
-// eslint-disable-next-line import/no-named-as-default
+import BuildPage from '../BuildPage';
 import Header from '../Header';
 
 const Root: React.FC = () => {
@@ -27,7 +27,12 @@ const Root: React.FC = () => {
 
   console.log(data);
 
-  return <Header />;
+  return (
+    <>
+      <Header />
+      <BuildPage />
+    </>
+  );
 };
 
 // eslint-disable-next-line jest/no-export
