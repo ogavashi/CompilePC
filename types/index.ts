@@ -9,8 +9,8 @@ export type Product = {
   id: string;
   name: string;
   mainImage: string;
-  description: string;
-  officialWebsite: string;
+  description?: string;
+  officialWebsite?: string;
   manufacturer: string;
 };
 
@@ -120,4 +120,21 @@ export type RAM = Product & {
   cooling: string;
   moduleProfile: string;
   moduleHeight: string;
+};
+
+// collection hardDrives
+export type HardDrives = Product & {
+  placement: string;
+  type: string;
+  capacity: number;
+  formFactor: string;
+  cacheMemory: number;
+  recordTechnology: string;
+  RPM: number;
+  dataTransferRate: number;
+  operationPowerConsumption: number;
+  standbyPowerConsumption: number;
+  MTBF: number;
+  size: string; // e.g. 147x102x20 mm
+  weight: number;
 };
