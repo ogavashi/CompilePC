@@ -2,7 +2,7 @@ import React from 'react';
 import { Container } from '@mui/system';
 import Header from '../Header';
 
-const BuildPage: React.FC = ({ children }) => {
+const Layout: React.FC = ({ children }) => {
   return (
     <>
       <Header />
@@ -11,4 +11,4 @@ const BuildPage: React.FC = ({ children }) => {
   );
 };
 
-export default BuildPage;
+export default Layout;
