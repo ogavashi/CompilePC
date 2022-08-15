@@ -6,12 +6,16 @@ const useStyles = makeStyles((theme: Theme) =>
     title: {
       display: 'flex',
       alignItems: 'center',
-      paddingLeft: theme.spacing(1),
+      paddingLeft: theme.spacing(4),
       color: 'white',
     },
-    button: {
-      cursor: 'pointer',
-      fontSize: 'large',
+    accordionSummary: {
+      '& .MuiAccordionSummary-content': {
+        padding: theme.spacing(2),
+      },
+    },
+    productIcon: {
+      width: '60px',
     },
     icon: {
       width: '30px',

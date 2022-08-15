@@ -2,12 +2,12 @@ import React from 'react';
 import AppBar from '@mui/material/AppBar';
 import { Button, InputBase } from '@mui/material';
 import { Box, Container } from '@mui/system';
-import AppLogo from '../Icons';
+import { AppLogo } from '../Icons';
 
 const Header: React.FC = () => {
   return (
     <AppBar position="sticky">
-      <Container maxWidth="lg">
+      <Container maxWidth="xl">
         <Box
           display="flex"
           alignItems="center"

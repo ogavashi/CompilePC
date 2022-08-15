@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Accordion,
   AccordionDetails,
@@ -6,55 +6,95 @@ import {
   IconButton,
   Typography,
 } from '@mui/material';
-import AddBoxIcon from '@mui/icons-material/AddBox';
-import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox';
-import SwapHorizontalCircleIcon from '@mui/icons-material/SwapHorizontalCircle';
+import AddRoundedIcon from '@mui/icons-material/AddRounded';
+import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
+import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded';
 import useStyles from './styles';
-import BuilderProduct from '../BuilderProduct';
+import globalUseStyles from '../../../../../common/globalUseStyles';
+
+const parts = [
+  {
+    id: '1',
+    title: 'Ryzen 5 3600',
+    price: 700,
+    mainImage:
+      'https://www.amd.com/system/files/2019-06/238593-ryzen-5-pib-left-facing-1260x709.png',
+    specs: [
+      { name: 'Socket', value: 'AM4' },
+      { name: 'Series', value: 'AMD Ryzen' },
+    ],
+  },
+  {
+    id: '2',
+    title: 'Ryzen 5 2600',
+    price: 600,
+    mainImage: 'https://mzimg.com/120/61/g4tmbzmxe61.jpg',
+    specs: [
+      { name: 'Socket', value: 'AM4' },
+      { name: 'Series', value: 'AMD Ryzen' },
+    ],
+  },
+  {
+    id: '3',
+    title: 'Ryzen 5 5600',
+    price: 500,
+    mainImage:
+      'https://ae04.alicdn.com/kf/S99721446a0814d2e9340b7938ebc2ca4D/AMD-Ryzen-5-5600-R5-5600-3-5-6-12.png',
+    specs: [
+      { name: 'Socket', value: 'AM4' },
+      { name: 'Series', value: 'AMD Ryzen' },
+    ],
+  },
+];
 
 type ProductAccordionProps = {
-  icon: string;
+  icon: React.FC;
   category: string;
+  selectedId: string;
+  expand: boolean;
+  toggleAccordion: () => void;
 };
 
 const ProductAccordion: React.FC<ProductAccordionProps> = ({
-  icon,
+  icon: Icon,
   category,
   children,
+  selectedId,
+  expand,
+  toggleAccordion,
 }) => {
   const styles = useStyles();
-  const [expand, setExpand] = useState<boolean>(false);
-  const [selectedId, setSelectedId] = useState<string>('');
+  const globalStyles = globalUseStyles();
 
-  const toggleAccordion = () => {
-    setExpand((prev) => !prev);
-  };
-
-  const onClickAdd = (productId: string) => {
-    setSelectedId(productId);
-    setExpand(false);
-  };
+  const selectedProduct = parts.find((part) => part.id === selectedId);
 
   const DisplayReplace = () =>
     selectedId ? (
       <IconButton onClick={toggleAccordion}>
-        <SwapHorizontalCircleIcon className={styles.button} color="secondary" />
+        <SwapHorizIcon
+          className={globalStyles.greenBuilderIcon}
+          fontSize="large"
+        />
       </IconButton>
     ) : (
       <IconButton onClick={toggleAccordion}>
-        <AddBoxIcon className={styles.button} color="secondary" />
+        <AddRoundedIcon
+          className={globalStyles.greenBuilderIcon}
+          fontSize="large"
+        />
       </IconButton>
     );
 
   return (
     <Accordion expanded={expand}>
       <AccordionSummary
+        className={styles.accordionSummary}
         expandIcon={
           expand ? (
             <IconButton onClick={toggleAccordion}>
-              <IndeterminateCheckBoxIcon
-                className={styles.button}
-                sx={{ color: 'tomatoRed' }}
+              <RemoveRoundedIcon
+                fontSize="large"
+                className={globalStyles.redBuilderIcon}
               />
             </IconButton>
           ) : (
@@ -62,9 +102,19 @@ const ProductAccordion: React.FC<ProductAccordionProps> = ({
           )
         }
       >
-        <img className={styles.icon} src={`${icon}`} alt={`${category}`} />
-        <Typography className={styles.title}>
-          {!selectedId && `${category} is not selected`}
+        {selectedId ? (
+          <img
+            className={styles.productIcon}
+            src={selectedProduct?.mainImage}
+            alt={selectedProduct?.title}
+          />
+        ) : (
+          <Icon />
+        )}
+        <Typography variant="h5" className={styles.title}>
+          {selectedId
+            ? ` ${selectedProduct?.title}`
+            : `${category} is not selected`}
         </Typography>
       </AccordionSummary>
       <AccordionDetails>{children}</AccordionDetails>

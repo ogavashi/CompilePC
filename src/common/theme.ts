@@ -4,11 +4,13 @@ declare module '@mui/material/styles' {
   interface Palette {
     backgroundGrey: string;
     backgroundBlack: string;
+    green: string;
     tomatoRed: string;
   }
   interface PaletteOptions {
     backgroundGrey: string;
     backgroundBlack: string;
+    green: string;
     tomatoRed: string;
   }
 }
@@ -45,18 +47,38 @@ const defaultTheme = createTheme({
       primary: colors.white,
       secondary: colors.green,
     },
-    backgroundGrey: colors.grey,
     backgroundBlack: colors.black,
+    backgroundGrey: colors.grey,
     tomatoRed: colors.red,
+    green: colors.green,
   },
   typography: {
     h1: {
       fontSize: 40,
       fontWeight: 600,
     },
+    h2: {
+      fontSize: 40,
+      fontWeight: 600,
+    },
+    h3: {
+      fontSize: 40,
+      fontWeight: 600,
+    },
+    h4: {
+      fontSize: 40,
+      fontWeight: 600,
+    },
+    h5: {
+      fontSize: 26,
+      fontWeight: 500,
+    },
+    h6: {
+      fontSize: 14,
+    },
   },
   shape: {
-    borderRadius: 10,
+    borderRadius: 4,
   },
   components: {
     MuiInputBase: {
@@ -78,7 +100,6 @@ const defaultTheme = createTheme({
     MuiAccordion: {
       styleOverrides: {
         root: {
-          width: '600px',
           borderRadius: 10,
           backgroundColor: colors.grey,
           '&:hover:not(.Mui-disabled)': {
@@ -106,6 +127,13 @@ const defaultTheme = createTheme({
           '&:hover:not(.Mui-disabled)': {
             cursor: 'default',
           },
+        },
+      },
+    },
+    MuiAppBar: {
+      styleOverrides: {
+        root: {
+          backgroundColor: colors.grey,
         },
       },
     },

@@ -23,10 +23,8 @@ const useStyles = makeStyles((theme: Theme) =>
       alignItems: 'flex-end',
     },
     image: {
-      width: '150px',
-    },
-    button: {
-      cursor: 'pointer',
+      width: '90px',
+      margin: theme.spacing(5),
     },
     specsWrapper: {
       display: 'flex',

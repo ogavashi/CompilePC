@@ -8,7 +8,6 @@ const useStyles = makeStyles((theme: Theme) =>
       gap: theme.spacing(8),
       '& .MuiPaper-root': {
         backgroundColor: theme.palette.backgroundGrey,
-        padding: theme.spacing(4),
       },
     },
     sideSection: {
