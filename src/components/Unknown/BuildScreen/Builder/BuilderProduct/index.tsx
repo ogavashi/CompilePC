@@ -5,64 +5,59 @@ import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import useStyles from './styles';
-import globalUseStyles from '../../../../../common/globalUseStyles';
 
-export type BuilderProductSpecs = {
+export type BuilderProductSpec = {
   name: string;
   value: string;
 };
 
-type ProductProps = {
+type BuilProduct = {
   id: string;
-  title: string;
+  name: string;
   mainImage: string;
-  price: number;
-  specs: BuilderProductSpecs[];
+  specs: BuilderProductSpec[];
+};
+
+type ProductProps = {
+  product: BuilProduct;
   handleSelect: (id: string) => void;
   selectedId: string;
 };
 
 const BuilderProduct: React.FC<ProductProps> = ({
-  id,
-  title,
-  mainImage,
-  price,
-  specs,
+  product,
   handleSelect,
   selectedId,
 }) => {
   const styles = useStyles();
-  const globalStyles = globalUseStyles();
 
-  const showCheckIcon = () =>
-    selectedId === id ? (
+  const CheckIcon = () =>
+    selectedId === product.id ? (
       <IconButton onClick={() => handleSelect('')}>
-        <CloseRoundedIcon
-          className={globalStyles.redBuilderIcon}
-          fontSize="large"
-        />
+        <CloseRoundedIcon className={styles.redIcon} fontSize="large" />
       </IconButton>
     ) : (
-      <IconButton onClick={() => handleSelect(id)}>
-        <SwapHorizIcon
-          className={globalStyles.greenBuilderIcon}
-          fontSize="large"
-        />
+      <IconButton onClick={() => handleSelect(product.id)}>
+        <SwapHorizIcon className={styles.greenIcon} fontSize="large" />
       </IconButton>
     );
 
   return (
     <Box className={styles.wrapper}>
       <Box className={styles.leftWrapper}>
-        <img className={styles.image} src={mainImage} alt={title} />
+        <img
+          className={styles.image}
+          src={product.mainImage}
+          alt={product.name}
+        />
         <Box>
-          <Typography variant="h5">{title}</Typography>
+          <Typography variant="h5">{product.name}</Typography>
           <Box>
-            {specs.map((spec) => (
+            {product.specs.map((spec) => (
               <Box key={spec.name} className={styles.specsWrapper}>
                 <Typography
                   variant="h6"
-                  paddingRight={1}
+                  marginRight={1}
                 >{`${spec.name}: `}</Typography>
                 <Typography fontWeight="bold">{spec.value}</Typography>
               </Box>
@@ -71,13 +66,13 @@ const BuilderProduct: React.FC<ProductProps> = ({
         </Box>
       </Box>
       <Box className={styles.rightWrapper}>
-        <Typography variant="h5">~{price}$</Typography>
+        <Typography variant="h5">~300$</Typography>
         {selectedId ? (
-          showCheckIcon()
+          <CheckIcon />
         ) : (
-          <IconButton onClick={() => handleSelect(id)}>
+          <IconButton onClick={() => handleSelect(product.id)}>
             <AddRoundedIcon
-              className={globalStyles.greenBuilderIcon}
+              className={styles.greenIcon}
               fontSize="large"
               color="secondary"
             />

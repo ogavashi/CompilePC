@@ -78,7 +78,7 @@ const defaultTheme = createTheme({
     },
   },
   shape: {
-    borderRadius: 4,
+    borderRadius: 10,
   },
   components: {
     MuiInputBase: {

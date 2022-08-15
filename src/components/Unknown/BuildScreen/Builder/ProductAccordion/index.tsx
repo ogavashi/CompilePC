@@ -10,12 +10,11 @@ import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded';
 import useStyles from './styles';
-import globalUseStyles from '../../../../../common/globalUseStyles';
 
 const parts = [
   {
     id: '1',
-    title: 'Ryzen 5 3600',
+    name: 'Ryzen 5 3600',
     price: 700,
     mainImage:
       'https://www.amd.com/system/files/2019-06/238593-ryzen-5-pib-left-facing-1260x709.png',
@@ -26,7 +25,7 @@ const parts = [
   },
   {
     id: '2',
-    title: 'Ryzen 5 2600',
+    name: 'Ryzen 5 2600',
     price: 600,
     mainImage: 'https://mzimg.com/120/61/g4tmbzmxe61.jpg',
     specs: [
@@ -36,7 +35,7 @@ const parts = [
   },
   {
     id: '3',
-    title: 'Ryzen 5 5600',
+    name: 'Ryzen 5 5600',
     price: 500,
     mainImage:
       'https://ae04.alicdn.com/kf/S99721446a0814d2e9340b7938ebc2ca4D/AMD-Ryzen-5-5600-R5-5600-3-5-6-12.png',
@@ -64,24 +63,17 @@ const ProductAccordion: React.FC<ProductAccordionProps> = ({
   toggleAccordion,
 }) => {
   const styles = useStyles();
-  const globalStyles = globalUseStyles();
 
   const selectedProduct = parts.find((part) => part.id === selectedId);
 
   const DisplayReplace = () =>
     selectedId ? (
       <IconButton onClick={toggleAccordion}>
-        <SwapHorizIcon
-          className={globalStyles.greenBuilderIcon}
-          fontSize="large"
-        />
+        <SwapHorizIcon className={styles.greenIcon} fontSize="large" />
       </IconButton>
     ) : (
       <IconButton onClick={toggleAccordion}>
-        <AddRoundedIcon
-          className={globalStyles.greenBuilderIcon}
-          fontSize="large"
-        />
+        <AddRoundedIcon className={styles.greenIcon} fontSize="large" />
       </IconButton>
     );
 
@@ -92,10 +84,7 @@ const ProductAccordion: React.FC<ProductAccordionProps> = ({
         expandIcon={
           expand ? (
             <IconButton onClick={toggleAccordion}>
-              <RemoveRoundedIcon
-                fontSize="large"
-                className={globalStyles.redBuilderIcon}
-              />
+              <RemoveRoundedIcon fontSize="large" className={styles.redIcon} />
             </IconButton>
           ) : (
             <DisplayReplace />
@@ -106,15 +95,13 @@ const ProductAccordion: React.FC<ProductAccordionProps> = ({
           <img
             className={styles.productIcon}
             src={selectedProduct?.mainImage}
-            alt={selectedProduct?.title}
+            alt={selectedProduct?.name}
           />
         ) : (
           <Icon />
         )}
         <Typography variant="h5" className={styles.title}>
-          {selectedId
-            ? ` ${selectedProduct?.title}`
-            : `${category} is not selected`}
+          {selectedId ? selectedProduct?.name : `${category} is not selected`}
         </Typography>
       </AccordionSummary>
       <AccordionDetails>{children}</AccordionDetails>
