@@ -1,5 +1,5 @@
 import './bootstrap';
-import getBiba from './biba/getBiba';
+import parseCategoryProducts from './category/parseCategoryProducts';
 
 // eslint-disable-next-line import/prefer-default-export
-export { getBiba };
+export { parseCategoryProducts };
