@@ -5,6 +5,8 @@ import {
   useFirestoreCollectionData,
 } from 'reactfire';
 import { DEFAULT_REGION } from '../../../common/constants';
+import BuildPage from '../BuildPage';
+import Layout from '../Layout';
 import BuilderProduct from '../BuildScreen/Builder/BuilderProduct';
 import BuilderProductExample from '../BuildScreen/Builder/BuilderProduct/BuilderProductExample';
 import ProductAccordion from '../BuildScreen/Builder/ProductAccordion';

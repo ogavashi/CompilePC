@@ -13,7 +13,9 @@ declare module '@mui/material/styles' {
   }
 }
 
-const theme = createTheme({});
+const theme = createTheme({
+  spacing: 4,
+});
 
 const colors = {
   green: '#00B589',
@@ -26,6 +28,7 @@ const colors = {
 };
 
 const defaultTheme = createTheme({
+  ...theme,
   palette: {
     primary: {
       main: colors.buttonLightGrey,
