@@ -1,4 +1,3 @@
-import { Button, InputBase } from '@mui/material';
 import React, { useEffect } from 'react';
 import {
   useFirebaseApp,
@@ -6,6 +5,9 @@ import {
   useFirestoreCollectionData,
 } from 'reactfire';
 import { DEFAULT_REGION } from '../../../common/constants';
+import BuilderProduct from '../BuildScreen/Builder/BuilderProduct';
+import BuilderProductExample from '../BuildScreen/Builder/BuilderProduct/BuilderProductExample';
+import ProductAccordion from '../BuildScreen/Builder/ProductAccordion';
 
 const Root: React.FC = () => {
   const functions = useFirebaseApp().functions(DEFAULT_REGION);
@@ -28,13 +30,21 @@ const Root: React.FC = () => {
 
   return (
     <div>
-      <Button color="primary" variant="contained">
+      {/* <Button color="primary" variant="contained">
         Press Me
       </Button>
       <Button color="secondary" variant="contained">
         Press Me
       </Button>
-      <InputBase />
+      <InputBase /> */}
+      <ProductAccordion
+        category="Processor"
+        icon="https://pcua.nerdpart.com/configurator/images/confg-ico-1.svg"
+      >
+        <BuilderProductExample />
+        <BuilderProductExample />
+        <BuilderProductExample />
+      </ProductAccordion>
     </div>
   );
 };
