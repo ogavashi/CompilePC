@@ -3,13 +3,17 @@ import { createTheme } from '@mui/material';
 declare module '@mui/material/styles' {
   interface Palette {
     backgroundGrey: string;
+    tomatoRed: string;
   }
   interface PaletteOptions {
     backgroundGrey: string;
+    tomatoRed: string;
   }
 }
 
-const theme = createTheme({});
+const theme = createTheme({
+  spacing: 4,
+});
 
 const colors = {
   green: '#00B589',
@@ -17,12 +21,15 @@ const colors = {
   grey: '#282828',
   white: '#FFFFFF',
   lightGrey: '#373737',
+  buttonLightGrey: '#3E3E3E',
+  red: '#FC4422',
 };
 
 const defaultTheme = createTheme({
+  ...theme,
   palette: {
     primary: {
-      main: colors.grey,
+      main: colors.buttonLightGrey,
       contrastText: colors.green,
     },
     secondary: {
@@ -36,8 +43,8 @@ const defaultTheme = createTheme({
       primary: colors.white,
       secondary: colors.green,
     },
-
     backgroundGrey: colors.grey,
+    tomatoRed: colors.red,
   },
   typography: {
     h1: {
@@ -62,6 +69,46 @@ const defaultTheme = createTheme({
               border: 'none',
             },
           },
+        },
+      },
+    },
+    MuiAccordion: {
+      styleOverrides: {
+        root: {
+          borderRadius: 10,
+          backgroundColor: colors.grey,
+          '&:hover:not(.Mui-disabled)': {
+            cursor: 'default',
+          },
+        },
+      },
+    },
+    MuiAccordionSummary: {
+      styleOverrides: {
+        root: {
+          borderRadius: 10,
+          backgroundColor: colors.grey,
+          '&:hover:not(.Mui-disabled)': {
+            cursor: 'default',
+          },
+        },
+      },
+    },
+    MuiAccordionDetails: {
+      styleOverrides: {
+        root: {
+          borderRadius: 10,
+          backgroundColor: colors.grey,
+          '&:hover:not(.Mui-disabled)': {
+            cursor: 'default',
+          },
+        },
+      },
+    },
+    MuiAppBar: {
+      styleOverrides: {
+        root: {
+          backgroundColor: colors.grey,
         },
       },
     },

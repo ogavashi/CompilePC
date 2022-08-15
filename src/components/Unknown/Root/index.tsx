@@ -1,4 +1,3 @@
-import { Button, InputBase } from '@mui/material';
 import React, { useEffect } from 'react';
 import {
   useFirebaseApp,
@@ -6,6 +5,8 @@ import {
   useFirestoreCollectionData,
 } from 'reactfire';
 import { DEFAULT_REGION } from '../../../common/constants';
+import BuildPage from '../BuildPage';
+import Layout from '../Layout';
 
 const Root: React.FC = () => {
   const functions = useFirebaseApp().functions(DEFAULT_REGION);
@@ -27,15 +28,9 @@ const Root: React.FC = () => {
   console.log(data);
 
   return (
-    <div>
-      <Button color="primary" variant="contained">
-        Press Me
-      </Button>
-      <Button color="secondary" variant="contained">
-        Press Me
-      </Button>
-      <InputBase />
-    </div>
+    <Layout>
+      <BuildPage />
+    </Layout>
   );
 };
 
