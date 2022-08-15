@@ -2,8 +2,9 @@ import React from 'react';
 import { Box } from '@mui/system';
 import { Typography, Paper } from '@mui/material';
 import useStyles from './styles';
+import Builder from './Builder';
 
-const BuildPage: React.FC = () => {
+const BuildScreen: React.FC = () => {
   const styles = useStyles();
 
   return (
@@ -28,7 +29,9 @@ const BuildPage: React.FC = () => {
           <Typography gutterBottom variant="h1">
             Main Parts
           </Typography>
-          <Paper>biba</Paper>
+          <Paper>
+            <Builder />
+          </Paper>
         </Box>
         <Box>
           <Typography gutterBottom variant="h1">
@@ -47,4 +50,4 @@ const BuildPage: React.FC = () => {
   );
 };
 
-export default BuildPage;
+export default BuildScreen;

@@ -1,3 +1,4 @@
 import { ReactComponent as AppLogo } from './logo.svg';
+import { ReactComponent as CPUIcon } from './cpu-icon.svg';
 
-export default AppLogo;
+export { AppLogo, CPUIcon };

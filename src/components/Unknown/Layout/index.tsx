@@ -6,7 +6,7 @@ const Layout: React.FC = ({ children }) => {
   return (
     <>
       <Header />
-      <Container maxWidth="lg">{children}</Container>
+      <Container maxWidth="xl">{children}</Container>
     </>
   );
 };

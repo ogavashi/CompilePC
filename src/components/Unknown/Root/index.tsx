@@ -5,8 +5,8 @@ import {
   useFirestoreCollectionData,
 } from 'reactfire';
 import { DEFAULT_REGION } from '../../../common/constants';
-import BuildPage from '../BuildPage';
 import Layout from '../Layout';
+import BuildScreen from '../BuildScreen';
 
 const Root: React.FC = () => {
   const functions = useFirebaseApp().functions(DEFAULT_REGION);
@@ -14,23 +14,25 @@ const Root: React.FC = () => {
   const ref = firebase.collection('test');
   const data = useFirestoreCollectionData(ref);
 
-  const getBiba = functions.httpsCallable('getBiba');
+  // const getBiba = functions.httpsCallable('getBiba');
 
-  useEffect(() => {
-    const test = async () => {
-      const res = await getBiba();
-      console.log(res);
-    };
+  // useEffect(() => {
+  //   const test = async () => {
+  //     const res = await getBiba();
+  //     console.log(res);
+  //   };
 
-    test();
-  }, [getBiba]);
+  //   test();
+  // }, [getBiba]);
 
-  console.log(data);
+  // console.log(data);
 
   return (
-    <Layout>
-      <BuildPage />
-    </Layout>
+    <div>
+      <Layout>
+        <BuildScreen />
+      </Layout>
+    </div>
   );
 };
 
