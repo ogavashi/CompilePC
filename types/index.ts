@@ -2,7 +2,6 @@
 export type Category = {
   id: string;
   name: string;
-  listNumber: string;
 };
 
 export type Product = {
@@ -11,28 +10,28 @@ export type Product = {
   mainImage: string;
   description?: string;
   officialWebsite?: string;
-  manufacturer: string;
+  manufacturer?: string;
 };
 
 // collection CPUs
 export type CPU = Product & {
-  series: string;
-  codeName: string;
-  socket: string;
-  litography: number;
-  cores: number;
-  threads: number;
-  clockSpeed: number;
-  turboBoost?: number;
-  l1Cache: number;
-  l2Cache: number;
-  l3Cache: number;
+  series?: string;
+  codeName?: string;
+  socket?: string;
+  litography?: string;
+  cores?: string;
+  threads?: string;
+  clockSpeed?: string;
+  turboBoost?: string;
+  l1Cache?: string;
+  l2Cache?: string;
+  l3Cache?: string;
   IGP?: string;
-  TDP: number;
-  PSIExpress: string;
-  maxOperatingTemperature: string;
-  maxDDR4Speed: string;
-  channels: string;
+  TDP?: string;
+  PSIExpress?: string;
+  maxOperatingTemperature?: string;
+  maxDDR4Speed?: string;
+  channels?: string;
 };
 
 // collection graphicsCards
