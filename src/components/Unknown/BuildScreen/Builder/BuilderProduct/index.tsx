@@ -8,7 +8,7 @@ import useStyles from './styles';
 
 export type BuilderProductSpec = {
   name: string;
-  value: string | undefined;
+  value: string;
 };
 
 export type BuildProduct = {
