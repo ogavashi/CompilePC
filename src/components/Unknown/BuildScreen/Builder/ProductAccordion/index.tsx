@@ -10,46 +10,13 @@ import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded';
 import useStyles from './styles';
-
-const parts = [
-  {
-    id: '1',
-    name: 'Ryzen 5 3600',
-    price: 700,
-    mainImage:
-      'https://www.amd.com/system/files/2019-06/238593-ryzen-5-pib-left-facing-1260x709.png',
-    specs: [
-      { name: 'Socket', value: 'AM4' },
-      { name: 'Series', value: 'AMD Ryzen' },
-    ],
-  },
-  {
-    id: '2',
-    name: 'Ryzen 5 2600',
-    price: 600,
-    mainImage: 'https://mzimg.com/120/61/g4tmbzmxe61.jpg',
-    specs: [
-      { name: 'Socket', value: 'AM4' },
-      { name: 'Series', value: 'AMD Ryzen' },
-    ],
-  },
-  {
-    id: '3',
-    name: 'Ryzen 5 5600',
-    price: 500,
-    mainImage:
-      'https://ae04.alicdn.com/kf/S99721446a0814d2e9340b7938ebc2ca4D/AMD-Ryzen-5-5600-R5-5600-3-5-6-12.png',
-    specs: [
-      { name: 'Socket', value: 'AM4' },
-      { name: 'Series', value: 'AMD Ryzen' },
-    ],
-  },
-];
+import { BuildProduct } from '../BuilderProduct';
 
 type ProductAccordionProps = {
   icon: React.FC;
   category: string;
   selectedId: string;
+  selectedProduct: BuildProduct | undefined;
   expand: boolean;
   toggleAccordion: () => void;
 };
@@ -59,12 +26,11 @@ const ProductAccordion: React.FC<ProductAccordionProps> = ({
   category,
   children,
   selectedId,
+  selectedProduct,
   expand,
   toggleAccordion,
 }) => {
   const styles = useStyles();
-
-  const selectedProduct = parts.find((part) => part.id === selectedId);
 
   const DisplayReplace = () =>
     selectedId ? (

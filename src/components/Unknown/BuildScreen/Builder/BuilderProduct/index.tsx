@@ -8,10 +8,10 @@ import useStyles from './styles';
 
 export type BuilderProductSpec = {
   name: string;
-  value: string;
+  value: string | undefined;
 };
 
-type BuilProduct = {
+export type BuildProduct = {
   id: string;
   name: string;
   mainImage: string;
@@ -19,7 +19,7 @@ type BuilProduct = {
 };
 
 type ProductProps = {
-  product: BuilProduct;
+  product: BuildProduct;
   handleSelect: (id: string) => void;
   selectedId: string;
 };
