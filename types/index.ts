@@ -62,7 +62,7 @@ export type GraphicsCard = Product & {
   size: string; // e.g. 200x123x38
 };
 
-type MotherboardFormFactor =
+export type MotherboardFormFactor =
   | 'mini-ITX'
   | 'micro-ATX'
   | 'ATX'
@@ -71,38 +71,38 @@ type MotherboardFormFactor =
 
 // collection motherboards
 export type Motherboard = Product & {
-  socket: string;
-  formFactor: MotherboardFormFactor;
-  powerPhases: number;
+  socket?: string;
+  formFactor?: MotherboardFormFactor;
+  powerPhases?: string;
   VRMHeatsink?: boolean;
-  size: string; // e.g. 226x211 mm
-  chipset: string;
-  BIOS: string;
-  DDR4: string;
-  memoryModule: string;
-  operationMode: number;
-  maxClockFrequency: number;
-  maxMemory: number;
-  VGA: boolean;
-  HDMI: boolean;
-  HDMIVersion: string;
+  size?: string; // e.g. 226x211 mm
+  chipset?: string;
+  BIOS?: string;
+  DDR4?: string;
+  memoryModule?: string;
+  operationMode?: string;
+  maxClockFrequency?: string;
+  maxMemory?: string;
+  VGA?: boolean;
+  HDMI?: boolean;
+  HDMIVersion?: string;
   displayPort?: boolean;
   displayPortVersion?: string;
-  audiochip: string;
-  sound: number;
-  sata3: number;
-  m2: string;
-  PSI_E_16x: number;
-  PCIExpressVerison: string;
-  ExternalUSB_2_0: number;
-  ExternalUSB_3_2_gen1: number;
-  ExternalUSB_3_2_gen2: number;
-  InternalUSB_2_0: number;
-  InternalUSB_3_2_gen1: number;
-  InternalUSB_3_2_gen2: number;
-  mainPowerSocket: number;
-  CPUPowerSocket: number;
-  FanPowerConnectors: number;
+  audiochip?: string;
+  sound?: string;
+  sata3?: string;
+  m2?: string;
+  PSI_E_16x?: string;
+  PCIExpressVerison?: string;
+  ExternalUSB_2_0?: string;
+  ExternalUSB_3_2_gen1?: string;
+  ExternalUSB_3_2_gen2?: string;
+  InternalUSB_2_0?: string;
+  InternalUSB_3_2_gen1?: string;
+  InternalUSB_3_2_gen2?: string;
+  mainPowerSocket?: string;
+  CPUPowerSocket?: string;
+  FanPowerConnectors?: string;
 };
 
 // collection RAM

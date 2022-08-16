@@ -1,0 +1,109 @@
+import { Page } from 'puppeteer';
+import { Motherboard, MotherboardFormFactor } from '../../../types';
+import camelize from '../common/camelize';
+import getParsingElement from '../common/getParsingElement';
+import parseElementInnerHTML from '../common/parseElementInnerHTML';
+import parseElementText from '../common/parseElementText';
+
+const parseMotherboardPage = async (
+  productId: string,
+  page: Page,
+): Promise<Motherboard | null> => {
+  await page.waitForXPath(
+    "//div[@class='desc-menu']/a[contains(., 'Specifications')]",
+  );
+  const anchor = (await page.$x(
+    "//div[@class='desc-menu']/a[contains(., 'Specifications')]",
+  )) as any;
+  await Promise.all([
+    await anchor[0].click(),
+    await page.waitForNavigation({ waitUntil: 'networkidle2' }),
+  ]);
+
+  const name = await parseElementText('.op1-tt', page);
+
+  const mainImageContainer = await getParsingElement('.img200', page);
+  const mainImage = await page.evaluate(
+    (el) => el.lastElementChild.getAttribute('srcset').split(' ')[0],
+    mainImageContainer,
+  );
+
+  const description = await parseElementInnerHTML('.desc-exp-text', page);
+
+  const specsTable = await getParsingElement('#help_table', page);
+
+  const rawSpecsTable = await page.evaluate(async (node) => {
+    async function getNodeTreeText(inputNode: any): Promise<any> {
+      if (inputNode && inputNode.hasChildNodes()) {
+        return node.innerText;
+      }
+
+      return null;
+    }
+
+    return getNodeTreeText(node);
+  }, specsTable);
+
+  if (!name || !mainImage || !rawSpecsTable) return null;
+
+  const cleanedSpecsTable = rawSpecsTable
+    .split('\n')
+    .filter((item: string) => item.includes('\t'));
+
+  const specs: Record<string, string> = {};
+
+  cleanedSpecsTable.forEach((item: string) => {
+    const [name, value] = item.split('\t');
+
+    if (!name && !value) {
+      return;
+    }
+
+    const camelName = camelize(name);
+    specs.hasOwnProperty(camelName)
+      ? (specs[`${camelName}Internal`] = value)
+      : (specs[camelName] = value);
+  });
+  console.log(specs);
+
+  return {
+    id: productId,
+    name,
+    mainImage,
+    description: description || undefined,
+    socket: specs?.socket,
+    formFactor: specs?.formFactor as MotherboardFormFactor,
+    powerPhases: specs?.powerPhases,
+    VRMHeatsink: !specs?.vRMHeatsink,
+    size: specs?.['size(HxW)'], // e.g. 226x211 mm
+    chipset: specs?.chipset,
+    BIOS: specs?.BIOS,
+    DDR4: specs?.DDR4,
+    memoryModule: specs?.memoryModule,
+    operationMode: specs?.operationMode,
+    maxClockFrequency: specs?.maxClockFrequency,
+    maxMemory: specs?.maxMemory,
+    VGA: !specs?.['dSubOutput(VGA)'],
+    HDMI: !specs?.hDMIOutput,
+    HDMIVersion: specs?.hDMIVersion,
+    displayPort: !specs?.displayPort,
+    displayPortVersion: specs?.displayPortVersion,
+    audiochip: specs?.audiochip,
+    sound: specs?.['sound(Channels)'],
+    sata3: specs?.['sATA3(6Gbs)'],
+    m2: specs?.['M.2'],
+    PSI_E_16x: specs?.pCIE16xSlots,
+    PCIExpressVerison: specs?.pCIExpress,
+    ExternalUSB_2_0: specs?.['USB 2.0'],
+    ExternalUSB_3_2_gen1: specs?.['uSB32Gen1'],
+    ExternalUSB_3_2_gen2: specs?.['uSB32Gen2'],
+    InternalUSB_2_0: specs?.['USB 2.0Internal'],
+    InternalUSB_3_2_gen1: specs?.['uSB32Gen1Internal'],
+    InternalUSB_3_2_gen2: specs?.['uSB32Gen2Internal'],
+    mainPowerSocket: specs?.mainPowerSocket,
+    CPUPowerSocket: specs?.cPUPower,
+    FanPowerConnectors: specs?.FanPowerConnectors,
+  };
+};
+
+export default parseMotherboardPage;
