@@ -1,6 +1,7 @@
 import { Page } from 'puppeteer';
 import { Motherboard, MotherboardFormFactor } from '../../../types';
 import camelize from '../common/camelize';
+import { xPathSelectors } from '../common/constants';
 import getParsingElement from '../common/getParsingElement';
 import parseElementInnerHTML from '../common/parseElementInnerHTML';
 import parseElementText from '../common/parseElementText';
@@ -9,12 +10,10 @@ const parseMotherboardPage = async (
   productId: string,
   page: Page,
 ): Promise<Motherboard | null> => {
-  await page.waitForXPath(
-    "//div[@class='desc-menu']/a[contains(., 'Specifications')]",
-  );
-  const anchor = (await page.$x(
-    "//div[@class='desc-menu']/a[contains(., 'Specifications')]",
-  )) as any;
+  const description = await parseElementInnerHTML('.desc-ai-title', page);
+
+  await page.waitForXPath(xPathSelectors.specificationButton);
+  const anchor = (await page.$x(xPathSelectors.specificationButton)) as any;
   await Promise.all([
     await anchor[0].click(),
     await page.waitForNavigation({ waitUntil: 'networkidle2' }),
@@ -27,8 +26,6 @@ const parseMotherboardPage = async (
     (el) => el.lastElementChild.getAttribute('srcset').split(' ')[0],
     mainImageContainer,
   );
-
-  const description = await parseElementInnerHTML('.desc-exp-text', page);
 
   const specsTable = await getParsingElement('#help_table', page);
 
@@ -64,7 +61,6 @@ const parseMotherboardPage = async (
       ? (specs[`${camelName}Internal`] = value)
       : (specs[camelName] = value);
   });
-  console.log(specs);
 
   return {
     id: productId,
