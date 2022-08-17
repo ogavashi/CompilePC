@@ -38,27 +38,27 @@ export type CPU = Product & {
 export type GraphicsCard = Product & {
   interface: string;
   GPUModel: string;
-  memorySize: number;
+  memorySize: string;
   memoryType: string;
-  memoryBus: number;
-  GPUClockSpeed: number;
-  litography: number;
+  memoryBus: string;
+  GPUClockSpeed: string;
+  litography: string;
   maxResolution: string;
-  HDMI: number;
+  HDMI: string;
   HDMIVersion: string;
-  displayPort?: number;
+  displayPort?: string;
   displayPortVersion?: string;
   directX: string;
-  openGL: number;
+  openGL: string;
   isVRReady: boolean;
-  streamProcessors: number;
-  textureUnits: number;
-  monitorsConnection: number;
+  streamProcessors: string;
+  textureUnits: string;
+  monitorsConnection: string;
   cooling: string;
-  fans: number;
+  fans: string;
   additionalPower: string;
-  minPSU: number;
-  numberOfSlots: number;
+  minPSU: string;
+  numberOfSlots: string;
   size: string; // e.g. 200x123x38
 };
 
@@ -108,14 +108,14 @@ export type Motherboard = Product & {
 // collection RAM
 export type RAM = Product & {
   colour: string;
-  capacity: number;
-  modules: number;
+  capacity: string;
+  modules: string;
   formFactor: string;
   type: string;
-  speed: number;
-  clockSpeed: number;
+  speed: string;
+  clockSpeed: string;
   timing: string;
-  voltage: number;
+  voltage: string;
   cooling: string;
   moduleProfile: string;
   moduleHeight: string;
@@ -125,15 +125,15 @@ export type RAM = Product & {
 export type HardDrive = Product & {
   placement: string;
   type: string;
-  capacity: number;
+  capacity: string;
   formFactor: string;
-  cacheMemory: number;
+  cacheMemory: string;
   recordTechnology: string;
-  RPM: number;
-  dataTransferRate: number;
-  operationPowerConsumption: number;
-  standbyPowerConsumption: number;
-  MTBF: number;
+  RPM: string;
+  dataTransferRate: string;
+  operationPowerConsumption: string;
+  standbyPowerConsumption: string;
+  MTBF: string;
   size: string; // e.g. 147x102x20 mm
-  weight: number;
+  weight: string;
 };

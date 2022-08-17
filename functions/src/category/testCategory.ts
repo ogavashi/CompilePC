@@ -8,9 +8,9 @@ import {
   EKATALOG_LIST_LINK,
 } from '../common/constants';
 import StealthPlugin from 'puppeteer-extra-plugin-stealth';
-import { Category, Motherboard } from '../../../types';
-import parseMotherboardPage from '../motherboard/parseMotherboardPage';
+import { Category, HardDrive } from '../../../types';
 import mapFirestoreDocSnap from '../common/mapFirestoreDocSnap';
+import parseHardDrivePage from '../hardDrive/parseHardDrivePage';
 puppeteer.use(StealthPlugin());
 
 const firestore = admin.firestore();
@@ -37,7 +37,7 @@ const testCategory = functions
         mapFirestoreDocSnap<Category>(doc),
       );
 
-      const category = categories[1]; // choose your category by index, add it beforehand in firebase console
+      const category = categories[4]; // choose your category by index, add it beforehand in firebase console
       if (!category) return;
 
       const browser = await puppeteer.launch(options);
@@ -53,7 +53,7 @@ const testCategory = functions
           a.getAttribute('href'),
         ),
       );
-      const products: Motherboard[] = []; // put your component type here
+      const products: HardDrive[] = []; // put your component type here
       for await (const link of productLinks) {
         if (!link) return;
 
@@ -64,7 +64,7 @@ const testCategory = functions
 
         const productId = link.split('/en/').join('').split('.htm').join(); // TODO: use regex
 
-        const parser = parseMotherboardPage; // put YOUR parser here
+        const parser = parseHardDrivePage; // put YOUR parser here
         if (!parser) return;
 
         const product = await parser(productId, productPage);

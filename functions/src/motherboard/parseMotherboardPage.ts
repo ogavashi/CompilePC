@@ -1,6 +1,7 @@
 import { Page } from 'puppeteer';
 import { Motherboard, MotherboardFormFactor } from '../../../types';
 import camelize from '../common/camelize';
+import cleanComplexTable from '../common/cleanComplexTable';
 import { xPathSelectors } from '../common/constants';
 import getParsingElement from '../common/getParsingElement';
 import parseElementInnerHTML from '../common/parseElementInnerHTML';
@@ -43,9 +44,7 @@ const parseMotherboardPage = async (
 
   if (!name || !mainImage || !rawSpecsTable) return null;
 
-  const cleanedSpecsTable = rawSpecsTable
-    .split('\n')
-    .filter((item: string) => item.includes('\t'));
+  const cleanedSpecsTable = cleanComplexTable(rawSpecsTable);
 
   const specs: Record<string, string> = {};
 

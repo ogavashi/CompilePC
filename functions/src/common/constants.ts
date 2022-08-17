@@ -11,4 +11,5 @@ export const parserByCategoryId: Record<string, CallableFunction> = {
 export const xPathSelectors: Record<string, string> = {
   specificationButton:
     "//div[@class='desc-menu']/a[contains(., 'Specifications')]",
+  ramColourDivs: "//td[@class='small-col-plate2']/div",
 };
