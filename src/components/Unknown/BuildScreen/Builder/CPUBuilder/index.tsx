@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useFirestoreCollectionData, useFirestore } from 'reactfire';
 import ProductAccordion from '../ProductAccordion';
 import { CPUIcon } from '../../../Icons';
@@ -10,6 +10,7 @@ import normalizeProducts from '../../../../../common/normalizeProduct';
 const CPUBuilder: React.FC = () => {
   const [selectedId, setSelectedId] = useState<string>('');
   const [expand, setExpand] = useState<boolean>(false);
+  const specs = ['Series', 'Socket', 'Threads'];
 
   const handleAddProduct = (productId: string) => {
     setExpand(false);
@@ -26,22 +27,32 @@ const CPUBuilder: React.FC = () => {
 
   const { data, status } = useFirestoreCollectionData<CPU>(productRef);
 
-  const selectedProduct =
-    data && data.find((product) => product.id === selectedId);
+  const normalizedProducts = useMemo(
+    () => data && normalizeProducts(data, specs),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [data],
+  );
+
+  const selectedProduct = useMemo(
+    () =>
+      normalizedProducts &&
+      normalizedProducts.find((product) => product.id === selectedId),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [selectedId],
+  );
 
   return (
     <ProductAccordion
       icon={CPUIcon}
       category={ProductCategoryByCollection.CPUs}
       selectedId={selectedId}
-      selectedProduct={
-        selectedProduct && normalizeProducts([selectedProduct])[0]
-      }
       expand={expand}
+      selectedProduct={selectedProduct}
       toggleAccordion={toggleAccordion}
     >
       {status === 'success' &&
-        normalizeProducts(data).map((product) => (
+        normalizedProducts &&
+        normalizedProducts.map((product) => (
           <BuilderProduct
             product={product}
             key={product.id}

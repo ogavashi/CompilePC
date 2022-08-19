@@ -16,7 +16,8 @@ type ProductAccordionProps = {
   icon: React.FC;
   category: string;
   selectedId: string;
-  selectedProduct: BuildProduct | undefined;
+  // eslint-disable-next-line react/require-default-props
+  selectedProduct?: BuildProduct;
   expand: boolean;
   toggleAccordion: () => void;
 };
