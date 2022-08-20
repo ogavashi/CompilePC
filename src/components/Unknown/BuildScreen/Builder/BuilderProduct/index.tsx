@@ -11,15 +11,17 @@ export type BuilderProductSpec = {
   value: string;
 };
 
-type BuilProduct = {
+export type BuildProduct = {
   id: string;
   name: string;
   mainImage: string;
   specs: BuilderProductSpec[];
 };
 
+export type ProductSpecPropType<T> = { propName: keyof T; name: string };
+
 type ProductProps = {
-  product: BuilProduct;
+  product: BuildProduct;
   handleSelect: (id: string) => void;
   selectedId: string;
 };

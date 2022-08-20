@@ -1,47 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
+import { useFirestoreCollectionData, useFirestore } from 'reactfire';
 import ProductAccordion from '../ProductAccordion';
 import { CPUIcon } from '../../../Icons';
-import BuilderProduct from '../BuilderProduct';
+import BuilderProduct, { ProductSpecPropType } from '../BuilderProduct';
 import { ProductCategoryByCollection } from '../../../../../common/constants';
-
-const parts = [
-  {
-    id: '1',
-    name: 'Ryzen 5 3600',
-    price: 700,
-    mainImage:
-      'https://www.amd.com/system/files/2019-06/238593-ryzen-5-pib-left-facing-1260x709.png',
-    specs: [
-      { name: 'Socket', value: 'AM4' },
-      { name: 'Series', value: 'AMD Ryzen' },
-    ],
-  },
-  {
-    id: '2',
-    name: 'Ryzen 5 2600',
-    price: 600,
-    mainImage: 'https://mzimg.com/120/61/g4tmbzmxe61.jpg',
-    specs: [
-      { name: 'Socket', value: 'AM4' },
-      { name: 'Series', value: 'AMD Ryzen' },
-    ],
-  },
-  {
-    id: '3',
-    name: 'Ryzen 5 5600',
-    price: 500,
-    mainImage:
-      'https://ae04.alicdn.com/kf/S99721446a0814d2e9340b7938ebc2ca4D/AMD-Ryzen-5-5600-R5-5600-3-5-6-12.png',
-    specs: [
-      { name: 'Socket', value: 'AM4' },
-      { name: 'Series', value: 'AMD Ryzen' },
-    ],
-  },
-];
+import { CPU } from '../../../../../../types';
+import normalizeProducts from '../../../../../common/normalizeProduct';
 
 const CPUBuilder: React.FC = () => {
   const [selectedId, setSelectedId] = useState<string>('');
   const [expand, setExpand] = useState<boolean>(false);
+  const specs: ProductSpecPropType<CPU>[] = useMemo(
+    () => [
+      { propName: 'series', name: 'Series' },
+      { propName: 'socket', name: 'Socket' },
+      { propName: 'threads', name: 'Threads' },
+    ],
+    [],
+  );
 
   const handleAddProduct = (productId: string) => {
     setExpand(false);
@@ -52,14 +28,22 @@ const CPUBuilder: React.FC = () => {
     setExpand((prev) => !prev);
   };
 
-  const products = parts.map((part) => (
-    <BuilderProduct
-      product={part}
-      key={part.id}
-      handleSelect={handleAddProduct}
-      selectedId={selectedId}
-    />
-  ));
+  const firestore = useFirestore();
+
+  const productRef = firestore.collection('CPUs');
+
+  const { data: products, status } =
+    useFirestoreCollectionData<CPU>(productRef);
+
+  const normalizedProducts = useMemo(
+    () => products && normalizeProducts(products, specs),
+    [products, specs],
+  );
+
+  const selectedProduct = useMemo(
+    () => normalizedProducts?.find((product) => product.id === selectedId),
+    [normalizedProducts, selectedId],
+  );
 
   return (
     <ProductAccordion
@@ -67,9 +51,18 @@ const CPUBuilder: React.FC = () => {
       category={ProductCategoryByCollection.CPUs}
       selectedId={selectedId}
       expand={expand}
+      selectedProduct={selectedProduct}
       toggleAccordion={toggleAccordion}
     >
-      {products}
+      {status === 'success' &&
+        normalizedProducts?.map((product) => (
+          <BuilderProduct
+            product={product}
+            key={product.id}
+            handleSelect={handleAddProduct}
+            selectedId={selectedId}
+          />
+        ))}
     </ProductAccordion>
   );
 };
