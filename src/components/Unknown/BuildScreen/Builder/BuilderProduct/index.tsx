@@ -18,6 +18,8 @@ export type BuildProduct = {
   specs: BuilderProductSpec[];
 };
 
+export type ProductSpecPropType = { propName: string; name: string };
+
 type ProductProps = {
   product: BuildProduct;
   handleSelect: (id: string) => void;

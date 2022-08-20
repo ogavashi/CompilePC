@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { useFirestoreCollectionData, useFirestore } from 'reactfire';
 import ProductAccordion from '../ProductAccordion';
 import { CPUIcon } from '../../../Icons';
-import BuilderProduct from '../BuilderProduct';
+import BuilderProduct, { ProductSpecPropType } from '../BuilderProduct';
 import { ProductCategoryByCollection } from '../../../../../common/constants';
 import { CPU } from '../../../../../../types';
 import normalizeProducts from '../../../../../common/normalizeProduct';
@@ -10,7 +10,14 @@ import normalizeProducts from '../../../../../common/normalizeProduct';
 const CPUBuilder: React.FC = () => {
   const [selectedId, setSelectedId] = useState<string>('');
   const [expand, setExpand] = useState<boolean>(false);
-  const specs = ['Series', 'Socket', 'Threads'];
+  const specs: ProductSpecPropType[] = useMemo(
+    () => [
+      { propName: 'series', name: 'Series' },
+      { propName: 'socket', name: 'Socket' },
+      { propName: 'threads', name: 'Threads' },
+    ],
+    [],
+  );
 
   const handleAddProduct = (productId: string) => {
     setExpand(false);
@@ -25,20 +32,18 @@ const CPUBuilder: React.FC = () => {
 
   const productRef = firestore.collection('CPUs');
 
-  const { data, status } = useFirestoreCollectionData<CPU>(productRef);
+  const { data: products, status } =
+    useFirestoreCollectionData<CPU>(productRef);
 
-  const normalizedProducts = useMemo(
-    () => data && normalizeProducts(data, specs),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [data],
-  );
+  const normalizedProducts = useMemo(() => {
+    return products && normalizeProducts(products, specs);
+  }, [products, specs]);
 
   const selectedProduct = useMemo(
     () =>
       normalizedProducts &&
       normalizedProducts.find((product) => product.id === selectedId),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [selectedId],
+    [normalizedProducts, selectedId],
   );
 
   return (
