@@ -35,14 +35,13 @@ const CPUBuilder: React.FC = () => {
   const { data: products, status } =
     useFirestoreCollectionData<CPU>(productRef);
 
-  const normalizedProducts = useMemo(() => {
-    return products && normalizeProducts(products, specs);
-  }, [products, specs]);
+  const normalizedProducts = useMemo(
+    () => products && normalizeProducts(products, specs),
+    [products, specs],
+  );
 
   const selectedProduct = useMemo(
-    () =>
-      normalizedProducts &&
-      normalizedProducts.find((product) => product.id === selectedId),
+    () => normalizedProducts?.find((product) => product.id === selectedId),
     [normalizedProducts, selectedId],
   );
 
@@ -56,8 +55,7 @@ const CPUBuilder: React.FC = () => {
       toggleAccordion={toggleAccordion}
     >
       {status === 'success' &&
-        normalizedProducts &&
-        normalizedProducts.map((product) => (
+        normalizedProducts?.map((product) => (
           <BuilderProduct
             product={product}
             key={product.id}
