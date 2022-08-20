@@ -2,7 +2,9 @@ import { Slider, TextField, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import React, { useEffect } from 'react';
 import useDebounce from '../../../../../hooks/useDebounce';
-import usePriceInputs from '../../../../../hooks/usePriceInputs';
+import usePriceInputs, {
+  PriceRange,
+} from '../../../../../hooks/usePriceInputs';
 import useQuery from '../../../../../hooks/useQuery';
 import useStyles from './styles';
 
@@ -30,12 +32,12 @@ const RangeFilter: React.FC<RangeFilterProps> = ({
     handleSliderChange,
   } = usePriceInputs(searchParams);
 
-  const debouncedValue = useDebounce<number[]>(priceRange, 20);
+  const debouncedValue = useDebounce<PriceRange>(priceRange, 20);
 
   useEffect(() => {
     handleChangeFilters({
-      minPrice: String(debouncedValue[0]),
-      maxPrice: String(debouncedValue[1]),
+      minPrice: String(debouncedValue.minPrice),
+      maxPrice: String(debouncedValue.maxPrice),
     });
   }, [debouncedValue, handleChangeFilters]);
 
@@ -47,14 +49,14 @@ const RangeFilter: React.FC<RangeFilterProps> = ({
       <Box display="flex" flexDirection="row" justifyContent="space-between">
         <TextField
           className={styles.textField}
-          value={priceRange[0]}
+          value={priceRange.minPrice}
           onChange={handleMinPrice}
           onBlur={validateRange}
           inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
         />
         <TextField
           className={styles.textField}
-          value={priceRange[1]}
+          value={priceRange.maxPrice}
           onChange={handleMaxPrice}
           onBlur={validateRange}
           inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
@@ -62,7 +64,7 @@ const RangeFilter: React.FC<RangeFilterProps> = ({
       </Box>
       <Slider
         color="secondary"
-        value={priceRange}
+        value={[priceRange.minPrice, priceRange.maxPrice]}
         max={50000}
         step={1000}
         onChange={handleSliderChange}

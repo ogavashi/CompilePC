@@ -34,7 +34,7 @@ const Root: React.FC = () => {
       <Routes>
         <Route path="/" element={<BuildScreen />} />
         <Route path="login" element={<div>Sign In</div>} />
-        <Route path="login" element={<div>Sign Up</div>} />
+        <Route path="register" element={<div>Sign Up</div>} />
         <Route path="product/:id" element={<div>Product</div>} />
         {/* Protected route */}
         <Route path="assemblies" element={<div>Assemblies</div>} />

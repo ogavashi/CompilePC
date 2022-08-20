@@ -7,20 +7,25 @@ import RangeFilter from './RangeFilter';
 import useStyles from './styles';
 import SwitchFilter from './SwitchFilter';
 
-const Filters: React.FC = () => {
+const CPUFilters = [
+  { value: 'INTEL', key: 'intel' },
+  { value: 'AMD', key: 'amd' },
+];
+
+const GPUFilters = [
+  { value: 'NVIDIA', key: 'nvidia' },
+  { value: 'AMD', key: 'amd' },
+];
+
+const Filter: React.FC = () => {
   const styles = useStyles();
 
   const { handleParamsChange } = useQuery();
 
-  const [filters, setFilters] = useState<Record<string, string>>({});
+  const [filters, setFilters] = useState<Record<string, string> | null>(null);
 
   const handleChangeFilters = useCallback((filter: Record<string, string>) => {
-    setFilters((prev) => {
-      return {
-        ...prev,
-        ...filter,
-      };
-    });
+    setFilters((prev) => ({ ...prev, ...filter }));
   }, []);
 
   const handleApplyFilters = () => {
@@ -31,24 +36,18 @@ const Filters: React.FC = () => {
     <Box className={styles.wrapper}>
       <SwitchFilter
         title="cpu"
-        options={[
-          { value: 'INTEL', key: 'intel' },
-          { value: 'AMD', key: 'amd' },
-        ]}
+        options={CPUFilters}
         handleChangeFilters={handleChangeFilters}
       />
       <SwitchFilter
         title="gpu"
-        options={[
-          { value: 'NVIDIA', key: 'nvidia' },
-          { value: 'AMD', key: 'amd' },
-        ]}
+        options={GPUFilters}
         handleChangeFilters={handleChangeFilters}
       />
       <RangeFilter title="Budget" handleChangeFilters={handleChangeFilters} />
 
       <Button
-        className={styles.button}
+        fullWidth
         variant="contained"
         color="secondary"
         onClick={handleApplyFilters}
@@ -59,4 +58,4 @@ const Filters: React.FC = () => {
   );
 };
 
-export default Filters;
+export default Filter;

@@ -8,5 +8,13 @@ const ProductCategoryByCollection = {
   HardDrives: 'HDD',
 };
 
+const NUMERIC_INPUT_FORMAT = /^[0-9]*$/;
+
+const minSliderDistance = 1000;
 // eslint-disable-next-line import/prefer-default-export
-export { DEFAULT_REGION, ProductCategoryByCollection };
+export {
+  DEFAULT_REGION,
+  ProductCategoryByCollection,
+  minSliderDistance,
+  NUMERIC_INPUT_FORMAT,
+};

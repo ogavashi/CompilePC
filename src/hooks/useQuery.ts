@@ -3,7 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 const useQuery = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const handleParamsChange = (filters: Record<string, string>) => {
+  const handleParamsChange = (filters: Record<string, string> | null) => {
     const currentParams = Object.fromEntries(Array.from(searchParams));
 
     const params = {
@@ -19,7 +19,6 @@ const useQuery = () => {
       ...normalizedFilters,
     });
   };
-
   return { searchParams, handleParamsChange };
 };
 

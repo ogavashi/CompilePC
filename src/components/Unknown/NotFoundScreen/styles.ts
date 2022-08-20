@@ -4,10 +4,10 @@ import { Theme } from '@mui/system';
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     title: {
-      fontSize: '180px',
+      fontSize: 180,
     },
     text: {
-      fontSize: '120px',
+      fontSize: 120,
     },
     icon: {
       margin: theme.spacing(3),

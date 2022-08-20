@@ -1,29 +1,36 @@
 import { useState } from 'react';
+import { minSliderDistance, NUMERIC_INPUT_FORMAT } from '../common/constants';
+
+export type PriceRange = {
+  minPrice: number;
+  maxPrice: number;
+};
 
 const usePriceInputs = (searchParams: URLSearchParams) => {
-  const [priceRange, setPriceRange] = useState<number[]>([
-    Number(searchParams.get('minPrice')) || 0,
-    Number(searchParams.get('maxPrice')) || 50000,
-  ]);
-  const minDistance = 1000;
-  const regex = /^[0-9]*$/;
+  const [priceRange, setPriceRange] = useState<PriceRange>({
+    minPrice: Number(searchParams.get('minPrice')) || 0,
+    maxPrice: Number(searchParams.get('maxPrice')) || 50000,
+  });
 
   const handleMinPrice = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (regex.test(e.target.value)) {
+    if (NUMERIC_INPUT_FORMAT.test(e.target.value)) {
       const value = Number(e.target.value);
-      setPriceRange([value, priceRange[1]]);
+      setPriceRange({ minPrice: value, maxPrice: priceRange.maxPrice });
     }
   };
   const handleMaxPrice = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (regex.test(e.target.value)) {
+    if (NUMERIC_INPUT_FORMAT.test(e.target.value)) {
       const value = Number(e.target.value);
-      setPriceRange([priceRange[0], value]);
+      setPriceRange({ minPrice: priceRange.minPrice, maxPrice: value });
     }
   };
 
   const validateRange = () => {
-    if (priceRange[0] > priceRange[1])
-      setPriceRange([priceRange[1], priceRange[0]]);
+    if (priceRange.minPrice > priceRange.maxPrice)
+      setPriceRange({
+        minPrice: priceRange.maxPrice,
+        maxPrice: priceRange.minPrice,
+      });
   };
 
   const handleSliderChange = (
@@ -31,20 +38,25 @@ const usePriceInputs = (searchParams: URLSearchParams) => {
     newValue: number | number[],
     activeThumb: number,
   ) => {
+    const atBeginning = activeThumb === 0;
+
     if (!Array.isArray(newValue)) {
       return;
     }
 
-    if (newValue[1] - newValue[0] < minDistance) {
-      if (activeThumb === 0) {
-        const clamped = Math.min(newValue[0], 50000 - minDistance);
-        setPriceRange([clamped, clamped + minDistance]);
-      } else {
-        const clamped = Math.max(newValue[1], minDistance);
-        setPriceRange([clamped - minDistance, clamped]);
-      }
+    if (newValue[1] - newValue[0] < minSliderDistance) {
+      const clamped = atBeginning
+        ? Math.min(newValue[0], 50000 - minSliderDistance)
+        : Math.max(newValue[1], minSliderDistance);
+      setPriceRange({
+        minPrice: atBeginning ? clamped : clamped - minSliderDistance,
+        maxPrice: atBeginning ? clamped + minSliderDistance : clamped,
+      });
     } else {
-      setPriceRange(newValue as number[]);
+      setPriceRange({
+        minPrice: newValue[0],
+        maxPrice: newValue[1],
+      });
     }
   };
 

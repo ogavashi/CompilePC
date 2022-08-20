@@ -9,9 +9,6 @@ const useStyles = makeStyles((theme: Theme) =>
       alignItems: 'center',
       padding: theme.spacing(4),
     },
-    button: {
-      width: '100%',
-    },
   }),
 );
 

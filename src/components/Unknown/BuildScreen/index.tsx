@@ -3,7 +3,7 @@ import { Box } from '@mui/system';
 import { Typography, Paper } from '@mui/material';
 import useStyles from './styles';
 import Builder from './Builder';
-import Filters from './Filter';
+import Filter from './Filter';
 
 const BuildScreen: React.FC = () => {
   const styles = useStyles();
@@ -19,7 +19,7 @@ const BuildScreen: React.FC = () => {
           Filters
         </Typography>
         <Paper>
-          <Filters />
+          <Filter />
         </Paper>
       </Box>
       <Box
