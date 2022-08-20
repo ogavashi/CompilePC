@@ -6,12 +6,14 @@ declare module '@mui/material/styles' {
     backgroundBlack: string;
     green: string;
     tomatoRed: string;
+    white: string;
   }
   interface PaletteOptions {
     backgroundGrey: string;
     backgroundBlack: string;
     green: string;
     tomatoRed: string;
+    white: string;
   }
 }
 
@@ -51,6 +53,7 @@ const defaultTheme = createTheme({
     backgroundGrey: colors.grey,
     tomatoRed: colors.red,
     green: colors.green,
+    white: colors.white,
   },
   typography: {
     h1: {
@@ -62,7 +65,7 @@ const defaultTheme = createTheme({
       fontWeight: 600,
     },
     h3: {
-      fontSize: 40,
+      fontSize: 20,
       fontWeight: 600,
     },
     h4: {
@@ -104,6 +107,9 @@ const defaultTheme = createTheme({
           backgroundColor: colors.grey,
           '&:hover:not(.Mui-disabled)': {
             cursor: 'default',
+          },
+          '&:before': {
+            display: 'none',
           },
         },
       },

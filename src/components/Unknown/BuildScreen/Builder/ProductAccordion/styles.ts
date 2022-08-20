@@ -3,6 +3,9 @@ import { createStyles, makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
+    wrapper: {
+      margin: theme.spacing(3),
+    },
     title: {
       display: 'flex',
       alignItems: 'center',

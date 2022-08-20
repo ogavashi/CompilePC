@@ -1,0 +1,76 @@
+import { Slider, TextField, Typography } from '@mui/material';
+import { Box } from '@mui/system';
+import React, { useEffect } from 'react';
+import useDebounce from '../../../../../hooks/useDebounce';
+import usePriceInputs from '../../../../../hooks/usePriceInputs';
+import useQuery from '../../../../../hooks/useQuery';
+import useStyles from './styles';
+
+export type Param = {
+  [key: string]: string;
+};
+
+type RangeFilterProps = {
+  title: string;
+  handleChangeFilters: CallableFunction;
+};
+
+const RangeFilter: React.FC<RangeFilterProps> = ({
+  title,
+  handleChangeFilters,
+}) => {
+  const styles = useStyles();
+  const { searchParams } = useQuery();
+
+  const {
+    priceRange,
+    handleMinPrice,
+    handleMaxPrice,
+    validateRange,
+    handleSliderChange,
+  } = usePriceInputs(searchParams);
+
+  const debouncedValue = useDebounce<number[]>(priceRange, 20);
+
+  useEffect(() => {
+    handleChangeFilters({
+      minPrice: String(debouncedValue[0]),
+      maxPrice: String(debouncedValue[1]),
+    });
+  }, [debouncedValue, handleChangeFilters]);
+
+  return (
+    <Box className={styles.wrapper}>
+      <Typography gutterBottom variant="h3">
+        {title}:
+      </Typography>
+      <Box display="flex" flexDirection="row" justifyContent="space-between">
+        <TextField
+          className={styles.textField}
+          value={priceRange[0]}
+          onChange={handleMinPrice}
+          onBlur={validateRange}
+          inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+        />
+        <TextField
+          className={styles.textField}
+          value={priceRange[1]}
+          onChange={handleMaxPrice}
+          onBlur={validateRange}
+          inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+        />
+      </Box>
+      <Slider
+        color="secondary"
+        value={priceRange}
+        max={50000}
+        step={1000}
+        onChange={handleSliderChange}
+        valueLabelDisplay="auto"
+        disableSwap
+      />
+    </Box>
+  );
+};
+
+export default RangeFilter;

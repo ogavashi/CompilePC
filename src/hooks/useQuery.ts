@@ -1,10 +1,26 @@
-import React from 'react';
-import { useLocation } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 
-function useQuery(): URLSearchParams {
-  const { search } = useLocation();
+const useQuery = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  return React.useMemo(() => new URLSearchParams(search), [search]);
-}
+  const handleParamsChange = (filters: Record<string, string>) => {
+    const currentParams = Object.fromEntries(Array.from(searchParams));
+
+    const params = {
+      ...currentParams,
+      ...filters,
+    };
+
+    const normalizedFilters = Object.fromEntries(
+      Object.entries(params).filter(([_, v]) => v),
+    );
+
+    setSearchParams({
+      ...normalizedFilters,
+    });
+  };
+
+  return { searchParams, handleParamsChange };
+};
 
 export default useQuery;

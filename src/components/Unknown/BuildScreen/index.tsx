@@ -3,6 +3,7 @@ import { Box } from '@mui/system';
 import { Typography, Paper } from '@mui/material';
 import useStyles from './styles';
 import Builder from './Builder';
+import Filters from './Filter';
 
 const BuildScreen: React.FC = () => {
   const styles = useStyles();
@@ -14,10 +15,12 @@ const BuildScreen: React.FC = () => {
       className={styles.mainContainer}
     >
       <Box className={styles.sideSection}>
-        <Typography gutterBottom variant="h1">
+        <Typography gutterBottom variant="h2">
           Filters
         </Typography>
-        <Paper>biba</Paper>
+        <Paper>
+          <Filters />
+        </Paper>
       </Box>
       <Box
         className={styles.mainSection}
@@ -26,22 +29,20 @@ const BuildScreen: React.FC = () => {
         gap={4}
       >
         <Box>
-          <Typography gutterBottom variant="h1">
+          <Typography gutterBottom variant="h2">
             Main Parts
           </Typography>
-          <Paper>
-            <Builder />
-          </Paper>
+          <Builder />
         </Box>
         <Box>
-          <Typography gutterBottom variant="h1">
+          <Typography gutterBottom variant="h2">
             Periphery
           </Typography>
           <Paper>biba</Paper>
         </Box>
       </Box>
       <Box className={styles.sideSection}>
-        <Typography gutterBottom variant="h1">
+        <Typography gutterBottom variant="h2">
           Your Build
         </Typography>
         <Paper>bibabibabibabiba</Paper>

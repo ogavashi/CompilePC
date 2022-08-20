@@ -78,7 +78,7 @@ const ProductAccordion: React.FC<ProductAccordionProps> = ({
     );
 
   return (
-    <Accordion expanded={expand}>
+    <Accordion className={styles.wrapper} expanded={expand}>
       <AccordionSummary
         className={styles.accordionSummary}
         expandIcon={
