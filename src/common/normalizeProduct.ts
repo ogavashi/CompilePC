@@ -7,16 +7,18 @@ import {
 
 const normalizeProducts = <T extends Product>(
   products: T[],
-  productSpecs: ProductSpecPropType[],
+  productSpecs: ProductSpecPropType<T>[],
 ): BuildProduct[] =>
   products.map((product) => {
-    const filteredSpecs: BuilderProductSpec[] = [];
+    const specs: BuilderProductSpec[] = [];
 
     productSpecs.forEach((spec) => {
-      if (product[spec.propName as keyof Product]) {
-        filteredSpecs.push({
-          name: spec.name as string,
-          value: product[spec.propName as keyof Product] as string,
+      const productSpec = product[spec.propName as keyof Product];
+
+      if (productSpec) {
+        specs.push({
+          name: spec.name,
+          value: productSpec,
         });
       }
     });
@@ -25,7 +27,7 @@ const normalizeProducts = <T extends Product>(
       id: product.id,
       name: product.name,
       mainImage: product.mainImage,
-      specs: filteredSpecs,
+      specs,
     };
   });
 

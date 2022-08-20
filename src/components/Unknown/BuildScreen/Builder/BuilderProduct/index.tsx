@@ -18,7 +18,7 @@ export type BuildProduct = {
   specs: BuilderProductSpec[];
 };
 
-export type ProductSpecPropType = { propName: string; name: string };
+export type ProductSpecPropType<T> = { propName: keyof T; name: string };
 
 type ProductProps = {
   product: BuildProduct;

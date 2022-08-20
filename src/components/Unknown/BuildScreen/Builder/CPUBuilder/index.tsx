@@ -10,7 +10,7 @@ import normalizeProducts from '../../../../../common/normalizeProduct';
 const CPUBuilder: React.FC = () => {
   const [selectedId, setSelectedId] = useState<string>('');
   const [expand, setExpand] = useState<boolean>(false);
-  const specs: ProductSpecPropType[] = useMemo(
+  const specs: ProductSpecPropType<CPU>[] = useMemo(
     () => [
       { propName: 'series', name: 'Series' },
       { propName: 'socket', name: 'Socket' },
