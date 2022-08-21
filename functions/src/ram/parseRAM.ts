@@ -9,55 +9,62 @@ import parseColorDivs from '../common/parseColorDivs';
 import cleanSimpleTable from '../common/cleanSimpleTable';
 
 const parseRAM = async (productId: string, page: Page): Promise<RAM | null> => {
-  const name = await parseElementText('.op1-tt', page);
+  const specs: Record<string, string> = {};
+  let description, mainImage, name;
+  try {
+    name = await parseElementText('.op1-tt', page);
 
-  const mainImageContainer = await getParsingElement('.img200', page);
-  const mainImage = await page.evaluate(
-    (el) => el.lastElementChild.getAttribute('srcset').split(' ')[0],
-    mainImageContainer,
-  );
+    const mainImageContainer = await getParsingElement('.img200', page);
+    mainImage = await page.evaluate(
+      (el) => el.lastElementChild.getAttribute('srcset').split(' ')[0],
+      mainImageContainer,
+    );
 
-  const description = await parseElementInnerHTML('.conf-desc-ai-title', page);
+    description = await parseElementInnerHTML('.conf-desc-ai-title', page);
 
-  const specsTable = await getParsingElement('#help_table', page);
+    const specsTable = await getParsingElement('#help_table', page);
 
-  const rawSpecsTable = await page.evaluate(async (node) => {
-    async function getNodeTreeText(inputNode: any): Promise<any> {
-      if (inputNode && inputNode.hasChildNodes()) {
-        return node.innerText;
+    const rawSpecsTable = await page.evaluate(async (node) => {
+      async function getNodeTreeText(inputNode: any): Promise<any> {
+        if (inputNode && inputNode.hasChildNodes()) {
+          return node.innerText;
+        }
+
+        return null;
       }
 
-      return null;
-    }
+      return getNodeTreeText(node);
+    }, specsTable);
 
-    return getNodeTreeText(node);
-  }, specsTable);
+    if (!name || !mainImage || !rawSpecsTable) return null;
 
-  if (!name || !mainImage || !rawSpecsTable) return null;
+    const cleanedSpecsTable = cleanSimpleTable(rawSpecsTable);
 
-  const cleanedSpecsTable = cleanSimpleTable(rawSpecsTable);
+    cleanedSpecsTable.forEach((item: string) => {
+      const [name, value] = item.split('\t');
 
-  const specs: Record<string, string> = {};
+      if (!name && !value) {
+        return;
+      }
 
-  cleanedSpecsTable.forEach((item: string) => {
-    const [name, value] = item.split('\t');
+      const camelName = camelize(name);
 
-    if (!name && !value) {
-      return;
-    }
+      specs[camelName] = value;
+    });
 
-    const camelName = camelize(name);
+    const colourArray = await parseColorDivs(
+      xPathSelectors.ramColourDivs,
+      page,
+    );
 
-    specs[camelName] = value;
-  });
-
-  const colourArray = await parseColorDivs(xPathSelectors.ramColourDivs, page);
-
-  if (colourArray !== []) specs.colour = colourArray.join();
+    if (colourArray) specs.colour = colourArray.join();
+  } catch (err) {
+    console.log(err);
+  }
 
   return {
     id: productId,
-    name,
+    name: specs?.name,
     mainImage,
     description: description || undefined,
     colour: specs?.colour,

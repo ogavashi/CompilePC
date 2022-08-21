@@ -23,7 +23,7 @@ const parseGraphicsCardPage = async (
   const specsTable = await getParsingElement('#help_table', page);
 
   const rawSpecsTable = await page.evaluate(async (node) => {
-    async function getNodeTreeText(inputNode: any): Promise<any> {
+    async function getNodeTreeText(inputNode: Element): Promise<string | null> {
       if (inputNode && inputNode.hasChildNodes()) {
         return node.innerText;
       }
@@ -80,6 +80,7 @@ const parseGraphicsCardPage = async (
     additionalPower: specs?.additionalPower,
     minPSU: specs?.minimumPSURecommendation,
     numberOfSlots: specs?.numberOfSlots,
+    // taken from e-katalog: Length	200 mm / 200x123x38 /
     size: specs?.length,
   };
 };

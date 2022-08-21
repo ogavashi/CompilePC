@@ -31,7 +31,7 @@ const parseMotherboardPage = async (
   const specsTable = await getParsingElement('#help_table', page);
 
   const rawSpecsTable = await page.evaluate(async (node) => {
-    async function getNodeTreeText(inputNode: any): Promise<any> {
+    async function getNodeTreeText(inputNode: Element): Promise<string | null> {
       if (inputNode && inputNode.hasChildNodes()) {
         return node.innerText;
       }
@@ -90,11 +90,11 @@ const parseMotherboardPage = async (
     PSI_E_16x: specs?.pCIE16xSlots,
     PCIExpressVerison: specs?.pCIExpress,
     ExternalUSB_2_0: specs?.['USB 2.0'],
-    ExternalUSB_3_2_gen1: specs?.['uSB32Gen1'],
-    ExternalUSB_3_2_gen2: specs?.['uSB32Gen2'],
+    ExternalUSB_3_2_gen1: specs?.uSB32Gen1,
+    ExternalUSB_3_2_gen2: specs?.uSB32Gen2,
     InternalUSB_2_0: specs?.['USB 2.0Internal'],
-    InternalUSB_3_2_gen1: specs?.['uSB32Gen1Internal'],
-    InternalUSB_3_2_gen2: specs?.['uSB32Gen2Internal'],
+    InternalUSB_3_2_gen1: specs?.uSB32Gen1Internal,
+    InternalUSB_3_2_gen2: specs?.uSB32Gen2Internal,
     mainPowerSocket: specs?.mainPowerSocket,
     CPUPowerSocket: specs?.cPUPower,
     FanPowerConnectors: specs?.FanPowerConnectors,

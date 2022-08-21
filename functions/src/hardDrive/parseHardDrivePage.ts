@@ -24,7 +24,7 @@ const parseHardDrivePage = async (
   const specsTable = await getParsingElement('#help_table', page);
 
   const rawSpecsTable = await page.evaluate(async (node) => {
-    async function getNodeTreeText(inputNode: any): Promise<any> {
+    async function getNodeTreeText(inputNode: Element): Promise<string | null> {
       if (inputNode && inputNode.hasChildNodes()) {
         return node.innerText;
       }
@@ -57,8 +57,6 @@ const parseHardDrivePage = async (
       ? (specs[`${camelName}Dimensions`] = value)
       : (specs[camelName] = value);
   });
-
-  console.log(specs);
 
   return {
     id: productId,
