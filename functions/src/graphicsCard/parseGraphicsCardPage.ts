@@ -23,7 +23,9 @@ const parseGraphicsCardPage = async (
   const specsTable = await getParsingElement('#help_table', page);
 
   const rawSpecsTable = await page.evaluate(async (node) => {
-    async function getNodeTreeText(inputNode: Element): Promise<string | null> {
+    async function getNodeTreeText(
+      inputNode: HTMLElement,
+    ): Promise<string | null> {
       if (inputNode && inputNode.hasChildNodes()) {
         return node.innerText;
       }
@@ -71,7 +73,7 @@ const parseGraphicsCardPage = async (
     displayPortVersion: specs?.displayPortVersion,
     directX: specs?.directX,
     openGL: specs?.openGL,
-    isVRReady: !specs?.VR,
+    isVRReady: !!!specs?.VR,
     streamProcessors: specs?.streamProcessors,
     textureUnits: specs?.textureUnits,
     monitorsConnection: specs?.monitorsConnection,

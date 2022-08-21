@@ -31,7 +31,9 @@ const parseMotherboardPage = async (
   const specsTable = await getParsingElement('#help_table', page);
 
   const rawSpecsTable = await page.evaluate(async (node) => {
-    async function getNodeTreeText(inputNode: Element): Promise<string | null> {
+    async function getNodeTreeText(
+      inputNode: HTMLElement,
+    ): Promise<string | null> {
       if (inputNode && inputNode.hasChildNodes()) {
         return node.innerText;
       }
@@ -71,7 +73,7 @@ const parseMotherboardPage = async (
     socket: specs?.socket,
     formFactor: specs?.formFactor as MotherboardFormFactor,
     powerPhases: specs?.powerPhases,
-    VRMHeatsink: !specs?.vRMHeatsink,
+    VRMHeatsink: !!!specs?.vRMHeatsink,
     size: specs?.['size(HxW)'], // e.g. 226x211 mm
     chipset: specs?.chipset,
     BIOS: specs?.BIOS,
@@ -80,10 +82,10 @@ const parseMotherboardPage = async (
     operationMode: specs?.operationMode,
     maxClockFrequency: specs?.maxClockFrequency,
     maxMemory: specs?.maxMemory,
-    VGA: !specs?.['dSubOutput(VGA)'],
-    HDMI: !specs?.hDMIOutput,
+    VGA: !!!specs?.['dSubOutput(VGA)'],
+    HDMI: !!!specs?.hDMIOutput,
     HDMIVersion: specs?.hDMIVersion,
-    displayPort: !specs?.displayPort,
+    displayPort: !!!specs?.displayPort,
     displayPortVersion: specs?.displayPortVersion,
     audiochip: specs?.audiochip,
     sound: specs?.['sound(Channels)'],

@@ -24,7 +24,9 @@ const parseHardDrivePage = async (
   const specsTable = await getParsingElement('#help_table', page);
 
   const rawSpecsTable = await page.evaluate(async (node) => {
-    async function getNodeTreeText(inputNode: Element): Promise<string | null> {
+    async function getNodeTreeText(
+      inputNode: HTMLElement,
+    ): Promise<string | null> {
       if (inputNode && inputNode.hasChildNodes()) {
         return node.innerText;
       }
