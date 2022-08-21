@@ -9,6 +9,7 @@ import {
   EKATALOG_LIST_LINK,
   EKATALOG_LINK,
   parserByCategoryId,
+  regexes,
 } from '../common/constants';
 import mapFirestoreDocSnap from '../common/mapFirestoreDocSnap';
 import { Category } from '../../../types';
@@ -68,7 +69,7 @@ const parseComponentsData = functions
             waitUntil: ['networkidle2', 'domcontentloaded'],
           });
 
-          const productId = link.split('/en/').join('').split('.htm').join(); // TODO: use regex
+          const productId = link.replace(regexes.cleanLinkForProductId, '');
 
           const parser = parserByCategoryId[category.id];
           if (!parser) return;

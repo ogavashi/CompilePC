@@ -61,6 +61,8 @@ const parseMotherboardPage = async (
       : (specs[camelName] = value);
   });
 
+  console.log(specs);
+
   return {
     id: productId,
     name,

@@ -13,3 +13,8 @@ export const xPathSelectors: Record<string, string> = {
     "//div[@class='desc-menu']/a[contains(., 'Specifications')]",
   ramColourDivs: "//td[@class='small-col-plate2']/div",
 };
+
+export const regexes: Record<string, RegExp> = {
+  camelizeClean: /[./-]/g,
+  cleanLinkForProductId: /\/en\/|.htm/g,
+};

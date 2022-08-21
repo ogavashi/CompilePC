@@ -6,11 +6,12 @@ import {
   DEFAULT_REGION,
   EKATALOG_LINK,
   EKATALOG_LIST_LINK,
+  regexes,
 } from '../common/constants';
 import StealthPlugin from 'puppeteer-extra-plugin-stealth';
-import { Category, HardDrive } from '../../../types';
+import { Category, Motherboard } from '../../../types';
 import mapFirestoreDocSnap from '../common/mapFirestoreDocSnap';
-import parseHardDrivePage from '../hardDrive/parseHardDrivePage';
+import parseMotherboardPage from '../motherboard/parseMotherboardPage';
 puppeteer.use(StealthPlugin());
 
 const firestore = admin.firestore();
@@ -37,7 +38,7 @@ const testCategory = functions
         mapFirestoreDocSnap<Category>(doc),
       );
 
-      const category = categories[4]; // choose your category by index, add it beforehand in firebase console
+      const category = categories[1]; // choose your category by index; add it beforehand in firebase console, if it does not exist
       if (!category) return;
 
       const browser = await puppeteer.launch(options);
@@ -53,7 +54,7 @@ const testCategory = functions
           a.getAttribute('href'),
         ),
       );
-      const products: HardDrive[] = []; // put your component type here
+      const products: Motherboard[] = []; // put your component type here
       for await (const link of productLinks) {
         if (!link) return;
 
@@ -62,9 +63,9 @@ const testCategory = functions
           waitUntil: ['networkidle2', 'domcontentloaded'],
         });
 
-        const productId = link.split('/en/').join('').split('.htm').join(); // TODO: use regex
+        const productId = link.replace(regexes.cleanLinkForProductId, '');
 
-        const parser = parseHardDrivePage; // put YOUR parser here
+        const parser = parseMotherboardPage; // put YOUR parser here
         if (!parser) return;
 
         const product = await parser(productId, productPage);
