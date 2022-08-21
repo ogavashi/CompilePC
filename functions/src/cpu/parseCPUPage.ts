@@ -4,6 +4,7 @@ import { CPU } from '../../../types';
 import getParsingElement from '../common/getParsingElement';
 import parseElementInnerHTML from '../common/parseElementInnerHTML';
 import camelize from '../common/camelize';
+import cleanComplexTable from '../common/cleanComplexTable';
 
 const parseCPUPage = async (
   productId: string,
@@ -22,7 +23,9 @@ const parseCPUPage = async (
   const specsTable = await getParsingElement('#help_table', page);
 
   const rawSpecsTable = await page.evaluate(async (node) => {
-    async function getNodeTreeText(inputNode: any): Promise<any> {
+    async function getNodeTreeText(
+      inputNode: HTMLElement,
+    ): Promise<string | null> {
       if (inputNode && inputNode.hasChildNodes()) {
         return node.innerText;
       }
@@ -35,9 +38,7 @@ const parseCPUPage = async (
 
   if (!name || !mainImage || !rawSpecsTable) return null;
 
-  const cleanedSpecsTable = rawSpecsTable
-    .split('\n')
-    .filter((item: string) => item.includes('\t'));
+  const cleanedSpecsTable = cleanComplexTable(rawSpecsTable);
 
   const specs: Record<string, string> = {};
 

@@ -9,6 +9,7 @@ import {
   EKATALOG_LIST_LINK,
   EKATALOG_LINK,
   parserByCategoryId,
+  regexes,
 } from '../common/constants';
 import mapFirestoreDocSnap from '../common/mapFirestoreDocSnap';
 import { Category } from '../../../types';
@@ -38,14 +39,12 @@ const parseComponentsData = functions
         mapFirestoreDocSnap<Category>(doc),
       );
 
-      console.log(categories);
       const browser = await puppeteer.launch(options);
       const page = await browser.newPage();
 
       for await (const category of categories) {
         if (!category) return;
 
-        console.log('category', category);
         await page.goto(`${EKATALOG_LIST_LINK}${category.id}`, {
           waitUntil: ['networkidle2', 'domcontentloaded'],
         });
@@ -64,14 +63,13 @@ const parseComponentsData = functions
 
         for await (const link of productLinks) {
           if (!link) return;
-          console.log('link', link);
 
           const productPage = await browser.newPage();
           await productPage.goto(`${EKATALOG_LINK}${link}`, {
             waitUntil: ['networkidle2', 'domcontentloaded'],
           });
 
-          const productId = link.split('/en/').join('').split('.htm').join(); // TODO: use regex
+          const productId = link.replace(regexes.cleanLinkForProductId, '');
 
           const parser = parserByCategoryId[category.id];
           if (!parser) return;
@@ -84,7 +82,6 @@ const parseComponentsData = functions
 
         const categoryCollectionRef = firestore.collection(category.name);
         const batch = firestore.batch();
-        console.log('products', products);
 
         products.forEach((product) => {
           const updatedRef = categoryCollectionRef.doc(product.id);
