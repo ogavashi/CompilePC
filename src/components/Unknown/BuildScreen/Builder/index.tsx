@@ -5,9 +5,6 @@ const Builder: React.FC = () => {
   return (
     <>
       <CPUBuilder />
-      <CPUBuilder />
-      <CPUBuilder />
-      <CPUBuilder />
     </>
   );
 };

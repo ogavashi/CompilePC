@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useContext } from 'react';
 import { useFirestoreCollectionData, useFirestore } from 'reactfire';
 import ProductAccordion from '../ProductAccordion';
 import { CPUIcon } from '../../../Icons';
@@ -6,10 +6,11 @@ import BuilderProduct, { ProductSpecPropType } from '../BuilderProduct';
 import { ProductCategoryByCollection } from '../../../../../common/constants';
 import { CPU } from '../../../../../../types';
 import normalizeProducts from '../../../../../common/normalizeProduct';
+import { BuildScreenContext } from '../../../BuildScreenContext';
 
 const CPUBuilder: React.FC = () => {
+  const { handleSelectBuilder } = useContext(BuildScreenContext);
   const [selectedId, setSelectedId] = useState<string>('');
-  const [expand, setExpand] = useState<boolean>(false);
   const specs: ProductSpecPropType<CPU>[] = useMemo(
     () => [
       { propName: 'series', name: 'Series' },
@@ -18,14 +19,9 @@ const CPUBuilder: React.FC = () => {
     ],
     [],
   );
-
   const handleAddProduct = (productId: string) => {
-    setExpand(false);
+    handleSelectBuilder(ProductCategoryByCollection.CPUs);
     setSelectedId(productId);
-  };
-
-  const toggleAccordion = () => {
-    setExpand((prev) => !prev);
   };
 
   const firestore = useFirestore();
@@ -50,9 +46,7 @@ const CPUBuilder: React.FC = () => {
       icon={CPUIcon}
       category={ProductCategoryByCollection.CPUs}
       selectedId={selectedId}
-      expand={expand}
       selectedProduct={selectedProduct}
-      toggleAccordion={toggleAccordion}
     >
       {status === 'success' &&
         normalizedProducts?.map((product) => (

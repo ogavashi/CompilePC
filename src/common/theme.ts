@@ -104,7 +104,6 @@ const defaultTheme = createTheme({
       styleOverrides: {
         root: {
           borderRadius: 10,
-          backgroundColor: colors.grey,
           '&:hover:not(.Mui-disabled)': {
             cursor: 'default',
           },
@@ -118,7 +117,6 @@ const defaultTheme = createTheme({
       styleOverrides: {
         root: {
           borderRadius: 10,
-          backgroundColor: colors.grey,
           '&:hover:not(.Mui-disabled)': {
             cursor: 'default',
           },
@@ -129,7 +127,6 @@ const defaultTheme = createTheme({
       styleOverrides: {
         root: {
           borderRadius: 10,
-          backgroundColor: colors.grey,
           '&:hover:not(.Mui-disabled)': {
             cursor: 'default',
           },

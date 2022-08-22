@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   Accordion,
   AccordionDetails,
@@ -11,6 +11,7 @@ import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded';
 import useStyles from './styles';
 import { BuildProduct } from '../BuilderProduct';
+import { BuildScreenContext } from '../../../BuildScreenContext';
 
 type ProductAccordionProps = {
   icon: React.FC;
@@ -18,8 +19,6 @@ type ProductAccordionProps = {
   selectedId: string;
   // eslint-disable-next-line react/require-default-props
   selectedProduct?: BuildProduct;
-  expand: boolean;
-  toggleAccordion: () => void;
 };
 
 const ProductAccordion: React.FC<ProductAccordionProps> = ({
@@ -28,29 +27,33 @@ const ProductAccordion: React.FC<ProductAccordionProps> = ({
   children,
   selectedId,
   selectedProduct,
-  expand,
-  toggleAccordion,
 }) => {
   const styles = useStyles();
 
+  const { selectedBuilder, handleSelectBuilder } =
+    useContext(BuildScreenContext);
+
   const DisplayReplace = () =>
     selectedId ? (
-      <IconButton onClick={toggleAccordion}>
+      <IconButton onClick={() => handleSelectBuilder(category)}>
         <SwapHorizIcon className={styles.greenIcon} fontSize="large" />
       </IconButton>
     ) : (
-      <IconButton onClick={toggleAccordion}>
+      <IconButton onClick={() => handleSelectBuilder(category)}>
         <AddRoundedIcon className={styles.greenIcon} fontSize="large" />
       </IconButton>
     );
 
   return (
-    <Accordion className={styles.wrapper} expanded={expand}>
+    <Accordion
+      className={styles.wrapper}
+      expanded={selectedBuilder === category}
+    >
       <AccordionSummary
         className={styles.accordionSummary}
         expandIcon={
-          expand ? (
-            <IconButton onClick={toggleAccordion}>
+          selectedBuilder === category ? (
+            <IconButton onClick={() => handleSelectBuilder(category)}>
               <RemoveRoundedIcon fontSize="large" className={styles.redIcon} />
             </IconButton>
           ) : (
