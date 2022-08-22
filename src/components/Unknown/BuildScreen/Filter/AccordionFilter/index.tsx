@@ -10,12 +10,12 @@ import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import useStyles from './styles';
 import FilterItem from '../FilterItem';
 import useQuery from '../../../../../hooks/useQuery';
-import { BuildScreenContext } from '../../../BuildScreenContext';
 import useFilterAccordion from '../../../../../hooks/useFilterAccordion';
+import { BuildScreenContext } from '../../../BuildScreenContext';
 
 type Option = {
   value: string;
@@ -30,27 +30,20 @@ type Filter = {
 
 type AccordionFilterProps = {
   filter: Filter;
-  handleChangeFilters: CallableFunction;
 };
 
-const AccordionFilter: React.FC<AccordionFilterProps> = ({
-  filter,
-  handleChangeFilters,
-}) => {
+const AccordionFilter: React.FC<AccordionFilterProps> = ({ filter }) => {
   const styles = useStyles();
 
   const { searchParams } = useQuery();
-
-  const { selectedFilter, handleSelectFilter } = useContext(BuildScreenContext);
-
-  const { filters, handleAddFilter } = useFilterAccordion(
+  const { selectedFilters, handleAddFilter } = useFilterAccordion(
     searchParams,
     filter.key,
   );
 
-  const isSelected = Boolean(Object.keys(filters).length);
+  const { selectedFilter, handleSelectFilter } = useContext(BuildScreenContext);
 
-  const selected = filter.options.filter((option) => filters[option.key]);
+  const isSelected = selectedFilters?.length;
 
   const DisplayReplace = () =>
     isSelected ? (
@@ -86,9 +79,8 @@ const AccordionFilter: React.FC<AccordionFilterProps> = ({
         {filter.options.map((option) => (
           <FilterItem
             option={option}
-            handleChangeFiilters={handleChangeFilters}
             handleAddFilter={handleAddFilter}
-            selected={selected}
+            selectedFilters={selectedFilters}
             key={option.key}
           />
         ))}

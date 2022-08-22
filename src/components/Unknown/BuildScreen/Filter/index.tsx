@@ -1,7 +1,8 @@
 import { Button } from '@mui/material';
 import { Box } from '@mui/system';
-import React, { useCallback, useState } from 'react';
+import React, { useContext } from 'react';
 import useQuery from '../../../../hooks/useQuery';
+import { BuildScreenContext } from '../../BuildScreenContext';
 import AccordionFilter from './AccordionFilter';
 import RangeFilter from './RangeFilter';
 
@@ -44,12 +45,7 @@ const Filter: React.FC = () => {
   const styles = useStyles();
 
   const { handleParamsChange } = useQuery();
-
-  const [filters, setFilters] = useState<Record<string, string> | null>(null);
-
-  const handleChangeFilters = useCallback((filter: Record<string, string>) => {
-    setFilters((prev) => ({ ...prev, ...filter }));
-  }, []);
+  const { filters } = useContext(BuildScreenContext);
 
   const handleApplyFilters = () => {
     handleParamsChange(filters);
@@ -67,15 +63,9 @@ const Filter: React.FC = () => {
         options={GPUFilters}
         handleChangeFilters={handleChangeFilters}
       /> */}
-      <RangeFilter title="Budget" handleChangeFilters={handleChangeFilters} />
-      <AccordionFilter
-        filter={OperatingFrequencyFilter}
-        handleChangeFilters={handleChangeFilters}
-      />
-      <AccordionFilter
-        filter={ThreadsFilter}
-        handleChangeFilters={handleChangeFilters}
-      />
+      <RangeFilter title="Budget" />
+      <AccordionFilter filter={OperatingFrequencyFilter} />
+      <AccordionFilter filter={ThreadsFilter} />
       <Button
         fullWidth
         variant="contained"

@@ -1,6 +1,7 @@
 import { ButtonBase, Typography } from '@mui/material';
 import { Box } from '@mui/system';
-import React from 'react';
+import React, { useContext } from 'react';
+import { BuildScreenContext } from '../../../BuildScreenContext';
 import useStyles from './styles';
 
 export type Option = {
@@ -10,26 +11,23 @@ export type Option = {
 
 type FilterItemProps = {
   option: Option;
-  handleChangeFiilters: CallableFunction;
   handleAddFilter: CallableFunction;
-  selected: Option[];
+  selectedFilters: string[] | null;
 };
 
 const FilterItem: React.FC<FilterItemProps> = ({
   option,
-  handleChangeFiilters,
   handleAddFilter,
-  selected,
+  selectedFilters,
 }) => {
   const styles = useStyles();
+  const { handleChangeFilters } = useContext(BuildScreenContext);
 
-  const isSelected = selected.find((item) => item.key === option.key);
+  const isSelected = selectedFilters && selectedFilters.includes(option.key);
 
   const onClickItem = (value: string) => {
-    const queryParam = handleAddFilter(
-      isSelected ? { [value]: null } : { [value]: value },
-    );
-    handleChangeFiilters(queryParam);
+    const selectedParamsQuery = handleAddFilter(value);
+    handleChangeFilters(selectedParamsQuery);
   };
 
   return (

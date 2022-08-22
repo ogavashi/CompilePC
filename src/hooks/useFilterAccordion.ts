@@ -3,30 +3,29 @@ import { useState } from 'react';
 const useFilterAccordion = (searchParams: URLSearchParams, name: string) => {
   const currentParams = searchParams.get(name) || '';
 
-  const normalizedParams = currentParams
-    ? currentParams.split('_').reduce((a, v) => ({ ...a, [v]: v }), {})
-    : {};
+  const normalizedParams = currentParams ? currentParams.split('_') : null;
 
-  const [filters, setFilters] =
-    useState<Record<string, string | null>>(normalizedParams);
+  const [selectedFilters, setSelectedFilters] = useState<string[] | null>(
+    normalizedParams,
+  );
 
-  const handleAddFilter = (value: Record<string, string | null>) => {
-    const currentFilters = { ...filters, ...value };
+  const handleAddFilter = (value: string) => {
+    let updatedFilters;
+    if (selectedFilters) {
+      updatedFilters = selectedFilters.includes(value)
+        ? selectedFilters.filter((filter) => filter !== value)
+        : [...selectedFilters, value];
+    } else {
+      updatedFilters = [value];
+    }
+    setSelectedFilters(updatedFilters);
 
-    const normalizedFilters = Object.fromEntries(
-      Object.entries(currentFilters).filter(([_, v]) => v),
-    );
+    const selectedParamsQuery = { [name]: updatedFilters.join('_') };
 
-    setFilters(normalizedFilters);
-
-    const filtersString = Object.keys(normalizedFilters).join('_');
-
-    return {
-      [name]: filtersString,
-    };
+    return selectedParamsQuery;
   };
 
-  return { filters, handleAddFilter };
+  return { selectedFilters, handleAddFilter };
 };
 
 export default useFilterAccordion;

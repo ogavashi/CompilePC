@@ -1,11 +1,12 @@
 import { Slider, TextField, Typography } from '@mui/material';
 import { Box } from '@mui/system';
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import useDebounce from '../../../../../hooks/useDebounce';
 import usePriceInputs, {
   PriceRange,
 } from '../../../../../hooks/usePriceInputs';
 import useQuery from '../../../../../hooks/useQuery';
+import { BuildScreenContext } from '../../../BuildScreenContext';
 import useStyles from './styles';
 
 export type Param = {
@@ -14,15 +15,12 @@ export type Param = {
 
 type RangeFilterProps = {
   title: string;
-  handleChangeFilters: CallableFunction;
 };
 
-const RangeFilter: React.FC<RangeFilterProps> = ({
-  title,
-  handleChangeFilters,
-}) => {
+const RangeFilter: React.FC<RangeFilterProps> = ({ title }) => {
   const styles = useStyles();
   const { searchParams } = useQuery();
+  const { handleChangeFilters } = useContext(BuildScreenContext);
 
   const {
     priceRange,
