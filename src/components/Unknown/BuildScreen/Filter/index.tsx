@@ -23,10 +23,10 @@ const OperatingFrequencyFilter = {
   title: 'Operating Frequency',
   key: 'frequency',
   options: [
-    { value: '1.5 GHz - 1.99 GHz', key: '1' },
-    { value: '2.0 GHz - 2.49 GHz', key: '2' },
-    { value: '2.5 GHz - 2.99 GHz', key: '3' },
-    { value: '3.0 GHz and higher', key: '4' },
+    { value: '1.5 GHz - 1.99 GHz', key: '1.5-1.99' },
+    { value: '2.0 GHz - 2.49 GHz', key: '2.0-2.49' },
+    { value: '2.5 GHz - 2.99 GHz', key: '2.5-2.99' },
+    { value: '3.0 GHz and higher', key: '3.0' },
   ],
 };
 
@@ -56,12 +56,10 @@ const Filter: React.FC = () => {
       {/* <SwitchFilter
         title="cpu"
         options={CPUFilters}
-        handleChangeFilters={handleChangeFilters}
       />
       <SwitchFilter
         title="gpu"
         options={GPUFilters}
-        handleChangeFilters={handleChangeFilters}
       /> */}
       <RangeFilter title="Budget" />
       <AccordionFilter filter={OperatingFrequencyFilter} />
@@ -70,6 +68,7 @@ const Filter: React.FC = () => {
         fullWidth
         variant="contained"
         color="secondary"
+        className={styles.button}
         onClick={handleApplyFilters}
       >
         Apply

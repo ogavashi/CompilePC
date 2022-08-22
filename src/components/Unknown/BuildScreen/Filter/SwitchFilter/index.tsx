@@ -1,7 +1,8 @@
 import { Typography } from '@mui/material';
 import { Box } from '@mui/system';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import useQuery from '../../../../../hooks/useQuery';
+import { BuildScreenContext } from '../../../BuildScreenContext';
 
 import Switcher, { Option } from '../../../Switcher';
 import useStyles from './styles';
@@ -9,17 +10,13 @@ import useStyles from './styles';
 type SwitchFilterProps = {
   title: string;
   options: Option[];
-  handleChangeFilters: CallableFunction;
 };
 
-const SwitchFilter: React.FC<SwitchFilterProps> = ({
-  title,
-  options,
-  handleChangeFilters,
-}) => {
+const SwitchFilter: React.FC<SwitchFilterProps> = ({ title, options }) => {
   const styles = useStyles();
 
   const { searchParams } = useQuery();
+  const { handleChangeFilters } = useContext(BuildScreenContext);
 
   const [value, setValue] = useState<string>(searchParams.get(title) || '');
 
