@@ -35,11 +35,7 @@ type AccordionFilterProps = {
 const AccordionFilter: React.FC<AccordionFilterProps> = ({ filter }) => {
   const styles = useStyles();
 
-  const { searchParams } = useQuery();
-  const { selectedFilters, handleAddFilter } = useFilterAccordion(
-    searchParams,
-    filter.key,
-  );
+  const { selectedFilters, handleAddFilter } = useFilterAccordion(filter.key);
 
   const { selectedFilter, handleSelectFilter } = useContext(BuildScreenContext);
 

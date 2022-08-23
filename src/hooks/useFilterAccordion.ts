@@ -1,12 +1,13 @@
 import { useState } from 'react';
+import useQuery from './useQuery';
 
-const useFilterAccordion = (searchParams: URLSearchParams, name: string) => {
-  const currentParams = searchParams.get(name) || '';
+const useFilterAccordion = (name: string) => {
+  const { parsedParams } = useQuery();
 
-  const normalizedParams = currentParams ? currentParams.split('_') : null;
+  const params = parsedParams[name] ? [parsedParams[name]].flat() : null;
 
   const [selectedFilters, setSelectedFilters] = useState<string[] | null>(
-    normalizedParams,
+    params,
   );
 
   const handleAddFilter = (value: string) => {
@@ -18,6 +19,7 @@ const useFilterAccordion = (searchParams: URLSearchParams, name: string) => {
     } else {
       updatedFilters = [value];
     }
+
     setSelectedFilters(updatedFilters);
 
     const selectedParamsQuery = { [name]: updatedFilters.join('_') };

@@ -19,7 +19,23 @@ const useQuery = () => {
       ...normalizedFilters,
     });
   };
-  return { searchParams, handleParamsChange };
+
+  const parseCurrentParams = () => {
+    const currentParams = Object.fromEntries(Array.from(searchParams));
+
+    const parsedParams = Object.fromEntries(
+      Object.entries(currentParams).map(([k, v]) => [
+        k,
+        v.includes('_') ? v.split('_') : v,
+      ]),
+    );
+
+    return parsedParams;
+  };
+
+  const parsedParams = parseCurrentParams();
+
+  return { searchParams, handleParamsChange, parsedParams };
 };
 
 export default useQuery;

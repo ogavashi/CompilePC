@@ -19,7 +19,6 @@ type RangeFilterProps = {
 
 const RangeFilter: React.FC<RangeFilterProps> = ({ title }) => {
   const styles = useStyles();
-  const { searchParams } = useQuery();
   const { handleChangeFilters } = useContext(BuildScreenContext);
 
   const {
@@ -28,7 +27,7 @@ const RangeFilter: React.FC<RangeFilterProps> = ({ title }) => {
     handleMaxPrice,
     validateRange,
     handleSliderChange,
-  } = usePriceInputs(searchParams);
+  } = usePriceInputs();
 
   const debouncedValue = useDebounce<PriceRange>(priceRange, 20);
 
