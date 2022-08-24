@@ -20,13 +20,13 @@ import useStyles from './styles';
 // ];
 
 const OperatingFrequencyFilter = {
-  title: 'Operating Frequency',
-  key: 'frequency',
+  title: 'Clock Speed',
+  key: 'clockSpeed',
   options: [
-    { value: '1.5 GHz - 1.99 GHz', key: '1.5-1.99' },
-    { value: '2.0 GHz - 2.49 GHz', key: '2.0-2.49' },
-    { value: '2.5 GHz - 2.99 GHz', key: '2.5-2.99' },
-    { value: '3.0 GHz and higher', key: '3.0' },
+    { value: '1.5 GHz - 1.99 GHz', key: '1.5-1.99-GHz' },
+    { value: '2.0 GHz - 2.49 GHz', key: '2.0-2.49-GHz' },
+    { value: '2.5 GHz - 2.99 GHz', key: '2.5-2.99-GHz' },
+    { value: '3.0 GHz and higher', key: '3.0-5.0-GHz' },
   ],
 };
 
@@ -34,10 +34,10 @@ const ThreadsFilter = {
   title: 'Threads Number',
   key: 'threads',
   options: [
-    { value: '4', key: '4' },
-    { value: '8', key: '8' },
-    { value: '12', key: '12' },
-    { value: '16', key: '16' },
+    { value: '4 threads', key: '4 threads' },
+    { value: '8 threads', key: '8 threads' },
+    { value: '12 threads', key: '12 threads' },
+    { value: '16 threads', key: '16 threads' },
   ],
 };
 

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { minSliderDistance, NUMERIC_INPUT_FORMAT } from '../common/constants';
+import { minSliderDistance, NUMERIC_FORMAT } from '../common/constants';
 import useQuery from './useQuery';
 
 export type PriceRange = {
@@ -16,13 +16,13 @@ const usePriceInputs = () => {
   });
 
   const handleMinPrice = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (NUMERIC_INPUT_FORMAT.test(e.target.value)) {
+    if (NUMERIC_FORMAT.test(e.target.value)) {
       const value = Number(e.target.value);
       setPriceRange({ minPrice: value, maxPrice: priceRange.maxPrice });
     }
   };
   const handleMaxPrice = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (NUMERIC_INPUT_FORMAT.test(e.target.value)) {
+    if (NUMERIC_FORMAT.test(e.target.value)) {
       const value = Number(e.target.value);
       setPriceRange({ minPrice: priceRange.minPrice, maxPrice: value });
     }
