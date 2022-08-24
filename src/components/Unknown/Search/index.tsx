@@ -12,12 +12,14 @@ const Search: React.FC = () => {
       placeholder="Search or type"
       size="small"
       fullWidth
+      variant="standard"
       InputProps={{
         startAdornment: (
           <InputAdornment position="start">
             <SearchIcon />
           </InputAdornment>
         ),
+        disableUnderline: true,
       }}
     />
   );

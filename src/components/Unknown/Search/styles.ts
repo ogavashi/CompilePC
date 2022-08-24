@@ -5,12 +5,13 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     searchField: {
       maxWidth: 600,
-      '& .MuiOutlinedInput-root': {
+      '& .MuiInputBase-root': {
         fontWeight: 'bold',
         color: theme.palette.textGrey,
-        '&:hover fieldset': {
-          border: 'none',
-        },
+        padding: '4px 10px',
+      },
+      '& .MuiInputBase-input': {
+        padding: 3,
       },
     },
   }),

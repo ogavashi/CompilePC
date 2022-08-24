@@ -11,6 +11,7 @@ import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded';
 import useStyles from './styles';
 import { BuildProduct } from '../BuilderProduct';
+import Search from '../../../Search';
 
 type ProductAccordionProps = {
   icon: React.FC;
@@ -71,6 +72,7 @@ const ProductAccordion: React.FC<ProductAccordionProps> = ({
           {selectedId ? selectedProduct?.name : `${category} is not selected`}
         </Typography>
       </AccordionSummary>
+      <Search />
       <AccordionDetails>{children}</AccordionDetails>
     </Accordion>
   );
