@@ -9,23 +9,16 @@ import {
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
-
 import React, { useContext } from 'react';
 import useStyles from './styles';
-import FilterItem from '../FilterItem';
-import useQuery from '../../../../../hooks/useQuery';
+import FilterItem, { FilterOption } from '../FilterItem';
 import useFilterAccordion from '../../../../../hooks/useFilterAccordion';
 import { BuildScreenContext } from '../../../BuildScreenContext';
-
-type Option = {
-  value: string;
-  key: string;
-};
 
 type Filter = {
   title: string;
   key: string;
-  options: Option[];
+  options: FilterOption[];
 };
 
 type AccordionFilterProps = {
@@ -39,7 +32,7 @@ const AccordionFilter: React.FC<AccordionFilterProps> = ({ filter }) => {
 
   const { selectedFilter, handleSelectFilter } = useContext(BuildScreenContext);
 
-  const isSelected = selectedFilters?.length;
+  const isSelected = Boolean(selectedFilters?.length);
 
   const DisplayReplace = () =>
     isSelected ? (

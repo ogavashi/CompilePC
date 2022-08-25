@@ -1,11 +1,11 @@
-import { Slider, TextField, Typography } from '@mui/material';
+import { InputBase, Slider, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import React, { useContext, useEffect } from 'react';
+import { NUMERIC_FORMAT } from '../../../../../common/constants';
 import useDebounce from '../../../../../hooks/useDebounce';
 import usePriceInputs, {
   PriceRange,
 } from '../../../../../hooks/usePriceInputs';
-import useQuery from '../../../../../hooks/useQuery';
 import { BuildScreenContext } from '../../../BuildScreenContext';
 import useStyles from './styles';
 
@@ -29,7 +29,7 @@ const RangeFilter: React.FC<RangeFilterProps> = ({ title }) => {
     handleSliderChange,
   } = usePriceInputs();
 
-  const debouncedValue = useDebounce<PriceRange>(priceRange, 20);
+  const debouncedValue = useDebounce<PriceRange>(priceRange, 30);
 
   useEffect(() => {
     handleChangeFilters({
@@ -44,19 +44,17 @@ const RangeFilter: React.FC<RangeFilterProps> = ({ title }) => {
         {title}:
       </Typography>
       <Box display="flex" flexDirection="row" justifyContent="space-between">
-        <TextField
-          className={styles.textField}
+        <InputBase
           value={priceRange.minPrice}
           onChange={handleMinPrice}
           onBlur={validateRange}
-          inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+          inputProps={{ inputMode: 'numeric', pattern: NUMERIC_FORMAT }}
         />
-        <TextField
-          className={styles.textField}
+        <InputBase
           value={priceRange.maxPrice}
           onChange={handleMaxPrice}
           onBlur={validateRange}
-          inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+          inputProps={{ inputMode: 'numeric', pattern: NUMERIC_FORMAT }}
         />
       </Box>
       <Slider

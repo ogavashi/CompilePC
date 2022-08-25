@@ -1,16 +1,12 @@
 import { ToggleButton, ToggleButtonGroup } from '@mui/material';
 import React from 'react';
+import { FilterOption } from '../BuildScreen/Filter/FilterItem';
 import useStyles from './styles';
-
-export type Option = {
-  key: string;
-  value: string;
-};
 
 type SwitcherProps = {
   value: string;
   onSwitch: CallableFunction;
-  options: Option[];
+  options: FilterOption[];
 };
 
 const Switcher: React.FC<SwitcherProps> = ({ value, onSwitch, options }) => {

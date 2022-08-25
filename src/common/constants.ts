@@ -10,11 +10,11 @@ const ProductCategoryByCollection = {
 
 const NUMERIC_FORMAT = /^[0-9]*$/;
 
-const minSliderDistance = 1000;
+const MIN_PRICE_SLIDER_DISTANCE = 1000;
 // eslint-disable-next-line import/prefer-default-export
 export {
   DEFAULT_REGION,
   ProductCategoryByCollection,
-  minSliderDistance,
+  MIN_PRICE_SLIDER_DISTANCE,
   NUMERIC_FORMAT,
 };

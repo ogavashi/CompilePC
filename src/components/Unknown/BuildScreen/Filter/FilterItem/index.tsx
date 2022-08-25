@@ -1,16 +1,17 @@
 import { ButtonBase, Typography } from '@mui/material';
 import { Box } from '@mui/system';
+import clsx from 'clsx';
 import React, { useContext } from 'react';
 import { BuildScreenContext } from '../../../BuildScreenContext';
 import useStyles from './styles';
 
-export type Option = {
+export type FilterOption = {
   value: string;
   key: string;
 };
 
 type FilterItemProps = {
-  option: Option;
+  option: FilterOption;
   handleAddFilter: CallableFunction;
   selectedFilters: string[] | null;
 };
@@ -25,16 +26,21 @@ const FilterItem: React.FC<FilterItemProps> = ({
 
   const isSelected = selectedFilters && selectedFilters.includes(option.key);
 
-  const onClickItem = (value: string) => {
+  const handleClickFilterItem = (value: string) => {
     const selectedParamsQuery = handleAddFilter(value);
     handleChangeFilters(selectedParamsQuery);
   };
 
+  const buttonClasses = clsx({
+    [styles.button]: true,
+    [styles.selected]: isSelected,
+  });
+
   return (
     <Box className={styles.wrapper}>
       <ButtonBase
-        className={`${styles.button} ${isSelected && styles.selected}`}
-        onClick={() => onClickItem(option.key)}
+        className={buttonClasses}
+        onClick={() => handleClickFilterItem(option.key)}
       >
         <Typography textAlign="center">{option.value}</Typography>
       </ButtonBase>

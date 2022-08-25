@@ -87,15 +87,17 @@ const defaultTheme = createTheme({
     MuiInputBase: {
       styleOverrides: {
         root: {
-          backgroundColor: colors.lightGrey,
-          color: colors.white,
+          border: 'none',
           borderRadius: 10,
-          padding: theme.spacing(1),
-          '&.Mui-focused': {
-            border: `1px solid ${colors.green}`,
-            '& .MuiOutlinedInput-notchedOutline': {
-              border: 'none',
-            },
+          margin: theme.spacing(1),
+          '& .MuiInputBase-input': {
+            minHeight: 50,
+            minWidth: 120,
+            backgroundColor: colors.black,
+            borderRadius: 10,
+            border: 'none',
+            fontSize: 20,
+            textAlign: 'center',
           },
         },
       },

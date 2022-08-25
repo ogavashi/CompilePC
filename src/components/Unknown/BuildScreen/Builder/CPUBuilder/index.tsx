@@ -1,6 +1,5 @@
 import React, { useState, useMemo, useContext } from 'react';
 import { useFirestoreCollectionData, useFirestore } from 'reactfire';
-import { CollectionReference } from '@firebase/firestore-types';
 import ProductAccordion from '../ProductAccordion';
 import { CPUIcon } from '../../../Icons';
 import BuilderProduct, { ProductSpecPropType } from '../BuilderProduct';
@@ -8,7 +7,7 @@ import { ProductCategoryByCollection } from '../../../../../common/constants';
 import { CPU } from '../../../../../../types';
 import normalizeProducts from '../../../../../common/normalizeProduct';
 import { BuildScreenContext } from '../../../BuildScreenContext';
-import useFilterRef from '../../../../../hooks/useFilterRef';
+import useQuery from '../../../../../hooks/useQuery';
 
 const CPUBuilder: React.FC = () => {
   const { handleSelectBuilder } = useContext(BuildScreenContext);
@@ -28,26 +27,11 @@ const CPUBuilder: React.FC = () => {
 
   const firestore = useFirestore();
 
-  const { filter } = useFilterRef();
+  const { parsedParams } = useQuery(); // will be used to fetch data from the mongodb
 
-  const productRef = useMemo(() => {
-    const baseRef = firestore.collection('CPUs');
+  const baseRef = firestore.collection('CPUs');
 
-    const filterRef = Object.keys(filter).reduce(
-      (acc, current) =>
-        acc.where(
-          filter[current].name,
-          filter[current].operator,
-          filter[current].value,
-        ) as CollectionReference,
-      baseRef,
-    );
-
-    return filterRef;
-  }, [filter, firestore]);
-
-  const { data: products, status } =
-    useFirestoreCollectionData<CPU>(productRef);
+  const { data: products, status } = useFirestoreCollectionData<CPU>(baseRef);
 
   const normalizedProducts = useMemo(
     () => products && normalizeProducts(products, specs),

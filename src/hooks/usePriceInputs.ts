@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { minSliderDistance, NUMERIC_FORMAT } from '../common/constants';
+import { MIN_PRICE_SLIDER_DISTANCE, NUMERIC_FORMAT } from '../common/constants';
 import useQuery from './useQuery';
 
 export type PriceRange = {
@@ -47,13 +47,13 @@ const usePriceInputs = () => {
       return;
     }
 
-    if (newValue[1] - newValue[0] < minSliderDistance) {
+    if (newValue[1] - newValue[0] < MIN_PRICE_SLIDER_DISTANCE) {
       const clamped = atBeginning
-        ? Math.min(newValue[0], 50000 - minSliderDistance)
-        : Math.max(newValue[1], minSliderDistance);
+        ? Math.min(newValue[0], 50000 - MIN_PRICE_SLIDER_DISTANCE)
+        : Math.max(newValue[1], MIN_PRICE_SLIDER_DISTANCE);
       setPriceRange({
-        minPrice: atBeginning ? clamped : clamped - minSliderDistance,
-        maxPrice: atBeginning ? clamped + minSliderDistance : clamped,
+        minPrice: atBeginning ? clamped : clamped - MIN_PRICE_SLIDER_DISTANCE,
+        maxPrice: atBeginning ? clamped + MIN_PRICE_SLIDER_DISTANCE : clamped,
       });
     } else {
       setPriceRange({

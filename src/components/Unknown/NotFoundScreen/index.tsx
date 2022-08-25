@@ -1,12 +1,11 @@
 import { Box, Button, Typography } from '@mui/material';
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { PSUBigIcon } from '../Icons';
 import useStyles from './styles';
 
 const NotFoundScreen: React.FC = () => {
   const styles = useStyles();
-  const navigate = useNavigate();
 
   return (
     <Box
@@ -33,7 +32,8 @@ const NotFoundScreen: React.FC = () => {
         variant="contained"
         color="primary"
         size="large"
-        onClick={() => navigate('/')}
+        component={Link}
+        to="/about"
       >
         Go home
       </Button>

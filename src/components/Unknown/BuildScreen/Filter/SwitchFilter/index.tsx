@@ -3,13 +3,14 @@ import { Box } from '@mui/system';
 import React, { useContext, useState } from 'react';
 import useQuery from '../../../../../hooks/useQuery';
 import { BuildScreenContext } from '../../../BuildScreenContext';
+import Switcher from '../../../Switcher';
+import { FilterOption } from '../FilterItem';
 
-import Switcher, { Option } from '../../../Switcher';
 import useStyles from './styles';
 
 type SwitchFilterProps = {
   title: string;
-  options: Option[];
+  options: FilterOption[];
 };
 
 const SwitchFilter: React.FC<SwitchFilterProps> = ({ title, options }) => {
