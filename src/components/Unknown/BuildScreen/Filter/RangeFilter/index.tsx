@@ -7,7 +7,6 @@ import usePriceInputs, {
   PriceRange,
 } from '../../../../../hooks/usePriceInputs';
 import { BuildScreenContext } from '../../../BuildScreenContext';
-import useStyles from './styles';
 
 export type Param = {
   [key: string]: string;
@@ -18,7 +17,6 @@ type RangeFilterProps = {
 };
 
 const RangeFilter: React.FC<RangeFilterProps> = ({ title }) => {
-  const styles = useStyles();
   const { handleChangeFilters } = useContext(BuildScreenContext);
 
   const {
@@ -39,7 +37,12 @@ const RangeFilter: React.FC<RangeFilterProps> = ({ title }) => {
   }, [debouncedValue, handleChangeFilters]);
 
   return (
-    <Box className={styles.wrapper}>
+    <Box
+      display="flex"
+      flexDirection="column"
+      alignItems="flex-start"
+      justifyContent="center"
+    >
       <Typography gutterBottom variant="h3">
         {title}:
       </Typography>

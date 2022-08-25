@@ -31,15 +31,12 @@ const FilterItem: React.FC<FilterItemProps> = ({
     handleChangeFilters(selectedParamsQuery);
   };
 
-  const buttonClasses = clsx({
-    [styles.button]: true,
-    [styles.selected]: isSelected,
-  });
-
   return (
     <Box className={styles.wrapper}>
       <ButtonBase
-        className={buttonClasses}
+        className={clsx(styles.button, {
+          [styles.selected]: isSelected,
+        })}
         onClick={() => handleClickFilterItem(option.key)}
       >
         <Typography textAlign="center">{option.value}</Typography>
