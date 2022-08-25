@@ -92,7 +92,6 @@ const defaultTheme = createTheme({
           margin: theme.spacing(1),
           '& .MuiInputBase-input': {
             minHeight: 50,
-            minWidth: 120,
             backgroundColor: colors.black,
             borderRadius: 10,
             border: 'none',

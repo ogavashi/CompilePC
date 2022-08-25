@@ -45,6 +45,7 @@ const RangeFilter: React.FC<RangeFilterProps> = ({ title }) => {
       </Typography>
       <Box display="flex" flexDirection="row" justifyContent="space-between">
         <InputBase
+          fullWidth
           value={priceRange.minPrice}
           onChange={handleMinPrice}
           onBlur={validateRange}
