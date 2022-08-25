@@ -1,10 +1,11 @@
 import React from 'react';
 import { InputAdornment, TextField } from '@mui/material';
-import { SearchIcon } from '../Icons';
+import SearchIcon from '@mui/icons-material/Search';
 import useStyles from './styles';
 
 type SearchProps = {
-  handleChange: () => void;
+  // eslint-disable-next-line react/require-default-props
+  handleChange?: () => void;
 };
 
 const Search: React.FC<SearchProps> = ({ handleChange }) => {
@@ -21,7 +22,7 @@ const Search: React.FC<SearchProps> = ({ handleChange }) => {
       InputProps={{
         startAdornment: (
           <InputAdornment position="start">
-            <SearchIcon />
+            <SearchIcon className={styles.searchIcon} />
           </InputAdornment>
         ),
         disableUnderline: true,

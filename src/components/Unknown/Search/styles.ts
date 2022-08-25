@@ -8,11 +8,14 @@ const useStyles = makeStyles((theme: Theme) =>
       '& .MuiInputBase-root': {
         fontWeight: 'bold',
         color: theme.palette.textGrey,
-        padding: '4px 10px',
+        padding: theme.spacing(1, 2),
       },
       '& .MuiInputBase-input': {
-        padding: 3,
+        padding: theme.spacing(1),
       },
+    },
+    searchIcon: {
+      fill: theme.palette.textGrey,
     },
   }),
 );
