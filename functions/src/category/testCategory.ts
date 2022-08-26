@@ -1,20 +1,18 @@
+import { Motherboard } from './../../../types/index';
 import puppeteer from 'puppeteer-extra';
 import * as functions from 'firebase-functions';
-import * as admin from 'firebase-admin';
 
 import {
+  CATEGORIES_COLLECTION_NAME,
   DEFAULT_REGION,
   EKATALOG_LINK,
   EKATALOG_LIST_LINK,
   regexes,
 } from '../common/constants';
 import StealthPlugin from 'puppeteer-extra-plugin-stealth';
-import { Category, Motherboard } from '../../../types';
-import mapFirestoreDocSnap from '../common/mapFirestoreDocSnap';
+import { getDB } from '../bootstrap';
 import parseMotherboardPage from '../motherboard/parseMotherboardPage';
 puppeteer.use(StealthPlugin());
-
-const firestore = admin.firestore();
 
 const runtimeOpts = {
   timeoutSeconds: 540,
@@ -31,19 +29,17 @@ const testCategory = functions
         ignoreHTTPSErrors: true,
       };
 
-      const categoriesRef = firestore.collection('categories');
+      const db = await getDB();
 
-      const categoriesSnap = await categoriesRef.get();
-      const categories = categoriesSnap.docs.map((doc) =>
-        mapFirestoreDocSnap<Category>(doc),
-      );
+      const categoriesCursor = db.collection(CATEGORIES_COLLECTION_NAME).find();
+      const categories = await categoriesCursor.toArray();
 
       const category = categories[1]; // choose your category by index; add it beforehand in firebase console, if it does not exist
       if (!category) return;
 
       const browser = await puppeteer.launch(options);
       const page = await browser.newPage();
-      await page.goto(`${EKATALOG_LIST_LINK}${category.id}`, {
+      await page.goto(`${EKATALOG_LIST_LINK}${category.ekatalog_id}`, {
         waitUntil: ['networkidle2', 'domcontentloaded'],
       });
       await page.waitForSelector("[data-lang='en']");
@@ -73,15 +69,16 @@ const testCategory = functions
 
         products.push(product);
       }
-      const categoryCollectionRef = firestore.collection(category.name);
-      const batch = firestore.batch();
+      const categoryCollectionRef = db.collection(category.name);
+      const bulk = categoryCollectionRef.initializeUnorderedBulkOp();
 
+      await categoryCollectionRef.deleteMany({});
       products.forEach((product) => {
-        const updatedRef = categoryCollectionRef.doc(product.id);
-        batch.set(updatedRef, product, { merge: true });
+        bulk.insert(product);
       });
-      await batch.commit();
+      await bulk.execute();
       await browser.close();
+      console.log('finish');
     } catch (err) {
       console.log(err);
     }
