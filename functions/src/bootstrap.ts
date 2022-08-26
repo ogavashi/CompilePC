@@ -4,6 +4,8 @@ import * as functions from 'firebase-functions';
 import { MongoClient } from 'mongodb';
 import { DEFAULT_REGION, DB_NAME } from './common/constants';
 
+import config from './config';
+
 admin.initializeApp();
 admin.firestore().settings({
   ignoreUndefinedProperties: true,
@@ -13,10 +15,7 @@ let client: MongoClient | null;
 
 const getClient = async () => {
   if (!client) {
-    const mClient = new MongoClient(
-      'mongodb+srv://gwyn:gwyn@cluster0.qfqld.mongodb.net/CompilePC?retryWrites=true&w=majority',
-      {},
-    );
+    const mClient = new MongoClient(config.mongo.url || '', {});
     client = await mClient.connect();
     functions.logger.log('Connected to MongoDB');
   } else {
@@ -29,7 +28,6 @@ const getClient = async () => {
 const getDB = async () => {
   return (await getClient()).db(DB_NAME);
 };
-
 
 const helloWorld = functions
   .region(DEFAULT_REGION)
