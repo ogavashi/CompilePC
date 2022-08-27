@@ -2,7 +2,9 @@ import { useState } from 'react';
 import useQuery from './useQuery';
 
 const useFilterAccordion = (name: string) => {
-  const { parsedParams } = useQuery();
+  const { parseCurrentParams } = useQuery();
+
+  const parsedParams = parseCurrentParams();
 
   const params = parsedParams[name] ? [parsedParams[name]].flat() : null;
 

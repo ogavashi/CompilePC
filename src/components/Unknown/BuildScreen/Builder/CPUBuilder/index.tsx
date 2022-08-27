@@ -16,10 +16,19 @@ import {
 import { CPU } from '../../../../../../types';
 import normalizeProducts from '../../../../../common/normalizeProduct';
 import { UIContext } from '../../../UIContext';
+import { BuildScreenContext } from '../../../BuildScreenContext';
+import useQuery from '../../../../../hooks/useQuery';
 
 const CPUBuilder: React.FC = () => {
+  const { handleSelectBuilder } = useContext(BuildScreenContext);
+  const { setAlert } = useContext(UIContext);
+
   const [selectedId, setSelectedId] = useState<string>('');
-  const [expand, setExpand] = useState<boolean>(false);
+  const [products, setProducts] = useState<CPU[] | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const { parseCurrentParams } = useQuery();
+
   const specs: ProductSpecPropType<CPU>[] = useMemo(
     () => [
       { propName: 'series', name: 'Series' },
@@ -28,35 +37,26 @@ const CPUBuilder: React.FC = () => {
     ],
     [],
   );
-
   const handleAddProduct = (productId: string) => {
-    setExpand(false);
+    handleSelectBuilder(ProductCategoryByCollection.CPUs);
     setSelectedId(productId);
-  };
-
-  const toggleAccordion = () => {
-    setExpand((prev) => !prev);
   };
 
   const functions = useFirebaseApp().functions(DEFAULT_REGION);
 
-  const getProduct = useCallback(
-    () => functions.httpsCallable('getProduct'),
+  const getProducts = useCallback(
+    () => functions.httpsCallable('getProducts'),
     [functions],
   );
 
-  const [products, setProducts] = useState<CPU[] | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  const { setAlert } = useContext(UIContext);
-
   useEffect(() => {
-    const getProducts = async () => {
+    const getCPUs = async () => {
       try {
+        const filter = parseCurrentParams();
         setIsLoading(true);
-        const { data: newProducts }: { data: CPU[] } = await getProduct()({
+        const { data: newProducts }: { data: CPU[] } = await getProducts()({
           collectionName: 'CPUs',
-          filter: {},
+          filter,
         });
         setProducts(newProducts);
       } catch (error) {
@@ -69,8 +69,8 @@ const CPUBuilder: React.FC = () => {
       setIsLoading(false);
     };
 
-    getProducts();
-  }, [getProduct, setAlert]);
+    getCPUs();
+  }, [getProducts, setAlert, parseCurrentParams]);
 
   const normalizedProducts = useMemo(
     () => products && normalizeProducts(products, specs),

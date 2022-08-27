@@ -8,7 +8,9 @@ export type PriceRange = {
 };
 
 const usePriceInputs = () => {
-  const { parsedParams } = useQuery();
+  const { parseCurrentParams } = useQuery();
+
+  const parsedParams = parseCurrentParams();
 
   const [priceRange, setPriceRange] = useState<PriceRange>({
     minPrice: Number(parsedParams.minPrice) || 0,

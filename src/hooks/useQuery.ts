@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 const useQuery = () => {
@@ -12,7 +13,7 @@ const useQuery = () => {
     };
 
     const normalizedFilters = Object.fromEntries(
-      Object.entries(params).filter(([_, v]) => v),
+      Object.entries(params).filter(([, value]) => value),
     );
 
     setSearchParams({
@@ -20,22 +21,24 @@ const useQuery = () => {
     });
   };
 
-  const parseCurrentParams = () => {
+  const parseCurrentParams = useCallback(() => {
     const currentParams = Object.fromEntries(Array.from(searchParams));
 
+    const normalizedFilters = Object.fromEntries(
+      Object.entries(currentParams).filter(([, value]) => value),
+    );
+
     const parsedParams = Object.fromEntries(
-      Object.entries(currentParams).map(([k, v]) => [
-        k,
-        v.includes('_') ? v.split('_') : v,
+      Object.entries(normalizedFilters).map(([key, value]) => [
+        key,
+        value.includes('_') ? value.split('_') : value,
       ]),
     );
 
     return parsedParams;
-  };
+  }, [searchParams]);
 
-  const parsedParams = parseCurrentParams();
-
-  return { searchParams, handleParamsChange, parsedParams };
+  return { searchParams, handleParamsChange, parseCurrentParams };
 };
 
 export default useQuery;
