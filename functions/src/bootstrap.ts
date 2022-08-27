@@ -2,7 +2,7 @@ import * as admin from 'firebase-admin';
 import * as functions from 'firebase-functions';
 
 import { MongoClient } from 'mongodb';
-import { DEFAULT_REGION, DB_NAME } from './common/constants';
+import { DB_NAME } from './common/constants';
 
 import config from './config';
 
@@ -29,13 +29,4 @@ const getDB = async () => {
   return (await getClient()).db(DB_NAME);
 };
 
-const helloWorld = functions
-  .region(DEFAULT_REGION)
-  .https.onRequest(async (request, response) => {
-    const db = (await getClient()).db('CompilePC');
-    const result = await db.collection('CPUs').findOne({});
-    console.log(result);
-    response.send('Hello from Firebase!');
-  });
-
-export { helloWorld, getDB };
+export { getDB };

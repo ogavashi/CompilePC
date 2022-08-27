@@ -17,13 +17,15 @@ const naormalizeFilter = (params: Record<string, string | string[]>) => {
   };
 
   const normalizedParams = Object.fromEntries(
-    Object.entries(params).filter(([_, v]) => v),
+    Object.entries(params).filter(([_, value]) => value),
   );
 
   const parsedFilters = Object.fromEntries(
-    Object.entries(normalizedParams).map(([k, v]) => [
-      k,
-      Array.isArray(v) ? v.map((el) => parseProp(el)).flat() : parseProp(v),
+    Object.entries(normalizedParams).map(([key, value]) => [
+      key,
+      Array.isArray(value)
+        ? value.map((el) => parseProp(el)).flat()
+        : parseProp(value),
     ]),
   );
 

@@ -78,7 +78,6 @@ const testCategory = functions
       });
       await bulk.execute();
       await browser.close();
-      console.log('finish');
     } catch (err) {
       console.log(err);
     }
