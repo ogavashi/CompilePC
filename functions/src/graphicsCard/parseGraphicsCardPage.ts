@@ -1,16 +1,16 @@
 import { Page } from 'puppeteer';
 import parseElementText from '../common/parseElementText';
-import { CPU } from '../../../types';
+import { GraphicsCard } from '../../../types';
 import getParsingElement from '../common/getParsingElement';
 import parseElementInnerHTML from '../common/parseElementInnerHTML';
 import camelize from '../common/camelize';
 import cleanComplexTable from '../common/cleanComplexTable';
 import { removeNonBreakingSpace } from '../common/removeNonBreakingSpace';
 
-const parseCPUPage = async (
+const parseGraphicsCardPage = async (
   productId: string,
   page: Page,
-): Promise<CPU | null> => {
+): Promise<GraphicsCard | null> => {
   const name = await parseElementText('.op1-tt', page);
 
   const mainImageContainer = await getParsingElement('.img200', page);
@@ -19,7 +19,7 @@ const parseCPUPage = async (
     mainImageContainer,
   );
 
-  const description = await parseElementInnerHTML('.desc-exp-text', page);
+  const description = await parseElementInnerHTML('.conf-desc-ai-title', page);
 
   const specsTable = await getParsingElement('#help_table', page);
 
@@ -45,7 +45,10 @@ const parseCPUPage = async (
 
   cleanedSpecsTable.forEach((item: string) => {
     const [name, value] = item.split('\t');
-    if (!name || !value) return;
+
+    if (!name && !value) {
+      return;
+    }
 
     const camelName = camelize(name);
 
@@ -57,26 +60,32 @@ const parseCPUPage = async (
     name,
     mainImage,
     description: description || undefined,
-    officialWebsite: specs?.officialWebsite,
-    manufacturer: specs?.manufacturer,
-    series: specs?.series,
-    codeName: specs?.codeName,
-    socket: specs?.socket,
+    interface: specs?.interface,
+    GPUModel: specs?.gPUModel,
+    memorySize: specs?.memorySize,
+    memoryType: specs?.memoryType,
+    memoryBus: specs?.memoryBus,
+    GPUClockSpeed: specs?.gPUClockSpeed,
     litography: specs?.litography,
-    cores: specs?.cores,
-    threads: specs?.threads,
-    clockSpeed: specs?.clockSpeed,
-    turboBoost: specs?.turboBoostTurboCore,
-    l1Cache: specs?.totalL1Cache,
-    l2Cache: specs?.totalL2Cache,
-    l3Cache: specs?.totalL2Cache,
-    IGP: specs?.IGP,
-    TDP: specs?.TDP,
-    PSIExpress: specs?.pCIExpress,
-    maxOperatingTemperature: specs?.maxOperatingTemperature,
-    maxDDR4Speed: specs?.maxDDR4Speed,
-    channels: specs?.channels,
+    maxResolution: specs?.maxResolution,
+    HDMI: specs?.HDMI,
+    HDMIVersion: specs?.hDMIVersion,
+    displayPort: specs?.displayPort,
+    displayPortVersion: specs?.displayPortVersion,
+    directX: specs?.directX,
+    openGL: specs?.openGL,
+    isVRReady: !!!specs?.VR,
+    streamProcessors: specs?.streamProcessors,
+    textureUnits: specs?.textureUnits,
+    monitorsConnection: specs?.monitorsConnection,
+    cooling: specs?.cooling,
+    fans: specs?.fans,
+    additionalPower: specs?.additionalPower,
+    minPSU: specs?.minimumPSURecommendation,
+    numberOfSlots: specs?.numberOfSlots,
+    // taken from e-katalog: Length	200 mm / 200x123x38 /
+    size: specs?.length,
   };
 };
 
-export default parseCPUPage;
+export default parseGraphicsCardPage;

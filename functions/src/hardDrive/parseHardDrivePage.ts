@@ -1,16 +1,17 @@
 import { Page } from 'puppeteer';
 import parseElementText from '../common/parseElementText';
-import { CPU } from '../../../types';
+import { HardDrive } from '../../../types';
 import getParsingElement from '../common/getParsingElement';
 import parseElementInnerHTML from '../common/parseElementInnerHTML';
 import camelize from '../common/camelize';
+import cleanSimpleTable from '../common/cleanSimpleTable';
 import cleanComplexTable from '../common/cleanComplexTable';
 import { removeNonBreakingSpace } from '../common/removeNonBreakingSpace';
 
-const parseCPUPage = async (
+const parseHardDrivePage = async (
   productId: string,
   page: Page,
-): Promise<CPU | null> => {
+): Promise<HardDrive | null> => {
   const name = await parseElementText('.op1-tt', page);
 
   const mainImageContainer = await getParsingElement('.img200', page);
@@ -19,7 +20,7 @@ const parseCPUPage = async (
     mainImageContainer,
   );
 
-  const description = await parseElementInnerHTML('.desc-exp-text', page);
+  const description = await parseElementInnerHTML('.conf-desc-ai-title', page);
 
   const specsTable = await getParsingElement('#help_table', page);
 
@@ -39,17 +40,25 @@ const parseCPUPage = async (
 
   if (!name || !mainImage || !rawSpecsTable) return null;
 
-  const cleanedSpecsTable = cleanComplexTable(rawSpecsTable);
+  const isTableSimple = !!(await page.$('.one-col'));
+
+  const cleanedSpecsTable = isTableSimple
+    ? cleanSimpleTable(rawSpecsTable)
+    : cleanComplexTable(rawSpecsTable);
 
   const specs: Record<string, string> = {};
 
   cleanedSpecsTable.forEach((item: string) => {
     const [name, value] = item.split('\t');
-    if (!name || !value) return;
+
+    if (!name && !value) {
+      return;
+    }
 
     const camelName = camelize(name);
-
-    specs[camelName] = removeNonBreakingSpace(value);
+    specs.hasOwnProperty(camelName)
+      ? (specs[`${camelName}Dimensions`] = removeNonBreakingSpace(value))
+      : (specs[camelName] = removeNonBreakingSpace(value));
   });
 
   return {
@@ -57,26 +66,20 @@ const parseCPUPage = async (
     name,
     mainImage,
     description: description || undefined,
-    officialWebsite: specs?.officialWebsite,
-    manufacturer: specs?.manufacturer,
-    series: specs?.series,
-    codeName: specs?.codeName,
-    socket: specs?.socket,
-    litography: specs?.litography,
-    cores: specs?.cores,
-    threads: specs?.threads,
-    clockSpeed: specs?.clockSpeed,
-    turboBoost: specs?.turboBoostTurboCore,
-    l1Cache: specs?.totalL1Cache,
-    l2Cache: specs?.totalL2Cache,
-    l3Cache: specs?.totalL2Cache,
-    IGP: specs?.IGP,
-    TDP: specs?.TDP,
-    PSIExpress: specs?.pCIExpress,
-    maxOperatingTemperature: specs?.maxOperatingTemperature,
-    maxDDR4Speed: specs?.maxDDR4Speed,
-    channels: specs?.channels,
+    placement: specs.placement,
+    type: specs.type,
+    capacity: specs.size,
+    formFactor: specs.formFactor,
+    cacheMemory: specs.cacheMemory,
+    recordTechnology: specs.recordTechnology,
+    RPM: specs.RPM,
+    dataTransferRate: specs.dataTransferRate,
+    operationPowerConsumption: specs.operationPowerConsumption,
+    standbyPowerConsumption: specs.standbyPowerConsumption,
+    MTBF: specs.MTBF,
+    size: specs.sizeDimensions,
+    weight: specs.weight,
   };
 };
 
-export default parseCPUPage;
+export default parseHardDrivePage;

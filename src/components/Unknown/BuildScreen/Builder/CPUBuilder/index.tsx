@@ -1,17 +1,25 @@
-import React, { useState, useMemo, useContext } from 'react';
-import { useFirestoreCollectionData, useFirestore } from 'reactfire';
+import React, {
+  useState,
+  useMemo,
+  useEffect,
+  useContext,
+  useCallback,
+} from 'react';
+import { useFirebaseApp } from 'reactfire';
 import ProductAccordion from '../ProductAccordion';
 import { CPUIcon } from '../../../Icons';
 import BuilderProduct, { ProductSpecPropType } from '../BuilderProduct';
-import { ProductCategoryByCollection } from '../../../../../common/constants';
+import {
+  DEFAULT_REGION,
+  ProductCategoryByCollection,
+} from '../../../../../common/constants';
 import { CPU } from '../../../../../../types';
 import normalizeProducts from '../../../../../common/normalizeProduct';
-import { BuildScreenContext } from '../../../BuildScreenContext';
-import useQuery from '../../../../../hooks/useQuery';
+import { UIContext } from '../../../UIContext';
 
 const CPUBuilder: React.FC = () => {
-  const { handleSelectBuilder } = useContext(BuildScreenContext);
   const [selectedId, setSelectedId] = useState<string>('');
+  const [expand, setExpand] = useState<boolean>(false);
   const specs: ProductSpecPropType<CPU>[] = useMemo(
     () => [
       { propName: 'series', name: 'Series' },
@@ -20,18 +28,49 @@ const CPUBuilder: React.FC = () => {
     ],
     [],
   );
+
   const handleAddProduct = (productId: string) => {
-    handleSelectBuilder(ProductCategoryByCollection.CPUs);
+    setExpand(false);
     setSelectedId(productId);
   };
 
-  const firestore = useFirestore();
+  const toggleAccordion = () => {
+    setExpand((prev) => !prev);
+  };
 
-  const { parsedParams } = useQuery(); // will be used to fetch data from the mongodb
+  const functions = useFirebaseApp().functions(DEFAULT_REGION);
 
-  const baseRef = firestore.collection('CPUs');
+  const getProduct = useCallback(
+    () => functions.httpsCallable('getProduct'),
+    [functions],
+  );
 
-  const { data: products, status } = useFirestoreCollectionData<CPU>(baseRef);
+  const [products, setProducts] = useState<CPU[] | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const { setAlert } = useContext(UIContext);
+
+  useEffect(() => {
+    const getProducts = async () => {
+      try {
+        setIsLoading(true);
+        const { data: newProducts }: { data: CPU[] } = await getProduct()({
+          collectionName: 'CPUs',
+          filter: {},
+        });
+        setProducts(newProducts);
+      } catch (error) {
+        setAlert({
+          show: true,
+          severity: 'error',
+          message: 'Could not fetch products',
+        });
+      }
+      setIsLoading(false);
+    };
+
+    getProducts();
+  }, [getProduct, setAlert]);
 
   const normalizedProducts = useMemo(
     () => products && normalizeProducts(products, specs),
@@ -50,7 +89,7 @@ const CPUBuilder: React.FC = () => {
       selectedId={selectedId}
       selectedProduct={selectedProduct}
     >
-      {status === 'success' &&
+      {!isLoading &&
         normalizedProducts?.map((product) => (
           <BuilderProduct
             product={product}
