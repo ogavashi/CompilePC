@@ -1,5 +1,6 @@
 import { Page } from 'puppeteer';
 import { Motherboard, MotherboardFormFactor } from '../../../types';
+import { removeNonBreakingSpace } from '../common/removeNonBreakingSpace';
 import camelize from '../common/camelize';
 import cleanComplexTable from '../common/cleanComplexTable';
 import { xPathSelectors } from '../common/constants';
@@ -59,8 +60,8 @@ const parseMotherboardPage = async (
 
     const camelName = camelize(name);
     specs.hasOwnProperty(camelName)
-      ? (specs[`${camelName}Internal`] = value)
-      : (specs[camelName] = value);
+      ? (specs[`${camelName}Internal`] = removeNonBreakingSpace(value))
+      : (specs[camelName] = removeNonBreakingSpace(value));
   });
 
   console.log(specs);

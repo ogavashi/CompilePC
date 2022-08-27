@@ -5,6 +5,7 @@ import getParsingElement from '../common/getParsingElement';
 import parseElementInnerHTML from '../common/parseElementInnerHTML';
 import camelize from '../common/camelize';
 import cleanComplexTable from '../common/cleanComplexTable';
+import { removeNonBreakingSpace } from '../common/removeNonBreakingSpace';
 
 const parseCPUPage = async (
   productId: string,
@@ -48,7 +49,7 @@ const parseCPUPage = async (
 
     const camelName = camelize(name);
 
-    specs[camelName] = value;
+    specs[camelName] = removeNonBreakingSpace(value);
   });
 
   return {

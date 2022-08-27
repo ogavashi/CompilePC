@@ -17,8 +17,11 @@
     "node": "14"
   },
   "dependencies": {
+    "dotenv": "^16.0.1",
     "firebase-admin": "^9.10.0",
     "firebase-functions": "^3.6.1",
+    "joi": "^17.6.0",
+    "mongodb": "^4.9.0",
     "puppeteer": "14.4.1",
     "puppeteer-extra": "^3.3.4",
     "puppeteer-extra-plugin-stealth": "^2.11.1"

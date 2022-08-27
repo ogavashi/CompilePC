@@ -6,6 +6,7 @@ import parseElementInnerHTML from '../common/parseElementInnerHTML';
 import camelize from '../common/camelize';
 import cleanSimpleTable from '../common/cleanSimpleTable';
 import cleanComplexTable from '../common/cleanComplexTable';
+import { removeNonBreakingSpace } from '../common/removeNonBreakingSpace';
 
 const parseHardDrivePage = async (
   productId: string,
@@ -56,8 +57,8 @@ const parseHardDrivePage = async (
 
     const camelName = camelize(name);
     specs.hasOwnProperty(camelName)
-      ? (specs[`${camelName}Dimensions`] = value)
-      : (specs[camelName] = value);
+      ? (specs[`${camelName}Dimensions`] = removeNonBreakingSpace(value))
+      : (specs[camelName] = removeNonBreakingSpace(value));
   });
 
   return {
