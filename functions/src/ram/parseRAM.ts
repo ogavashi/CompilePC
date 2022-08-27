@@ -7,6 +7,7 @@ import camelize from '../common/camelize';
 import { xPathSelectors } from '../common/constants';
 import parseColorDivs from '../common/parseColorDivs';
 import cleanSimpleTable from '../common/cleanSimpleTable';
+import { removeNonBreakingSpace } from '../common/removeNonBreakingSpace';
 
 const parseRAM = async (productId: string, page: Page): Promise<RAM | null> => {
   const specs: Record<string, string> = {};
@@ -51,7 +52,7 @@ const parseRAM = async (productId: string, page: Page): Promise<RAM | null> => {
 
       const camelName = camelize(name);
 
-      specs[camelName] = value;
+      specs[camelName] = removeNonBreakingSpace(value);
     });
 
     const colourArray = await parseColorDivs(
