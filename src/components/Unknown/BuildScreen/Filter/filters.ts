@@ -1,4 +1,4 @@
-import { Builder } from '../../../../../types/index';
+import { BuilderCategory } from '../../../../../types/index';
 
 export type FilterOption = {
   key: string;
@@ -11,11 +11,11 @@ export type Filter = {
   options: FilterOption[];
 };
 
-export type Filters = {
-  [key in Builder]: { accordion?: Filter[]; switcher?: Filter[] };
+export type CategoryFilterBatch = {
+  [key in BuilderCategory]: { accordion?: Filter[]; switcher?: Filter[] };
 };
 
-export const filters: Filters = {
+export const filters: CategoryFilterBatch = {
   CPU: {
     accordion: [
       {
