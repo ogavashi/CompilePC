@@ -1,6 +1,8 @@
+import { BuilderCategory } from '../../types';
+
 const DEFAULT_REGION = 'europe-central2';
 
-const ProductCategoryByCollection = {
+const ProductCategoryByCollection: Record<string, BuilderCategory> = {
   CPUs: 'CPU',
   GraphicsCards: 'Graphic card',
   Motherboards: 'Motherboard',
@@ -8,5 +10,13 @@ const ProductCategoryByCollection = {
   HardDrives: 'HDD',
 };
 
+const NUMERIC_FORMAT = /^[0-9]*$/;
+
+const MIN_PRICE_SLIDER_DISTANCE = 1000;
 // eslint-disable-next-line import/prefer-default-export
-export { DEFAULT_REGION, ProductCategoryByCollection };
+export {
+  DEFAULT_REGION,
+  ProductCategoryByCollection,
+  MIN_PRICE_SLIDER_DISTANCE,
+  NUMERIC_FORMAT,
+};

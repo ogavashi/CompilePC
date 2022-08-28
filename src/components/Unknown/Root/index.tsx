@@ -4,9 +4,11 @@ import {
   useFirestore,
   useFirestoreCollectionData,
 } from 'reactfire';
+import { Routes, Route } from 'react-router-dom';
 import { DEFAULT_REGION } from '../../../common/constants';
 import Layout from '../Layout';
 import BuildScreen from '../BuildScreen';
+import NotFoundScreen from '../NotFoundScreen';
 
 const Root: React.FC = () => {
   const functions = useFirebaseApp().functions(DEFAULT_REGION);
@@ -28,11 +30,17 @@ const Root: React.FC = () => {
   // console.log(data);
 
   return (
-    <div>
-      <Layout>
-        <BuildScreen />
-      </Layout>
-    </div>
+    <Layout>
+      <Routes>
+        <Route path="/" element={<BuildScreen />} />
+        <Route path="login" element={<div>Sign In</div>} />
+        <Route path="register" element={<div>Sign Up</div>} />
+        <Route path="product/:id" element={<div>Product</div>} />
+        {/* Protected route */}
+        <Route path="assemblies" element={<div>Assemblies</div>} />
+        <Route path="*" element={<NotFoundScreen />} />
+      </Routes>
+    </Layout>
   );
 };
 

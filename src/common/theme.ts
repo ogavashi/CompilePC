@@ -6,12 +6,14 @@ declare module '@mui/material/styles' {
     backgroundBlack: string;
     green: string;
     tomatoRed: string;
+    white: string;
   }
   interface PaletteOptions {
     backgroundGrey: string;
     backgroundBlack: string;
     green: string;
     tomatoRed: string;
+    white: string;
   }
 }
 
@@ -51,6 +53,7 @@ const defaultTheme = createTheme({
     backgroundGrey: colors.grey,
     tomatoRed: colors.red,
     green: colors.green,
+    white: colors.white,
   },
   typography: {
     h1: {
@@ -62,7 +65,7 @@ const defaultTheme = createTheme({
       fontWeight: 600,
     },
     h3: {
-      fontSize: 40,
+      fontSize: 20,
       fontWeight: 600,
     },
     h4: {
@@ -84,15 +87,16 @@ const defaultTheme = createTheme({
     MuiInputBase: {
       styleOverrides: {
         root: {
-          backgroundColor: colors.lightGrey,
-          color: colors.white,
+          border: 'none',
           borderRadius: 10,
-          padding: theme.spacing(1),
-          '&.Mui-focused': {
-            border: `1px solid ${colors.green}`,
-            '& .MuiOutlinedInput-notchedOutline': {
-              border: 'none',
-            },
+          margin: theme.spacing(1),
+          '& .MuiInputBase-input': {
+            minHeight: 50,
+            backgroundColor: colors.black,
+            borderRadius: 10,
+            border: 'none',
+            fontSize: 20,
+            textAlign: 'center',
           },
         },
       },
@@ -101,9 +105,11 @@ const defaultTheme = createTheme({
       styleOverrides: {
         root: {
           borderRadius: 10,
-          backgroundColor: colors.grey,
           '&:hover:not(.Mui-disabled)': {
             cursor: 'default',
+          },
+          '&:before': {
+            display: 'none',
           },
         },
       },
@@ -112,7 +118,6 @@ const defaultTheme = createTheme({
       styleOverrides: {
         root: {
           borderRadius: 10,
-          backgroundColor: colors.grey,
           '&:hover:not(.Mui-disabled)': {
             cursor: 'default',
           },
@@ -123,7 +128,6 @@ const defaultTheme = createTheme({
       styleOverrides: {
         root: {
           borderRadius: 10,
-          backgroundColor: colors.grey,
           '&:hover:not(.Mui-disabled)': {
             cursor: 'default',
           },

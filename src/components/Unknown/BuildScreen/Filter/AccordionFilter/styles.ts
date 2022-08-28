@@ -4,34 +4,30 @@ import { createStyles, makeStyles } from '@mui/styles';
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     wrapper: {
+      width: '100%',
       margin: theme.spacing(3),
+      backgroundColor: `${theme.palette.backgroundBlack} !important`,
     },
     title: {
       display: 'flex',
       alignItems: 'center',
-      paddingLeft: theme.spacing(4),
       color: 'white',
     },
     accordionSummary: {
+      backgroundColor: theme.palette.backgroundBlack,
       '& .MuiAccordionSummary-content': {
         padding: theme.spacing(2),
       },
     },
-    productIcon: {
-      width: '60px',
-    },
     greenIcon: {
       backgroundColor: theme.palette.green,
-      color: theme.palette.backgroundGrey,
+      color: theme.palette.backgroundBlack,
       borderRadius: theme.spacing(1),
     },
     redIcon: {
       backgroundColor: theme.palette.tomatoRed,
       color: theme.palette.backgroundGrey,
       borderRadius: theme.spacing(1),
-    },
-    icon: {
-      width: '30px',
     },
   }),
 );
