@@ -137,3 +137,11 @@ export type HardDrive = Product & {
   size: string; // e.g. 147x102x20 mm
   weight: string;
 };
+
+// Product builders
+export type BuilderCategory =
+  | 'CPU'
+  | 'Graphic card'
+  | 'Motherboard'
+  | 'RAM'
+  | 'HDD';

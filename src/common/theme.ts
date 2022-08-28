@@ -6,6 +6,7 @@ declare module '@mui/material/styles' {
     backgroundBlack: string;
     green: string;
     tomatoRed: string;
+    white: string;
     lightGrey: string;
     textGrey: string;
   }
@@ -14,6 +15,7 @@ declare module '@mui/material/styles' {
     backgroundBlack: string;
     green: string;
     tomatoRed: string;
+    white: string;
     lightGrey: string;
     textGrey: string;
   }
@@ -56,6 +58,7 @@ const defaultTheme = createTheme({
     backgroundGrey: colors.grey,
     tomatoRed: colors.red,
     green: colors.green,
+    white: colors.white,
     lightGrey: colors.lightGrey,
     textGrey: colors.textGrey,
   },
@@ -69,7 +72,7 @@ const defaultTheme = createTheme({
       fontWeight: 600,
     },
     h3: {
-      fontSize: 40,
+      fontSize: 20,
       fontWeight: 600,
     },
     h4: {
@@ -108,9 +111,11 @@ const defaultTheme = createTheme({
       styleOverrides: {
         root: {
           borderRadius: 10,
-          backgroundColor: colors.grey,
           '&:hover:not(.Mui-disabled)': {
             cursor: 'default',
+          },
+          '&:before': {
+            display: 'none',
           },
         },
       },
@@ -119,7 +124,6 @@ const defaultTheme = createTheme({
       styleOverrides: {
         root: {
           borderRadius: 10,
-          backgroundColor: colors.grey,
           '&:hover:not(.Mui-disabled)': {
             cursor: 'default',
           },
@@ -130,7 +134,6 @@ const defaultTheme = createTheme({
       styleOverrides: {
         root: {
           borderRadius: 10,
-          backgroundColor: colors.grey,
           '&:hover:not(.Mui-disabled)': {
             cursor: 'default',
           },

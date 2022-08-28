@@ -1,6 +1,6 @@
 import React from 'react';
 import { CssBaseline, ThemeProvider } from '@mui/material';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import { FirebaseAppProvider } from 'reactfire';
 import firebaseApp from '../../../common/firebaseApp';
 import theme from '../../../common/theme';
@@ -11,12 +11,12 @@ const App: React.FC = () => {
   return (
     <FirebaseAppProvider firebaseApp={firebaseApp}>
       <ThemeProvider theme={theme}>
-        <Router basename={process.env.PUBLIC_URL || '/'}>
+        <BrowserRouter basename={process.env.PUBLIC_URL || '/'}>
           <CssBaseline />
           <UIContextProvider>
             <Root />
           </UIContextProvider>
-        </Router>
+        </BrowserRouter>
       </ThemeProvider>
     </FirebaseAppProvider>
   );
