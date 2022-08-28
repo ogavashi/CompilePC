@@ -8,6 +8,7 @@ import { filters } from './filters';
 import RangeFilter from './RangeFilter';
 
 import useStyles from './styles';
+import SwitchFilter from './SwitchFilter';
 
 const Filter: React.FC = () => {
   const styles = useStyles();
@@ -24,13 +25,27 @@ const Filter: React.FC = () => {
     handleParamsChange(selectedFilters);
   };
 
+  const accordions = selectedBuilder && filters[selectedBuilder].accordion;
+
+  const switchers = selectedBuilder && filters[selectedBuilder].switcher;
+
+  const accordionFilters =
+    accordions &&
+    accordions.map((filter) => (
+      <AccordionFilter filter={filter} key={filter.key} />
+    ));
+
+  const switchFilters =
+    switchers &&
+    switchers.map((filter) => (
+      <SwitchFilter filter={filter} key={filter.key} />
+    ));
+
   return (
     <Box className={styles.wrapper}>
       <RangeFilter title="Budget" />
-      {selectedBuilder &&
-        filters[selectedBuilder].map((filter) => (
-          <AccordionFilter filter={filter} key={filter.key} />
-        ))}
+      {switchFilters}
+      {accordionFilters}
       <Button
         fullWidth
         variant="contained"

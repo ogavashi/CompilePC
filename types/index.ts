@@ -139,4 +139,4 @@ export type HardDrive = Product & {
 };
 
 // Product builders
-export type Builders = 'CPU' | 'Graphic card' | 'Motherboard' | 'RAM' | 'HDD';
+export type Builder = 'CPU' | 'Graphic card' | 'Motherboard' | 'RAM' | 'HDD';
