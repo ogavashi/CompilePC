@@ -57,12 +57,13 @@ const usePriceInputs = () => {
         minPrice: atBeginning ? clamped : clamped - MIN_PRICE_SLIDER_DISTANCE,
         maxPrice: atBeginning ? clamped + MIN_PRICE_SLIDER_DISTANCE : clamped,
       });
-    } else {
-      setPriceRange({
-        minPrice: newValue[0],
-        maxPrice: newValue[1],
-      });
+      return;
     }
+
+    setPriceRange({
+      minPrice: newValue[0],
+      maxPrice: newValue[1],
+    });
   };
 
   return {

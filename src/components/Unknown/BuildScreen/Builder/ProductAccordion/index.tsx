@@ -12,10 +12,11 @@ import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded';
 import useStyles from './styles';
 import { BuildProduct } from '../BuilderProduct';
 import { BuildScreenContext } from '../../../BuildScreenContext';
+import { Builders } from '../../../../../../types';
 
 type ProductAccordionProps = {
   icon: React.FC;
-  category: string;
+  category: Builders;
   selectedId: string;
   // eslint-disable-next-line react/require-default-props
   selectedProduct?: BuildProduct;

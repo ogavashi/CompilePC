@@ -38,7 +38,12 @@ const useQuery = () => {
     return parsedParams;
   }, [searchParams]);
 
-  return { searchParams, handleParamsChange, parseCurrentParams };
+  return {
+    searchParams,
+    setSearchParams,
+    handleParamsChange,
+    parseCurrentParams,
+  };
 };
 
 export default useQuery;

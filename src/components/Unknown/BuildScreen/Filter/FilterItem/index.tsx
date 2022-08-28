@@ -3,12 +3,8 @@ import { Box } from '@mui/system';
 import clsx from 'clsx';
 import React, { useContext } from 'react';
 import { BuildScreenContext } from '../../../BuildScreenContext';
+import { FilterOption } from '../filters';
 import useStyles from './styles';
-
-export type FilterOption = {
-  value: string;
-  key: string;
-};
 
 type FilterItemProps = {
   option: FilterOption;

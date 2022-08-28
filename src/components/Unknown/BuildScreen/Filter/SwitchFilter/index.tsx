@@ -4,7 +4,7 @@ import React, { useContext, useState } from 'react';
 import useQuery from '../../../../../hooks/useQuery';
 import { BuildScreenContext } from '../../../BuildScreenContext';
 import Switcher from '../../../Switcher';
-import { FilterOption } from '../FilterItem';
+import { FilterOption } from '../filters';
 
 import useStyles from './styles';
 

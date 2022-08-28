@@ -1,24 +1,34 @@
 import React, { createContext, useCallback, useState } from 'react';
+import useQuery from '../../../hooks/useQuery';
+import { Builders } from '../../../../types';
 
 export const BuildScreenContext = createContext<BuildScreenProps>(
   {} as BuildScreenProps,
 );
 
 interface BuildScreenProps {
-  selectedBuilder: string | null;
+  selectedBuilder: Builders | null;
   selectedFilter: string | null;
   filters: Record<string, string> | null;
-  handleSelectBuilder: (value: string) => void;
+  handleSelectBuilder: (value: Builders) => void;
   handleSelectFilter: (value: string) => void;
   handleChangeFilters: (value: Record<string, string> | null) => void;
+  setSelectedFilter: (value: string | null) => void;
 }
 
 export const BuildScreenContextProvider: React.FC = ({ children }) => {
-  const [selectedBuilder, setSelectedBuilder] = useState<string | null>(null);
+  const [selectedBuilder, setSelectedBuilder] = useState<Builders | null>(null);
   const [selectedFilter, setSelectedFilter] = useState<string | null>(null);
   const [filters, setFilters] = useState<Record<string, string> | null>(null);
 
-  const handleSelectBuilder = (panel: string) => {
+  const { setSearchParams } = useQuery();
+
+  const handleSelectBuilder = (panel: Builders) => {
+    // Erase query string and filters in state whenever new builder is opened
+    if (panel !== selectedBuilder && selectedBuilder !== null) {
+      setSearchParams({});
+      setFilters(null);
+    }
     setSelectedBuilder((prev) => (prev === panel ? null : panel));
   };
 
@@ -40,6 +50,7 @@ export const BuildScreenContextProvider: React.FC = ({ children }) => {
         handleSelectBuilder,
         selectedFilter,
         handleSelectFilter,
+        setSelectedFilter,
         filters,
         handleChangeFilters,
       }}

@@ -11,15 +11,10 @@ import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import React, { useContext } from 'react';
 import useStyles from './styles';
-import FilterItem, { FilterOption } from '../FilterItem';
+import FilterItem from '../FilterItem';
 import useFilterAccordion from '../../../../../hooks/useFilterAccordion';
 import { BuildScreenContext } from '../../../BuildScreenContext';
-
-type Filter = {
-  title: string;
-  key: string;
-  options: FilterOption[];
-};
+import { Filter } from '../filters';
 
 type AccordionFilterProps = {
   filter: Filter;

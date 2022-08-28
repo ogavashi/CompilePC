@@ -1,6 +1,8 @@
+import { Builders } from '../../types';
+
 const DEFAULT_REGION = 'europe-central2';
 
-const ProductCategoryByCollection = {
+const ProductCategoryByCollection: Record<string, Builders> = {
   CPUs: 'CPU',
   GraphicsCards: 'Graphic card',
   Motherboards: 'Motherboard',

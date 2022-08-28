@@ -1,6 +1,7 @@
 import { ToggleButton, ToggleButtonGroup } from '@mui/material';
 import React from 'react';
-import { FilterOption } from '../BuildScreen/Filter/FilterItem';
+import { FilterOption } from '../BuildScreen/Filter/filters';
+
 import useStyles from './styles';
 
 type SwitcherProps = {
