@@ -138,6 +138,27 @@ export type HardDrive = Product & {
   weight: string;
 };
 
+// collection solidStateDrives
+export type SolidStateDrive = Product & {
+  placement: string;
+  capacity: string;
+  formFactor: string;
+  m2Interface: string;
+  controller: string;
+  cacheMemory: string;
+  memoryType: string;
+  nVMe: string;
+  writeSpeed: string;
+  readSpeed: string;
+  writeIOPS: string;
+  readIOPS: string;
+  TBW: string;
+  MTBF: string;
+  trim: boolean;
+  size: string;
+  weight: string;
+};
+
 // Product builders
 export type BuilderCategory =
   | 'CPU'
