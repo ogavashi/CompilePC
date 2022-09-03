@@ -83,11 +83,11 @@ const parseCasePage = async (
     .filter((key) => regexes.liquidFansInCase.test(key))
     .map((key) => ({ [key]: rawSpecs[key] }));
 
-  const specs = Object.fromEntries(
-    Object.entries(rawSpecs).map(([key, value]) =>
-      key !== 'colour' && !value ? [key, booleanValues.shift()] : [key, value],
-    ),
+  const normalizedSpecs = Object.entries(rawSpecs).map(([key, value]) =>
+    key !== 'colour' && !value ? [key, booleanValues.shift()] : [key, value],
   );
+
+  const specs = Object.fromEntries(normalizedSpecs);
 
   return {
     id: productId,

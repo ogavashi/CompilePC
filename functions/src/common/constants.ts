@@ -6,6 +6,9 @@ export const EKATALOG_LIST_LINK = `${EKATALOG_LINK}/en/list/`;
 export const CATEGORIES_COLLECTION_NAME = 'categories';
 export const DB_NAME = 'CompilePC';
 
+export const RAM_COLOR_DIVS = '.small-col-plate2';
+export const CASE_COLOR_DIVS = '.descr-color';
+
 export const parserByCategoryId: Record<string, CallableFunction> = {
   186: parseCPUPage,
 };
