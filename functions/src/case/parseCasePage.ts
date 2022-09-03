@@ -1,5 +1,5 @@
 import { Page } from 'puppeteer';
-import { Motherboard, MotherboardFormFactor } from '../../../types';
+import { Case } from '../../../types';
 import { removeNonBreakingSpace } from '../common/removeNonBreakingSpace';
 import camelize from '../common/camelize';
 import cleanComplexTable from '../common/cleanComplexTable';
@@ -12,7 +12,7 @@ import parseColorDivs from '../common/parseColorDivs';
 const parseCasePage = async (
   productId: string,
   page: Page,
-): Promise<Motherboard | null> => {
+): Promise<Case | null> => {
   const description = await parseElementInnerHTML('.desc-ai-title', page);
 
   await page.waitForXPath(xPathSelectors.specificationButton);
@@ -32,13 +32,6 @@ const parseCasePage = async (
 
   const specsTable = await getParsingElement('#help_table', page);
 
-  page.on('console', async (msg) => {
-    const msgArgs = msg.args();
-    for (let i = 0; i < msgArgs.length; ++i) {
-      console.log(await msgArgs[i].jsonValue());
-    }
-  });
-
   const rawSpecsTable = await page.evaluate(async (node) => {
     async function getNodeTreeText(
       inputNode: HTMLElement,
@@ -52,11 +45,18 @@ const parseCasePage = async (
     return getNodeTreeText(node);
   }, specsTable);
 
+  const booleanValues = await page.evaluate(() => {
+    const classNamePattern = /prop-/i;
+    return [...document.querySelectorAll('img')]
+      .filter((element) => classNamePattern.test(element.className))
+      .map((element) => element.className === 'prop-y');
+  });
+
   if (!name || !mainImage || !rawSpecsTable) return null;
 
   const cleanedSpecsTable = cleanComplexTable(rawSpecsTable);
 
-  const specs: Record<string, string> = {};
+  const rawSpecs: Record<string, string> = {};
 
   cleanedSpecsTable.forEach((item: string) => {
     const [name, value] = item.split('\t');
@@ -66,58 +66,64 @@ const parseCasePage = async (
     }
 
     const camelName = camelize(name);
-    specs.hasOwnProperty(camelName)
-      ? (specs[`${camelName}Internal`] = removeNonBreakingSpace(value))
-      : (specs[camelName] = removeNonBreakingSpace(value));
+    rawSpecs.hasOwnProperty(camelName)
+      ? (rawSpecs[`${camelName}Internal`] = removeNonBreakingSpace(value))
+      : (rawSpecs[camelName] = removeNonBreakingSpace(value));
   });
 
   const colourArray = await parseColorDivs(xPathSelectors.caseColourDivs, page);
 
-  if (colourArray) specs.colour = colourArray.join();
+  if (colourArray) rawSpecs.colour = colourArray.join();
 
-  const fansSizes = Object.keys(specs)
+  const fansSizes = Object.keys(rawSpecs)
     .filter((key) => regexes.fansInCase.test(key))
-    .map((key) => ({ [key]: specs[key] }));
+    .map((key) => ({ [key]: rawSpecs[key] }));
 
-  console.log(fansSizes);
+  const liquidFansSizes = Object.keys(rawSpecs)
+    .filter((key) => regexes.liquidFansInCase.test(key))
+    .map((key) => ({ [key]: rawSpecs[key] }));
+
+  const specs = Object.fromEntries(
+    Object.entries(rawSpecs).map(([key, value]) =>
+      key !== 'colour' && !value ? [key, booleanValues.shift()] : [key, value],
+    ),
+  );
 
   return {
     id: productId,
     name,
     mainImage,
     description: description || undefined,
-    socket: specs?.socket,
-    formFactor: specs?.formFactor as MotherboardFormFactor,
-    powerPhases: specs?.powerPhases,
-    VRMHeatsink: !!!specs?.vRMHeatsink,
-    size: specs?.['size(HxW)'], // e.g. 226x211 mm
-    chipset: specs?.chipset,
-    BIOS: specs?.BIOS,
-    DDR4: specs?.DDR4,
-    memoryModule: specs?.memoryModule,
-    operationMode: specs?.operationMode,
-    maxClockFrequency: specs?.maxClockFrequency,
-    maxMemory: specs?.maxMemory,
-    VGA: !!!specs?.['dSubOutput(VGA)'],
-    HDMI: !!!specs?.hDMIOutput,
-    HDMIVersion: specs?.hDMIVersion,
-    displayPort: !!!specs?.displayPort,
-    displayPortVersion: specs?.displayPortVersion,
-    audiochip: specs?.audiochip,
-    sound: specs?.['sound(Channels)'],
-    sata3: specs?.['sATA3(6Gbs)'],
-    m2: specs?.['M.2'],
-    PSI_E_16x: specs?.pCIE16xSlots,
-    PCIExpressVerison: specs?.pCIExpress,
-    ExternalUSB_2_0: specs?.['USB 2.0'],
-    ExternalUSB_3_2_gen1: specs?.uSB32Gen1,
-    ExternalUSB_3_2_gen2: specs?.uSB32Gen2,
-    InternalUSB_2_0: specs?.['USB 2.0Internal'],
-    InternalUSB_3_2_gen1: specs?.uSB32Gen1Internal,
-    InternalUSB_3_2_gen2: specs?.uSB32Gen2Internal,
-    mainPowerSocket: specs?.mainPowerSocket,
-    CPUPowerSocket: specs?.cPUPower,
-    FanPowerConnectors: specs?.FanPowerConnectors,
+    officialWebsite: specs?.officialWebsite,
+    colour: specs?.colour,
+    target: specs?.features,
+    mount: specs?.mount,
+    motherboardFormFactor: specs?.mount,
+    boardPlacement: specs?.boardPlacement,
+    psuMaxLength: specs?.psuMaxLength,
+    gpuMaxLength: specs?.gpuMaxLength,
+    rubberFeet: specs?.rubberFeet,
+    PSU: specs?.PSU,
+    psuMount: specs?.psuMount,
+    expansionSlots: +specs?.expansionSlots,
+    openMechanism: specs?.openMechanism,
+    fansTotal: specs?.fansTotal,
+    fansInfo: fansSizes,
+    fansMountTotal: +specs?.fansMountTotal,
+    gridFrontPanel: specs?.gridFrontPanel,
+    dustFilter: specs?.dustFilter,
+    liquidCoolingSupport: specs?.liquidCoolingSupport,
+    liquidPlacement: specs?.placement,
+    liquidCoolingMountsTotal: +specs?.liquidCoolingMounts,
+    liquidCoolingInfo: liquidFansSizes,
+    usb32Gen1: +specs?.uSB32Gen1,
+    usb32Gen2: +specs?.uSB32Gen2,
+    usb20: +specs?.usb20,
+    audioPort: specs['audio(Microphoneheadphones)'],
+    material: specs?.material,
+    frontPanel: specs?.frontPanel,
+    weight: specs?.weight,
+    size: specs?.size,
   };
 };
 

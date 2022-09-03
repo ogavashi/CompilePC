@@ -159,6 +159,39 @@ export type SolidStateDrive = Product & {
   weight: string;
 };
 
+// collection cases
+export type Case = Product & {
+  colour: string | undefined;
+  target: string;
+  mount: string;
+  motherboardFormFactor: string;
+  boardPlacement: string;
+  psuMaxLength: string;
+  gpuMaxLength: string;
+  rubberFeet: boolean;
+  PSU: boolean;
+  psuMount: string;
+  expansionSlots: number;
+  openMechanism: string;
+  fansTotal: string;
+  fansInfo: Record<string, string>[];
+  fansMountTotal: number;
+  gridFrontPanel: boolean;
+  dustFilter: boolean;
+  liquidCoolingSupport: boolean;
+  liquidCoolingMountsTotal: number;
+  liquidPlacement: string;
+  liquidCoolingInfo: Record<string, string>[];
+  usb32Gen1: number;
+  usb32Gen2: number;
+  usb20: number;
+  audioPort: boolean;
+  material: string;
+  weight: string;
+  size: string;
+  frontPanel: string;
+};
+
 // Product builders
 export type BuilderCategory =
   | 'CPU'

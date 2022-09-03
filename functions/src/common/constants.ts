@@ -23,4 +23,5 @@ export const regexes: Record<string, RegExp> = {
   nonBreakingSpace: /\xA0/g,
   numericFormat: /^[0-9]*$/,
   fansInCase: /fans\(.*\)/i,
+  liquidFansInCase: /liquidCooling\(.*\)/i,
 };
