@@ -14,6 +14,7 @@ export const xPathSelectors: Record<string, string> = {
   specificationButton:
     "//div[@class='desc-menu']/a[contains(., 'Specifications')]",
   ramColourDivs: "//td[@class='small-col-plate2']/div",
+  caseColourDivs: "//td[@class=' color-plate descr-color']/div",
 };
 
 export const regexes: Record<string, RegExp> = {
@@ -21,4 +22,5 @@ export const regexes: Record<string, RegExp> = {
   cleanLinkForProductId: /\/en\/|.htm/g,
   nonBreakingSpace: /\xA0/g,
   numericFormat: /^[0-9]*$/,
+  fansInCase: /fans\(.*\)/i,
 };

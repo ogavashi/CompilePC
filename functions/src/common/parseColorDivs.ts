@@ -4,7 +4,8 @@ const parseColorDivs = async (
   xpath: string,
   page: Page,
 ): Promise<string[] | null> => {
-  if (!(await page.$('.small-col-plate2'))) return null;
+  if (!(await page.$('.small-col-plate2')) && !(await page.$('.descr-color')))
+    return null;
   const elements = await page.$x(xpath);
 
   if (!elements) return [];

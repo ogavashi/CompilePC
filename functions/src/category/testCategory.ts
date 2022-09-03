@@ -10,8 +10,7 @@ import {
 } from '../common/constants';
 import StealthPlugin from 'puppeteer-extra-plugin-stealth';
 import { getDB } from '../bootstrap';
-import parseSolidStateDrivePage from '../solidStateDrive/parseSolidStateDrivePage';
-import { SolidStateDrive } from '../../../types';
+import parseCasePage from '../case/parseCasePage';
 puppeteer.use(StealthPlugin());
 
 const runtimeOpts = {
@@ -34,7 +33,7 @@ const testCategory = functions
       const categoriesCursor = db.collection(CATEGORIES_COLLECTION_NAME).find();
       const categories = await categoriesCursor.toArray();
 
-      const category = categories[5]; // choose your category by index; add it beforehand in firebase console, if it does not exist
+      const category = categories[6]; // choose your category by index; add it beforehand in firebase console, if it does not exist
       if (!category) return;
 
       const browser = await puppeteer.launch(options);
@@ -50,7 +49,7 @@ const testCategory = functions
           a.getAttribute('href'),
         ),
       );
-      const products: SolidStateDrive[] = []; // put your component type here
+      const products: any[] = []; // put your component type here
       for await (const link of productLinks) {
         if (!link) return;
 
@@ -61,7 +60,7 @@ const testCategory = functions
 
         const productId = link.replace(regexes.cleanLinkForProductId, '');
 
-        const parser = parseSolidStateDrivePage; // put YOUR parser here
+        const parser = parseCasePage; // put YOUR parser here
         if (!parser) return;
 
         const product = await parser(productId, productPage);
