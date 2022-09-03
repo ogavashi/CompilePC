@@ -1,10 +1,12 @@
 import { Page } from 'puppeteer';
+import { CASE_COLOR_DIVS, RAM_COLOR_DIVS } from './constants';
 
 const parseColorDivs = async (
   xpath: string,
   page: Page,
 ): Promise<string[] | null> => {
-  if (!(await page.$('.small-col-plate2'))) return null;
+  if (!(await page.$(RAM_COLOR_DIVS)) && !(await page.$(CASE_COLOR_DIVS)))
+    return null;
   const elements = await page.$x(xpath);
 
   if (!elements) return [];
