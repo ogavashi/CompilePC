@@ -192,6 +192,61 @@ export type Case = Product & {
   frontPanel: string;
 };
 
+// collection coolings
+export type Cooling = Product & {
+  target: string;
+  type: string;
+  fans: number;
+  heatPipes: number;
+  heatPipeContact: string;
+  heatSinkMaterial: string;
+  plateMaterial: string;
+  mountType: string;
+  socket: string[];
+  fanSize: string;
+  bearing: string;
+  minRPM: string;
+  maxRPM: string;
+  speedController: string;
+  maxAirFlow: string;
+  maxTDP: string;
+  airFlowDirection: string;
+  replaceable: boolean;
+  staticPreasure: boolean;
+  lighting: boolean;
+  lightingColour: boolean;
+  powerSource: string;
+  minNoiseLevel: string;
+  noiseLevel: string;
+  dimensions: string;
+  height: string;
+  weight: string;
+};
+
+// collection PSUs
+export type PSU = Product & {
+  power: string;
+  formFactor: string;
+  PFC: string;
+  efficiency: string;
+  coolingSystem: string;
+  fanSize: string;
+  fanBearings: string;
+  certification: string;
+  atx12vVersion: string;
+  powerSupply: string;
+  SATA: number;
+  MOLEX: number;
+  PCIE8pin: number;
+  cableSystem: string;
+  braidedWires: boolean;
+  mbCableLength: string;
+  cpuCableLength: string;
+  sataCableLength: string;
+  molexCableLength: string;
+  PCIECableLength: string;
+};
+
 // Product builders
 export type BuilderCategory =
   | 'CPU'
