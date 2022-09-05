@@ -245,6 +245,7 @@ export type PSU = Product & {
   sataCableLength: string;
   molexCableLength: string;
   PCIECableLength: string;
+  maxPowerInfo: Record<string, string>[];
 };
 
 // Product builders
