@@ -1,4 +1,3 @@
-import { Motherboard } from './../../../types/index';
 import puppeteer from 'puppeteer-extra';
 import * as functions from 'firebase-functions';
 
@@ -11,12 +10,16 @@ import {
 } from '../common/constants';
 import StealthPlugin from 'puppeteer-extra-plugin-stealth';
 import { getDB } from '../bootstrap';
-import parseMotherboardPage from '../motherboard/parseMotherboardPage';
+import parseCasePage from '../case/parseCasePage';
+import { Case } from '../../../types';
+
 puppeteer.use(StealthPlugin());
 
 const runtimeOpts = {
   timeoutSeconds: 540,
 };
+
+// ONLY FOR TESTING PURPOSE
 
 const testCategory = functions
   .region(DEFAULT_REGION)
@@ -34,7 +37,7 @@ const testCategory = functions
       const categoriesCursor = db.collection(CATEGORIES_COLLECTION_NAME).find();
       const categories = await categoriesCursor.toArray();
 
-      const category = categories[1]; // choose your category by index; add it beforehand in firebase console, if it does not exist
+      const category = categories[6]; // choose your category by index; add it beforehand in firebase console, if it does not exist
       if (!category) return;
 
       const browser = await puppeteer.launch(options);
@@ -50,7 +53,7 @@ const testCategory = functions
           a.getAttribute('href'),
         ),
       );
-      const products: Motherboard[] = []; // put your component type here
+      const products: Case[] = []; // put your component type here
       for await (const link of productLinks) {
         if (!link) return;
 
@@ -61,13 +64,17 @@ const testCategory = functions
 
         const productId = link.replace(regexes.cleanLinkForProductId, '');
 
-        const parser = parseMotherboardPage; // put YOUR parser here
+        const parser = parseCasePage; // put YOUR parser here
         if (!parser) return;
 
         const product = await parser(productId, productPage);
         if (!product) return;
 
-        products.push(product);
+        const normalizedProduct = Object.fromEntries(
+          Object.entries(product).filter(([, value]) => value),
+        ) as Case; // put your component type here as well
+
+        products.push(normalizedProduct);
       }
       const categoryCollectionRef = db.collection(category.name);
       const bulk = categoryCollectionRef.initializeUnorderedBulkOp();
@@ -78,6 +85,7 @@ const testCategory = functions
       });
       await bulk.execute();
       await browser.close();
+      console.log('finish');
     } catch (err) {
       console.log(err);
     }
