@@ -46,11 +46,7 @@ const parseCoolingPage = async (
 
   if (!name || !mainImage || !rawSpecsTable) return null;
 
-  console.log(rawSpecsTable);
-
   const cleanedSpecsTable = cleanComplexTable(rawSpecsTable);
-
-  console.log(cleanedSpecsTable);
 
   const specs: Record<string, string> = {};
 
@@ -63,45 +59,42 @@ const parseCoolingPage = async (
     specs[camelName] = removeNonBreakingSpace(value);
   });
 
-  console.log(specs);
-  console.log(description);
-  console.log(name);
+  const sockets = specs.socket?.split(',');
 
-  return null;
-  // return {
-  //   id: productId,
-  //   name,
-  //   mainImage,
-  //   description: description || undefined,
-  //   officialWebsite: specs?.officialWebsite,
-  //   target: specs?.features,
-  //   type: specs?.productType,
-  //   fans: +specs?.fans,
-  //   heatPipes: +specs?.heatPipes,
-  //   heatPipeContact: specs?.heatPipeContact,
-  //   heatSinkMaterial: specs?.heatSinkMaterial,
-  //   plateMaterial: specs?.plateMaterial,
-  //   mountType: specs?.mountType,
-  //   socket: specs?.socket,
-  //   fanSize: specs?.fanSize,
-  //   bearing: specs?.bearing,
-  //   minRPM: specs?.minRPM,
-  //   maxRPM: specs?.maxRPM,
-  //   speedController: specs?.speedController,
-  //   maxAirFlow: specs?.maxAirFlow,
-  //   maxTDP: specs?.maxTDP,
-  //   airFlowDirection: specs?.airFlowDirection,
-  //   replaceable: !specs?.replaceable,
-  //   staticPreasure: specs?.staticPreasure,
-  //   lighting: !specs?.lighting,
-  //   lightingColour: specs?.lightingColour,
-  //   powerSource: specs?.powerSource,
-  //   minNoiseLevel: specs?.minNoiseLevel,
-  //   noiseLevel: specs?.noiseLevel,
-  //   dimensions: specs?.dimensions,
-  //   height: specs?.height,
-  //   weight: specs?.weight,
-  // };
+  return {
+    id: productId,
+    name,
+    mainImage,
+    description: description || undefined,
+    officialWebsite: specs?.officialWebsite,
+    target: specs?.features,
+    type: specs?.productType,
+    fans: +specs?.fans,
+    heatPipes: +specs?.heatPipes,
+    heatPipeContact: specs?.heatPipeContact,
+    heatSinkMaterial: specs?.heatSinkMaterial,
+    plateMaterial: specs?.plateMaterial,
+    mountType: specs?.mountType,
+    socket: sockets,
+    fanSize: specs?.fanSize,
+    bearing: specs?.bearing,
+    minRPM: specs?.minRPM,
+    maxRPM: specs?.maxRPM,
+    speedController: specs?.speedController,
+    maxAirFlow: specs?.maxAirFlow,
+    maxTDP: specs?.maxTDP,
+    airFlowDirection: specs?.airFlowDirection,
+    replaceable: !specs?.replaceable,
+    staticPreasure: specs?.staticPreasure,
+    lighting: !specs?.lighting,
+    lightingColour: specs?.lightingColour,
+    powerSource: specs?.powerSource,
+    minNoiseLevel: specs?.minNoiseLevel,
+    noiseLevel: specs?.noiseLevel,
+    dimensions: specs?.dimensions,
+    height: specs?.height,
+    weight: specs?.weight,
+  };
 };
 
 export default parseCoolingPage;

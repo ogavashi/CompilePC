@@ -1,3 +1,4 @@
+import { Cooling } from './../../../types/index';
 import puppeteer from 'puppeteer-extra';
 import * as functions from 'firebase-functions';
 
@@ -10,8 +11,7 @@ import {
 } from '../common/constants';
 import StealthPlugin from 'puppeteer-extra-plugin-stealth';
 import { getDB } from '../bootstrap';
-import { PSU } from '../../../types';
-import parsePSUpage from '../psu/parsePSUpage';
+import parseCoolingPage from '../cooling/parseCoolingPage';
 
 puppeteer.use(StealthPlugin());
 
@@ -37,7 +37,7 @@ const testCategory = functions
       const categoriesCursor = db.collection(CATEGORIES_COLLECTION_NAME).find();
       const categories = await categoriesCursor.toArray();
 
-      const category = categories[7]; // choose your category by index; add it beforehand in firebase console, if it does not exist
+      const category = categories[8]; // choose your category by index; add it beforehand in firebase console, if it does not exist
       if (!category) return;
 
       const browser = await puppeteer.launch(options);
@@ -53,7 +53,7 @@ const testCategory = functions
           a.getAttribute('href'),
         ),
       );
-      const products: PSU[] = []; // put your component type here
+      const products: Cooling[] = []; // put your component type here
       for await (const link of productLinks) {
         if (!link) return;
 
@@ -64,7 +64,7 @@ const testCategory = functions
 
         const productId = link.replace(regexes.cleanLinkForProductId, '');
 
-        const parser = parsePSUpage; // put YOUR parser here
+        const parser = parseCoolingPage; // put YOUR parser here
         if (!parser) return;
 
         const product = await parser(productId, productPage);
@@ -72,7 +72,7 @@ const testCategory = functions
 
         const normalizedProduct = Object.fromEntries(
           Object.entries(product).filter(([, value]) => value),
-        ) as PSU; // put your component type here as well
+        ) as Cooling; // put your component type here as well
 
         products.push(normalizedProduct);
       }
