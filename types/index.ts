@@ -212,9 +212,9 @@ export type Cooling = Product & {
   maxTDP: string;
   airFlowDirection: string;
   replaceable: boolean;
-  staticPreasure: boolean;
+  staticPreasure: string;
   lighting: boolean;
-  lightingColour: boolean;
+  lightingColour: string;
   powerSource: string;
   minNoiseLevel: string;
   noiseLevel: string;
@@ -233,7 +233,7 @@ export type PSU = Product & {
   fanSize: string;
   fanBearings: string;
   certification: string;
-  atx12vVersion: string;
+  atx12vVersion: number;
   powerSupply: string;
   SATA: number;
   MOLEX: number;
@@ -245,7 +245,6 @@ export type PSU = Product & {
   sataCableLength: string;
   molexCableLength: string;
   PCIECableLength: string;
-  maxPowerInfo: Record<string, string>[];
 };
 
 // Product builders
