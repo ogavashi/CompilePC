@@ -6,18 +6,19 @@ const cleanComplexTable = (rawSpecsTable: any) => {
 
   const normalizedSpecsTable = cleanedSpecsTable
     .map((item: string, index: number) => {
-      if (item.includes('Socket')) {
-        let sockets = item;
+      item.includes('Socket')
+        ? () => {
+            let sockets = item;
 
-        for (let i = index + 1; i < cleanedSpecsTable.length; i++) {
-          if (cleanedSpecsTable[i]) {
-            sockets += `,${cleanedSpecsTable[i]}`;
-          } else break;
-        }
-        return sockets;
-      } else {
-        return item;
-      }
+            for (let i = index + 1; i < cleanedSpecsTable.length; i++) {
+              if (cleanedSpecsTable[i]) {
+                sockets += `,${cleanedSpecsTable[i]}`;
+              } else break;
+            }
+
+            return sockets;
+          }
+        : item;
     })
     .filter((item: string) => item.includes('\t'));
 
