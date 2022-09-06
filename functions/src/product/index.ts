@@ -7,7 +7,10 @@ import naormalizeFilter from '../common/normalizeFilter';
 const schema = Joi.object({
   minPrice: Joi.number(),
   maxPrice: Joi.number(),
-}).pattern(Joi.string(), Joi.array().items(Joi.string()));
+}).pattern(
+  Joi.string(),
+  Joi.alternatives(Joi.array().items(Joi.string()), Joi.string()),
+);
 
 const getProducts = functions
   .region(DEFAULT_REGION)
