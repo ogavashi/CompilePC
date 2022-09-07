@@ -4,23 +4,30 @@
 const cleanComplexTable = (rawSpecsTable: any) => {
   const cleanedSpecsTable = rawSpecsTable.split('\n');
 
-  const normalizedSpecsTable = cleanedSpecsTable
-    .map((item: string, index: number) => {
-      item.includes('Socket')
-        ? () => {
-            let sockets = item;
+  const normalizedSpecsTable = cleanedSpecsTable.filter((item: string) => {
+    if (item.includes('Socket')) {
+      const indexOfSocketSpec = cleanedSpecsTable.indexOf(item);
+      const lastIndexOfSocketSpec = cleanedSpecsTable.indexOf(
+        '',
+        indexOfSocketSpec,
+      );
 
-            for (let i = index + 1; i < cleanedSpecsTable.length; i++) {
-              if (cleanedSpecsTable[i]) {
-                sockets += `,${cleanedSpecsTable[i]}`;
-              } else break;
-            }
+      let sockets = item;
 
-            return sockets;
-          }
-        : item;
-    })
-    .filter((item: string) => item.includes('\t'));
+      cleanedSpecsTable.forEach((spec: string, specIndex: number) => {
+        if (
+          specIndex > indexOfSocketSpec &&
+          specIndex < lastIndexOfSocketSpec
+        ) {
+          sockets += `,${spec}`;
+        }
+      });
+
+      item = sockets;
+    }
+
+    return item.includes('\t');
+  });
 
   return normalizedSpecsTable;
 };
