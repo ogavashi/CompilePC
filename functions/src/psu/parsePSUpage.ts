@@ -60,8 +60,6 @@ const parsePSUpage = async (
       : (specs[camelName] = removeNonBreakingSpace(value));
   });
 
-  console.log(specs, name);
-
   return {
     id: productId,
     name,
