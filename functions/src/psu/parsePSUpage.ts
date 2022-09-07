@@ -49,15 +49,11 @@ const parsePSUpage = async (
 
   cleanedSpecsTable.forEach((item: string) => {
     const [name, value] = item.split('\t');
-
-    if (!name && !value) {
-      return;
-    }
+    if (!name || !value) return;
 
     const camelName = camelize(name);
-    specs.hasOwnProperty(camelName)
-      ? (specs[`${camelName}Dimensions`] = removeNonBreakingSpace(value))
-      : (specs[camelName] = removeNonBreakingSpace(value));
+
+    specs[camelName] = removeNonBreakingSpace(value);
   });
 
   return {
