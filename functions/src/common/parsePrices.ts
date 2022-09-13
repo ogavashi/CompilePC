@@ -10,15 +10,11 @@ const parsePrices = async (page: Page) => {
     await page.waitForNavigation({ waitUntil: 'networkidle2' }),
   ]);
 
-  let biba = 0;
-
   const loadMoreButton = (await page.$x(xPathSelectors.loadMoreButton)) as any;
 
   while ((await page.$('.list-more-div')) !== null) {
-    biba++;
     loadMoreButton[0] &&
       (await loadMoreButton[0].evaluate((b: any) => b.click()));
-    if (biba === 10) break;
   }
 
   const storePrices = await page.evaluate(async () => {

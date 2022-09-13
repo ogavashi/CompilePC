@@ -55,8 +55,6 @@ const parseCPUPage = async (
 
   const price = await parsePrices(page);
 
-  console.log(price);
-
   return {
     id: productId,
     name,
