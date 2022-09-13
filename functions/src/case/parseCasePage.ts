@@ -8,6 +8,7 @@ import getParsingElement from '../common/getParsingElement';
 import parseElementInnerHTML from '../common/parseElementInnerHTML';
 import parseElementText from '../common/parseElementText';
 import parseColorDivs from '../common/parseColorDivs';
+import parsePrices from '../common/parsePrices';
 
 const parseCasePage = async (
   productId: string,
@@ -89,11 +90,14 @@ const parseCasePage = async (
 
   const specs = Object.fromEntries(normalizedSpecs);
 
+  const price = await parsePrices(page);
+
   return {
     id: productId,
     name,
     mainImage,
     description: description || undefined,
+    price,
     officialWebsite: specs?.officialWebsite,
     colour: specs?.colour,
     target: specs?.features,

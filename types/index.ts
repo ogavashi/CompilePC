@@ -4,6 +4,22 @@ export type Category = {
   name: string;
 };
 
+export type Offer = {
+  storeId: string;
+  price: number;
+  link: string;
+};
+
+export type Range = {
+  minPrice: number;
+  maxPrice: number;
+};
+
+export type Price = {
+  offers: Offer[];
+  range: Range;
+};
+
 export type Product = {
   id: string;
   name: string;
@@ -11,6 +27,12 @@ export type Product = {
   description?: string;
   officialWebsite?: string;
   manufacturer?: string;
+  price: Price;
+};
+
+export type Store = {
+  name: string;
+  imageUrl: string;
 };
 
 // collection CPUs

@@ -8,6 +8,7 @@ import { xPathSelectors } from '../common/constants';
 import parseColorDivs from '../common/parseColorDivs';
 import cleanSimpleTable from '../common/cleanSimpleTable';
 import { removeNonBreakingSpace } from '../common/removeNonBreakingSpace';
+import parsePrices from '../common/parsePrices';
 
 const parseRAM = async (productId: string, page: Page): Promise<RAM | null> => {
   const specs: Record<string, string> = {};
@@ -65,10 +66,13 @@ const parseRAM = async (productId: string, page: Page): Promise<RAM | null> => {
     console.log(err);
   }
 
+  const price = await parsePrices(page);
+
   return {
     id: productId,
     name: specs?.name,
     mainImage,
+    price,
     description: description || undefined,
     colour: specs?.colour,
     capacity: specs?.memoryCapacity,

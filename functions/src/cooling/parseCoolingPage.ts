@@ -7,6 +7,7 @@ import { xPathSelectors } from '../common/constants';
 import getParsingElement from '../common/getParsingElement';
 import parseElementInnerHTML from '../common/parseElementInnerHTML';
 import parseElementText from '../common/parseElementText';
+import parsePrices from '../common/parsePrices';
 
 const parseCoolingPage = async (
   productId: string,
@@ -68,69 +69,15 @@ const parseCoolingPage = async (
     await page.waitForNavigation({ waitUntil: 'networkidle2' }),
   ]);
 
-  // let biba = 0;
+  const price = await parsePrices(page);
 
-  // await page.waitForXPath(xPathSelectors.loadMoreButton);
-  // const loadMoreButton = (await page.$x(xPathSelectors.loadMoreButton)) as any;
-
-  // const buttonExists = async () =>
-  //   await page.evaluate(() =>
-  //     Boolean(document.querySelector('.list-more-div')),
-  //   );
-
-  // while (await buttonExists()) {
-  //   biba++;
-  //   await loadMoreButton[0].click();
-  //   if (biba === 10) break;
-  // }
-
-  const prices = await page.evaluate(async () => {
-    const prices: number[] = [];
-    const priceDivs = document.querySelectorAll('.where-buy-price');
-    priceDivs.forEach((div) => {
-      if (div.children[0].textContent)
-        prices.push(+div.children[0].textContent.replace(/\D/g, ''));
-    });
-    return prices;
-  });
-
-  const stores = await page.evaluate(async () => {
-    const stores: string[] = [];
-    const storeDivs = document.querySelectorAll('.it-shop');
-    storeDivs.forEach((div) => div.textContent && stores.push(div.textContent));
-    return stores;
-  });
-
-  const storeImageUrls = await page.evaluate(async () => {
-    const urls: string[] = [];
-    const imageDivs = document.querySelectorAll('.where-buy-logo');
-    imageDivs.forEach((div) =>
-      urls.push(
-        'https://ek.ua' + div.children[0].children[0].getAttribute('src'),
-      ),
-    );
-    return urls;
-  });
-
-  const itemUrls = await page.evaluate(async () => {
-    const urls: string[] = [];
-    const itemDivs = document.querySelectorAll('.it-shop');
-    itemDivs.forEach((div) => {
-      const link = div.getAttribute('onmouseover');
-      link && urls.push(link.split('"')[1]);
-    });
-    return urls;
-  });
-
-  console.log(prices);
-  console.log(stores);
-  console.log(storeImageUrls);
-  console.log(itemUrls);
+  console.log(price);
 
   return {
     id: productId,
     name,
     mainImage,
+    price,
     description: description || undefined,
     officialWebsite: specs?.officialWebsite,
     target: specs?.features,
