@@ -7,6 +7,7 @@ import { xPathSelectors } from '../common/constants';
 import getParsingElement from '../common/getParsingElement';
 import parseElementInnerHTML from '../common/parseElementInnerHTML';
 import parseElementText from '../common/parseElementText';
+import parsePrices from '../common/parsePrices';
 
 const parseCoolingPage = async (
   productId: string,
@@ -61,10 +62,20 @@ const parseCoolingPage = async (
 
   const sockets = specs.socket?.split(',');
 
+  await page.waitForXPath(xPathSelectors.pricesButton);
+  const pricePageAnchor = (await page.$x(xPathSelectors.pricesButton)) as any;
+  await Promise.all([
+    await pricePageAnchor[0].click(),
+    await page.waitForNavigation({ waitUntil: 'networkidle2' }),
+  ]);
+
+  const price = await parsePrices(page);
+
   return {
     id: productId,
     name,
     mainImage,
+    price,
     description: description || undefined,
     officialWebsite: specs?.officialWebsite,
     target: specs?.features,

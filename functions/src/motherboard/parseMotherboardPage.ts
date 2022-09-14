@@ -7,6 +7,7 @@ import { xPathSelectors } from '../common/constants';
 import getParsingElement from '../common/getParsingElement';
 import parseElementInnerHTML from '../common/parseElementInnerHTML';
 import parseElementText from '../common/parseElementText';
+import parsePrices from '../common/parsePrices';
 
 const parseMotherboardPage = async (
   productId: string,
@@ -64,12 +65,13 @@ const parseMotherboardPage = async (
       : (specs[camelName] = removeNonBreakingSpace(value));
   });
 
-  console.log(specs);
+  const price = await parsePrices(page);
 
   return {
     id: productId,
     name,
     mainImage,
+    price,
     description: description || undefined,
     socket: specs?.socket,
     formFactor: specs?.formFactor as MotherboardFormFactor,

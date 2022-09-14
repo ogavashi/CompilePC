@@ -6,6 +6,7 @@ import parseElementInnerHTML from '../common/parseElementInnerHTML';
 import camelize from '../common/camelize';
 import cleanComplexTable from '../common/cleanComplexTable';
 import { removeNonBreakingSpace } from '../common/removeNonBreakingSpace';
+import parsePrices from '../common/parsePrices';
 
 const parseCPUPage = async (
   productId: string,
@@ -52,11 +53,14 @@ const parseCPUPage = async (
     specs[camelName] = removeNonBreakingSpace(value);
   });
 
+  const price = await parsePrices(page);
+
   return {
     id: productId,
     name,
     mainImage,
     description: description || undefined,
+    price,
     officialWebsite: specs?.officialWebsite,
     manufacturer: specs?.manufacturer,
     series: specs?.series,

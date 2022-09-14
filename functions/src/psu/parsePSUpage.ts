@@ -7,6 +7,7 @@ import getParsingElement from '../common/getParsingElement';
 import parseElementInnerHTML from '../common/parseElementInnerHTML';
 import parseElementText from '../common/parseElementText';
 import cleanSimpleTable from '../common/cleanSimpleTable';
+import parsePrices from '../common/parsePrices';
 
 const parsePSUpage = async (
   productId: string,
@@ -56,10 +57,13 @@ const parsePSUpage = async (
     specs[camelName] = removeNonBreakingSpace(value);
   });
 
+  const price = await parsePrices(page);
+
   return {
     id: productId,
     name,
     mainImage,
+    price,
     description: description || undefined,
     officialWebsite: specs?.officialWebsite,
     power: specs?.power,

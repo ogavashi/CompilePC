@@ -13,7 +13,8 @@ const normalizeProducts = <T extends Product>(
     const specs: BuilderProductSpec[] = [];
 
     productSpecs.forEach((spec) => {
-      const productSpec = product[spec.propName as keyof Product];
+      const specName = spec.propName as keyof Omit<Product, 'price'>;
+      const productSpec = product[specName];
 
       if (productSpec) {
         specs.push({
@@ -27,6 +28,7 @@ const normalizeProducts = <T extends Product>(
       id: product.id,
       name: product.name,
       mainImage: product.mainImage,
+      priceRange: product.price.range,
       specs,
     };
   });
