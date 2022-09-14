@@ -5,7 +5,7 @@ import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import useStyles from './styles';
-import { Price, PriceRange } from '../../../../../../types';
+import { PriceRange } from '../../../../../../types';
 
 export type BuilderProductSpec = {
   name: string;
