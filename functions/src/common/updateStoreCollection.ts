@@ -1,29 +1,40 @@
-import { Store } from '../../../types';
+import { ObjectId, WithId } from 'mongodb';
 import { getDB } from '../bootstrap';
 
-const updateStoresCollection = async (stores: Store[]) => {
+export type ParsedStore = {
+  name: string;
+  imageUrl: string;
+};
+
+interface Store extends WithId<Document> {
+  _id: ObjectId;
+  name: string;
+  imageUrl: string;
+}
+
+const updateStoresCollection = async (stores: ParsedStore[]) => {
   const db = await getDB();
 
   const categoryCollectionRef = db.collection('stores');
   const bulk = categoryCollectionRef.initializeUnorderedBulkOp();
 
-  stores.forEach((store: Store) => {
+  stores.forEach((store: ParsedStore) => {
     bulk.find(store).upsert().updateOne({ $setOnInsert: store });
   });
   await bulk.execute();
 
-  const storeNames = stores.map((store: Store) => store.name);
+  const storeNames = stores.map((store: ParsedStore) => store.name);
 
   // TODO: will be fixed by @vitalyacode
   // You should do it with bulk
   const rawStoreIds = await Promise.all(
     storeNames.map(
       async (storeName: string) =>
-        await db.collection('stores').findOne({ name: storeName }),
+        (await db.collection('stores').findOne({ name: storeName })) as Store,
     ),
   );
 
-  const storeIds = rawStoreIds.map((rawStoreId: any) =>
+  const storeIds = rawStoreIds.map((rawStoreId: Store) =>
     rawStoreId['_id'].toString(),
   );
 

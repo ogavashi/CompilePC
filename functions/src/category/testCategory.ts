@@ -1,4 +1,4 @@
-import { CPU } from './../../../types/index';
+import { PSU } from './../../../types/index';
 import puppeteer from 'puppeteer-extra';
 import * as functions from 'firebase-functions';
 
@@ -11,7 +11,7 @@ import {
 } from '../common/constants';
 import StealthPlugin from 'puppeteer-extra-plugin-stealth';
 import { getDB } from '../bootstrap';
-import parseCPUPage from '../cpu/parseCPUPage';
+import parsePSUpage from '../psu/parsePSUpage';
 
 puppeteer.use(StealthPlugin());
 
@@ -37,7 +37,7 @@ const testCategory = functions
       const categoriesCursor = db.collection(CATEGORIES_COLLECTION_NAME).find();
       const categories = await categoriesCursor.toArray();
 
-      const category = categories[0]; // choose your category by index; add it beforehand in firebase console, if it does not exist
+      const category = categories[7]; // choose your category by index; add it beforehand in firebase console, if it does not exist
       if (!category) return;
 
       const browser = await puppeteer.launch(options);
@@ -53,7 +53,7 @@ const testCategory = functions
           a.getAttribute('href'),
         ),
       );
-      const products: CPU[] = []; // put your component type here
+      const products: PSU[] = []; // put your component type here
       for await (const link of productLinks) {
         if (!link) return;
 
@@ -64,7 +64,7 @@ const testCategory = functions
 
         const productId = link.replace(regexes.cleanLinkForProductId, '');
 
-        const parser = parseCPUPage; // put YOUR parser here
+        const parser = parsePSUpage; // put YOUR parser here
         if (!parser) return;
 
         const product = await parser(productId, productPage);
@@ -72,7 +72,7 @@ const testCategory = functions
 
         const normalizedProduct = Object.fromEntries(
           Object.entries(product).filter(([, value]) => value),
-        ) as CPU; // put your component type here as well
+        ) as PSU; // put your component type here as well
 
         products.push(normalizedProduct);
       }

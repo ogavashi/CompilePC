@@ -10,14 +10,14 @@ export type Offer = {
   link: string;
 };
 
-export type Range = {
+export type PriceRange = {
   minPrice: number;
   maxPrice: number;
 };
 
 export type Price = {
   offers: Offer[];
-  range: Range;
+  range: PriceRange;
 };
 
 export type Product = {
@@ -31,6 +31,7 @@ export type Product = {
 };
 
 export type Store = {
+  id: string;
   name: string;
   imageUrl: string;
 };
