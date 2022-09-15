@@ -13,7 +13,7 @@ const parseCPUPage = async (
   page: Page,
 ): Promise<CPU | null> => {
   const name = await parseElementText('.op1-tt', page);
-  console.log(name);
+
   const mainImageContainer = await getParsingElement('.img200', page);
   const mainImage = await page.evaluate(
     (el) => el.lastElementChild.getAttribute('srcset').split(' ')[0],
@@ -37,7 +37,7 @@ const parseCPUPage = async (
 
     return getNodeTreeText(node);
   }, specsTable);
-  console.log(name, 1);
+
   if (!name || !mainImage || !rawSpecsTable) return null;
 
   const cleanedSpecsTable = cleanComplexTable(rawSpecsTable);
@@ -52,9 +52,9 @@ const parseCPUPage = async (
 
     specs[camelName] = removeNonBreakingSpace(value);
   });
-  console.log(name, 2);
+
   const price = await parsePrices(page);
-  console.log(name, 3);
+
   const brand = name.split(' ')[0];
 
   return {
