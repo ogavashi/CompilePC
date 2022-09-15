@@ -64,11 +64,14 @@ const parseSolidStateDrivePage = async (
 
   const price = await parsePrices(page);
 
+  const brand = specs.name.split(' ')[0];
+
   return {
     id: productId,
     name,
     mainImage,
     price,
+    brand,
     description: description || undefined,
     placement: specs.placement,
     capacity: specs.size,

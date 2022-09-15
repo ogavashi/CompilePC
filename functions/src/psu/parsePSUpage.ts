@@ -59,11 +59,14 @@ const parsePSUpage = async (
 
   const price = await parsePrices(page);
 
+  const brand = name.split(' ')[0];
+
   return {
     id: productId,
     name,
     mainImage,
     price,
+    brand,
     description: description || undefined,
     officialWebsite: specs?.officialWebsite,
     power: specs?.power,

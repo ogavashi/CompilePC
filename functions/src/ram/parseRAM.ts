@@ -12,67 +12,62 @@ import parsePrices from '../common/parsePrices';
 
 const parseRAM = async (productId: string, page: Page): Promise<RAM | null> => {
   const specs: Record<string, string> = {};
-  let description, mainImage, name;
-  try {
-    name = await parseElementText('.op1-tt', page);
 
-    const mainImageContainer = await getParsingElement('.img200', page);
-    mainImage = await page.evaluate(
-      (el) => el.lastElementChild.getAttribute('srcset').split(' ')[0],
-      mainImageContainer,
-    );
+  const name = await parseElementText('.op1-tt', page);
 
-    description = await parseElementInnerHTML('.conf-desc-ai-title', page);
+  const mainImageContainer = await getParsingElement('.img200', page);
+  const mainImage = await page.evaluate(
+    (el) => el.lastElementChild.getAttribute('srcset').split(' ')[0],
+    mainImageContainer,
+  );
 
-    const specsTable = await getParsingElement('#help_table', page);
+  const description = await parseElementInnerHTML('.conf-desc-ai-title', page);
 
-    const rawSpecsTable = await page.evaluate(async (node) => {
-      async function getNodeTreeText(
-        inputNode: HTMLElement,
-      ): Promise<string | null> {
-        if (inputNode && inputNode.hasChildNodes()) {
-          return node.innerText;
-        }
+  const specsTable = await getParsingElement('#help_table', page);
 
-        return null;
+  const rawSpecsTable = await page.evaluate(async (node) => {
+    async function getNodeTreeText(
+      inputNode: HTMLElement,
+    ): Promise<string | null> {
+      if (inputNode && inputNode.hasChildNodes()) {
+        return node.innerText;
       }
 
-      return getNodeTreeText(node);
-    }, specsTable);
+      return null;
+    }
 
-    if (!name || !mainImage || !rawSpecsTable) return null;
+    return getNodeTreeText(node);
+  }, specsTable);
 
-    const cleanedSpecsTable = cleanSimpleTable(rawSpecsTable);
+  if (!name || !mainImage || !rawSpecsTable) return null;
 
-    cleanedSpecsTable.forEach((item: string) => {
-      const [name, value] = item.split('\t');
+  const cleanedSpecsTable = cleanSimpleTable(rawSpecsTable);
 
-      if (!name && !value) {
-        return;
-      }
+  cleanedSpecsTable.forEach((item: string) => {
+    const [name, value] = item.split('\t');
 
-      const camelName = camelize(name);
+    if (!name && !value) {
+      return;
+    }
 
-      specs[camelName] = removeNonBreakingSpace(value);
-    });
+    const camelName = camelize(name);
 
-    const colourArray = await parseColorDivs(
-      xPathSelectors.ramColourDivs,
-      page,
-    );
+    specs[camelName] = removeNonBreakingSpace(value);
+  });
 
-    if (colourArray) specs.colour = colourArray.join();
-  } catch (err) {
-    console.log(err);
-  }
+  const colourArray = await parseColorDivs(xPathSelectors.ramColourDivs, page);
+
+  if (colourArray) specs.colour = colourArray.join();
 
   const price = await parsePrices(page);
 
+  const brand = name.split(' ')[0];
   return {
     id: productId,
-    name: specs?.name,
+    name,
     mainImage,
     price,
+    brand,
     description: description || undefined,
     colour: specs?.colour,
     capacity: specs?.memoryCapacity,

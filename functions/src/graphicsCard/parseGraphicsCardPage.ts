@@ -58,11 +58,16 @@ const parseGraphicsCardPage = async (
 
   const price = await parsePrices(page);
 
+  const brand = specs.gPUModel.split(' ')[0];
+  const vendor = name.split(' ')[0];
+
   return {
     id: productId,
     name,
     mainImage,
     price,
+    brand,
+    vendor,
     description: description || undefined,
     interface: specs?.interface,
     GPUModel: specs?.gPUModel,

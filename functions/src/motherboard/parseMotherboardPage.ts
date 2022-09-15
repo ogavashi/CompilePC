@@ -67,11 +67,14 @@ const parseMotherboardPage = async (
 
   const price = await parsePrices(page);
 
+  const brand = name.split(' ')[0];
+
   return {
     id: productId,
     name,
     mainImage,
     price,
+    brand,
     description: description || undefined,
     socket: specs?.socket,
     formFactor: specs?.formFactor as MotherboardFormFactor,

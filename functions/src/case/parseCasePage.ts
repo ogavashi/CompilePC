@@ -92,10 +92,13 @@ const parseCasePage = async (
 
   const price = await parsePrices(page);
 
+  const brand = name.split(' ')[0];
+
   return {
     id: productId,
     name,
     mainImage,
+    brand,
     description: description || undefined,
     price,
     officialWebsite: specs?.officialWebsite,
