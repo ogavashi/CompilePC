@@ -25,6 +25,8 @@ const parseCasePage = async (
 
   const name = await parseElementText('.op1-tt', page);
 
+  const brand = await parseElementText('.path_lnk_brand', page);
+
   const mainImageContainer = await getParsingElement('.img200', page);
   const mainImage = await page.evaluate(
     (el) => el.lastElementChild.getAttribute('srcset').split(' ')[0],
@@ -53,7 +55,7 @@ const parseCasePage = async (
       .map((element) => element.className === 'prop-y');
   });
 
-  if (!name || !mainImage || !rawSpecsTable) return null;
+  if (!name || !mainImage || !rawSpecsTable || !brand) return null;
 
   const cleanedSpecsTable = cleanComplexTable(rawSpecsTable);
 
@@ -91,8 +93,6 @@ const parseCasePage = async (
   const specs = Object.fromEntries(normalizedSpecs);
 
   const price = await parsePrices(page);
-
-  const brand = name.split(' ')[0];
 
   return {
     id: productId,

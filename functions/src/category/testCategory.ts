@@ -1,4 +1,4 @@
-import { RAM } from './../../../types/index';
+import { Case } from './../../../types/index';
 import puppeteer from 'puppeteer-extra';
 import * as functions from 'firebase-functions';
 
@@ -11,7 +11,7 @@ import {
 } from '../common/constants';
 import StealthPlugin from 'puppeteer-extra-plugin-stealth';
 import { getDB } from '../bootstrap';
-import parseRAM from '../ram/parseRAM';
+import parseCasePage from '../case/parseCasePage';
 
 puppeteer.use(StealthPlugin());
 
@@ -37,7 +37,7 @@ const testCategory = functions
       const categoriesCursor = db.collection(CATEGORIES_COLLECTION_NAME).find();
       const categories = await categoriesCursor.toArray();
 
-      const category = categories[2]; // choose your category by index; add it beforehand in firebase console, if it does not exist
+      const category = categories[6]; // choose your category by index; add it beforehand in firebase console, if it does not exist
       if (!category) return;
 
       const browser = await puppeteer.launch(options);
@@ -53,7 +53,7 @@ const testCategory = functions
           a.getAttribute('href'),
         ),
       );
-      const products: RAM[] = []; // put your component type here
+      const products: Case[] = []; // put your component type here
       for await (const link of productLinks) {
         if (!link) return;
 
@@ -64,7 +64,7 @@ const testCategory = functions
 
         const productId = link.replace(regexes.cleanLinkForProductId, '');
 
-        const parser = parseRAM; // put YOUR parser here
+        const parser = parseCasePage; // put YOUR parser here
         if (!parser) return;
 
         const product = await parser(productId, productPage);
@@ -72,7 +72,7 @@ const testCategory = functions
 
         const normalizedProduct = Object.fromEntries(
           Object.entries(product).filter(([, value]) => value),
-        ) as RAM; // put your component type here as well
+        ) as Case; // put your component type here as well
 
         products.push(normalizedProduct);
       }

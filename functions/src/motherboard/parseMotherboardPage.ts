@@ -15,6 +15,8 @@ const parseMotherboardPage = async (
 ): Promise<Motherboard | null> => {
   const description = await parseElementInnerHTML('.desc-ai-title', page);
 
+  const brand = await parseElementText('.path_lnk_brand', page);
+
   await page.waitForXPath(xPathSelectors.specificationButton);
   const anchor = (await page.$x(xPathSelectors.specificationButton)) as any;
   await Promise.all([
@@ -46,7 +48,7 @@ const parseMotherboardPage = async (
     return getNodeTreeText(node);
   }, specsTable);
 
-  if (!name || !mainImage || !rawSpecsTable) return null;
+  if (!name || !mainImage || !rawSpecsTable || !brand) return null;
 
   const cleanedSpecsTable = cleanComplexTable(rawSpecsTable);
 
@@ -66,8 +68,6 @@ const parseMotherboardPage = async (
   });
 
   const price = await parsePrices(page);
-
-  const brand = name.split(' ')[0];
 
   return {
     id: productId,
