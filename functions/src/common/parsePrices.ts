@@ -4,17 +4,17 @@ import updateStoresCollection from './updateStoreCollection';
 
 const parsePrices = async (page: Page) => {
   await page.waitForXPath(xPathSelectors.pricesButton);
-  const pricePageAnchor = (await page.$x(xPathSelectors.pricesButton));
+  const pricePageAnchor = await page.$x(xPathSelectors.pricesButton);
   await Promise.all([
     await pricePageAnchor[0].click(),
     await page.waitForNavigation({ waitUntil: 'networkidle2' }),
   ]);
 
-  const loadMoreButton = (await page.$x(xPathSelectors.loadMoreButton));
+  let loadMoreButton = await page.$x(xPathSelectors.loadMoreButton);
 
-  while ((await page.$('.list-more-div')) !== null) {
-    loadMoreButton[0] &&
-      (await loadMoreButton[0].evaluate((b: any) => b.click()));
+  while (loadMoreButton[0]) {
+    await loadMoreButton[0].evaluate((b: any) => b.click());
+    loadMoreButton = await page.$x(xPathSelectors.loadMoreButton);
   }
 
   const storePrices = await page.evaluate(async () => {

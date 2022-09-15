@@ -14,6 +14,8 @@ const parseGraphicsCardPage = async (
 ): Promise<GraphicsCard | null> => {
   const name = await parseElementText('.op1-tt', page);
 
+  const vendor = await parseElementText('.path_lnk_brand', page);
+
   const mainImageContainer = await getParsingElement('.img200', page);
   const mainImage = await page.evaluate(
     (el) => el.lastElementChild.getAttribute('srcset').split(' ')[0],
@@ -38,7 +40,7 @@ const parseGraphicsCardPage = async (
     return getNodeTreeText(node);
   }, specsTable);
 
-  if (!name || !mainImage || !rawSpecsTable) return null;
+  if (!name || !mainImage || !rawSpecsTable || !vendor) return null;
 
   const cleanedSpecsTable = cleanComplexTable(rawSpecsTable);
 
@@ -58,11 +60,15 @@ const parseGraphicsCardPage = async (
 
   const price = await parsePrices(page);
 
+  const brand = specs.gPUModel.split(' ')[0];
+
   return {
     id: productId,
     name,
     mainImage,
     price,
+    brand,
+    vendor,
     description: description || undefined,
     interface: specs?.interface,
     GPUModel: specs?.gPUModel,

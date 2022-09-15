@@ -15,6 +15,8 @@ const parseHardDrivePage = async (
 ): Promise<HardDrive | null> => {
   const name = await parseElementText('.op1-tt', page);
 
+  const brand = await parseElementText('.path_lnk_brand', page);
+
   const mainImageContainer = await getParsingElement('.img200', page);
   const mainImage = await page.evaluate(
     (el) => el.lastElementChild.getAttribute('srcset').split(' ')[0],
@@ -39,7 +41,7 @@ const parseHardDrivePage = async (
     return getNodeTreeText(node);
   }, specsTable);
 
-  if (!name || !mainImage || !rawSpecsTable) return null;
+  if (!name || !mainImage || !rawSpecsTable || !brand) return null;
 
   const isTableSimple = !!(await page.$('.one-col'));
 
@@ -69,6 +71,7 @@ const parseHardDrivePage = async (
     name,
     mainImage,
     price,
+    brand,
     description: description || undefined,
     placement: specs.placement,
     type: specs.type,

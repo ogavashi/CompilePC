@@ -23,6 +23,7 @@ export type Price = {
 export type Product = {
   id: string;
   name: string;
+  brand: string;
   mainImage: string;
   description?: string;
   officialWebsite?: string;
@@ -59,6 +60,7 @@ export type CPU = Product & {
 
 // collection graphicsCards
 export type GraphicsCard = Product & {
+  vendor: string;
   interface: string;
   GPUModel: string;
   memorySize: string;
