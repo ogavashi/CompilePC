@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme: Theme) =>
       },
     },
     image: {
-      width: theme.spacing(160),
+      width: theme.spacing(140),
     },
   }),
 );

@@ -1,6 +1,7 @@
 import { Tab, Tabs, Typography } from '@mui/material';
 import { Box } from '@mui/system';
-import React, { useState } from 'react';
+import { get } from 'http';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import {
   Navigate,
   Route,
@@ -8,8 +9,12 @@ import {
   useNavigate,
   useParams,
 } from 'react-router-dom';
+import { useFirebaseApp } from 'reactfire';
+import { Store } from '../../../../types';
+import { DEFAULT_REGION } from '../../../common/constants';
 
 import NotFoundScreen from '../NotFoundScreen';
+import { UIContext } from '../UIContext';
 import OverviewTab from './OverviewTab';
 import PriceTable from './PriceTable';
 import useStyles from './styles';
@@ -193,6 +198,41 @@ const ProductScreen: React.FC = () => {
     navigate(newValue);
   };
 
+  const { setAlert } = useContext(UIContext);
+
+  const [stores, setStores] = useState<Store[] | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const functions = useFirebaseApp().functions(DEFAULT_REGION);
+
+  const getStores = useCallback(
+    () => functions.httpsCallable('getStores'),
+    [functions],
+  );
+
+  useEffect(() => {
+    const getStoresData = async () => {
+      try {
+        setIsLoading(true);
+        const storesId = mockProduct.price.offers.map((store) => store.storeId);
+
+        const { data: newStores }: { data: Store[] } = await getStores()({
+          storesId,
+        });
+        setStores(newStores);
+      } catch (error) {
+        setAlert({
+          show: true,
+          severity: 'error',
+          message: 'Could not fetch stores',
+        });
+      }
+      setIsLoading(false);
+    };
+
+    getStoresData();
+  }, [getStores, setAlert]);
+
   return (
     <Box className={styles.mainContainer}>
       <Typography variant="h2" gutterBottom>
@@ -213,7 +253,7 @@ const ProductScreen: React.FC = () => {
             src={mockProduct.mainImage}
           />
         </Box>
-        <PriceTable price={mockProduct.price} />
+        {stores && <PriceTable price={mockProduct.price} stores={stores} />}
       </Box>
       <Routes>
         <Route path="/" element={<OverviewTab product={mockProduct} />} />
