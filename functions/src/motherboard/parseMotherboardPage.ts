@@ -7,12 +7,15 @@ import { xPathSelectors } from '../common/constants';
 import getParsingElement from '../common/getParsingElement';
 import parseElementInnerHTML from '../common/parseElementInnerHTML';
 import parseElementText from '../common/parseElementText';
+import parsePrices from '../common/parsePrices';
 
 const parseMotherboardPage = async (
   productId: string,
   page: Page,
 ): Promise<Motherboard | null> => {
   const description = await parseElementInnerHTML('.desc-ai-title', page);
+
+  const brand = await parseElementText('.path_lnk_brand', page);
 
   await page.waitForXPath(xPathSelectors.specificationButton);
   const anchor = (await page.$x(xPathSelectors.specificationButton)) as any;
@@ -45,7 +48,7 @@ const parseMotherboardPage = async (
     return getNodeTreeText(node);
   }, specsTable);
 
-  if (!name || !mainImage || !rawSpecsTable) return null;
+  if (!name || !mainImage || !rawSpecsTable || !brand) return null;
 
   const cleanedSpecsTable = cleanComplexTable(rawSpecsTable);
 
@@ -64,12 +67,14 @@ const parseMotherboardPage = async (
       : (specs[camelName] = removeNonBreakingSpace(value));
   });
 
-  console.log(specs);
+  const price = await parsePrices(page);
 
   return {
     id: productId,
     name,
     mainImage,
+    price,
+    brand,
     description: description || undefined,
     socket: specs?.socket,
     formFactor: specs?.formFactor as MotherboardFormFactor,

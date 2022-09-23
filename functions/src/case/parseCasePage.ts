@@ -8,6 +8,7 @@ import getParsingElement from '../common/getParsingElement';
 import parseElementInnerHTML from '../common/parseElementInnerHTML';
 import parseElementText from '../common/parseElementText';
 import parseColorDivs from '../common/parseColorDivs';
+import parsePrices from '../common/parsePrices';
 
 const parseCasePage = async (
   productId: string,
@@ -23,6 +24,8 @@ const parseCasePage = async (
   ]);
 
   const name = await parseElementText('.op1-tt', page);
+
+  const brand = await parseElementText('.path_lnk_brand', page);
 
   const mainImageContainer = await getParsingElement('.img200', page);
   const mainImage = await page.evaluate(
@@ -52,7 +55,7 @@ const parseCasePage = async (
       .map((element) => element.className === 'prop-y');
   });
 
-  if (!name || !mainImage || !rawSpecsTable) return null;
+  if (!name || !mainImage || !rawSpecsTable || !brand) return null;
 
   const cleanedSpecsTable = cleanComplexTable(rawSpecsTable);
 
@@ -89,11 +92,15 @@ const parseCasePage = async (
 
   const specs = Object.fromEntries(normalizedSpecs);
 
+  const price = await parsePrices(page);
+
   return {
     id: productId,
     name,
     mainImage,
+    brand,
     description: description || undefined,
+    price,
     officialWebsite: specs?.officialWebsite,
     colour: specs?.colour,
     target: specs?.features,

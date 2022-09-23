@@ -7,6 +7,7 @@ import getParsingElement from '../common/getParsingElement';
 import parseElementInnerHTML from '../common/parseElementInnerHTML';
 import parseElementText from '../common/parseElementText';
 import cleanSimpleTable from '../common/cleanSimpleTable';
+import parsePrices from '../common/parsePrices';
 
 const parsePSUpage = async (
   productId: string,
@@ -15,6 +16,8 @@ const parsePSUpage = async (
   const description = await parseElementInnerHTML('.conf-desc-ai-title', page);
 
   const name = await parseElementText('.op1-tt', page);
+
+  const brand = await parseElementText('.path_lnk_brand', page);
 
   const mainImageContainer = await getParsingElement('.img200', page);
   const mainImage = await page.evaluate(
@@ -37,7 +40,7 @@ const parsePSUpage = async (
     return getNodeTreeText(node);
   }, specsTable);
 
-  if (!name || !mainImage || !rawSpecsTable) return null;
+  if (!name || !mainImage || !rawSpecsTable || !brand) return null;
 
   const isTableSimple = !!(await page.$('.one-col'));
 
@@ -56,10 +59,14 @@ const parsePSUpage = async (
     specs[camelName] = removeNonBreakingSpace(value);
   });
 
+  const price = await parsePrices(page);
+
   return {
     id: productId,
     name,
     mainImage,
+    price,
+    brand,
     description: description || undefined,
     officialWebsite: specs?.officialWebsite,
     power: specs?.power,

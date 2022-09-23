@@ -6,12 +6,15 @@ import parseElementInnerHTML from '../common/parseElementInnerHTML';
 import camelize from '../common/camelize';
 import cleanComplexTable from '../common/cleanComplexTable';
 import { removeNonBreakingSpace } from '../common/removeNonBreakingSpace';
+import parsePrices from '../common/parsePrices';
 
 const parseCPUPage = async (
   productId: string,
   page: Page,
 ): Promise<CPU | null> => {
   const name = await parseElementText('.op1-tt', page);
+
+  const brand = await parseElementText('.path_lnk_brand', page);
 
   const mainImageContainer = await getParsingElement('.img200', page);
   const mainImage = await page.evaluate(
@@ -37,7 +40,7 @@ const parseCPUPage = async (
     return getNodeTreeText(node);
   }, specsTable);
 
-  if (!name || !mainImage || !rawSpecsTable) return null;
+  if (!name || !mainImage || !rawSpecsTable || !brand) return null;
 
   const cleanedSpecsTable = cleanComplexTable(rawSpecsTable);
 
@@ -52,11 +55,15 @@ const parseCPUPage = async (
     specs[camelName] = removeNonBreakingSpace(value);
   });
 
+  const price = await parsePrices(page);
+
   return {
     id: productId,
     name,
     mainImage,
+    brand,
     description: description || undefined,
+    price,
     officialWebsite: specs?.officialWebsite,
     manufacturer: specs?.manufacturer,
     series: specs?.series,

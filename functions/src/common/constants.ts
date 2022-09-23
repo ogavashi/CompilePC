@@ -16,6 +16,9 @@ export const parserByCategoryId: Record<string, CallableFunction> = {
 export const xPathSelectors: Record<string, string> = {
   specificationButton:
     "//div[@class='desc-menu']/a[contains(., 'Specifications')]",
+  pricesButton: "//div[@class='desc-menu']/a[@title='View all stores offers']",
+  loadMoreButton: "//div[@class='list-more-div']",
+  priceDiv: "//td[@class='where-buy-price']/a",
   ramColourDivs: "//td[@class='small-col-plate2']/div",
   caseColourDivs: "//td[@class=' color-plate descr-color']/div",
 };

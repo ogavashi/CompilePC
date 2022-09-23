@@ -43,8 +43,10 @@ const naormalizeFilter = (params: Record<string, string | string[]>) => {
   const filter =
     parsedFilters.maxPrice && parsedFilters.minPrice
       ? Object.assign(properFilter, {
-          price: {
+          ['price.range.maxPrice']: {
             $lte: Number(parsedFilters.maxPrice) || 50000,
+          },
+          ['price.range.minPrice']: {
             $gte: Number(parsedFilters.minPrice) || 0,
           },
         })

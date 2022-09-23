@@ -4,13 +4,37 @@ export type Category = {
   name: string;
 };
 
+export type Offer = {
+  storeId: string;
+  price: number;
+  link: string;
+};
+
+export type PriceRange = {
+  minPrice: number;
+  maxPrice: number;
+};
+
+export type Price = {
+  offers: Offer[];
+  range: PriceRange;
+};
+
 export type Product = {
   id: string;
   name: string;
+  brand: string;
   mainImage: string;
   description?: string;
   officialWebsite?: string;
   manufacturer?: string;
+  price: Price;
+};
+
+export type Store = {
+  id: string;
+  name: string;
+  imageUrl: string;
 };
 
 // collection CPUs
@@ -36,6 +60,7 @@ export type CPU = Product & {
 
 // collection graphicsCards
 export type GraphicsCard = Product & {
+  vendor: string;
   interface: string;
   GPUModel: string;
   memorySize: string;

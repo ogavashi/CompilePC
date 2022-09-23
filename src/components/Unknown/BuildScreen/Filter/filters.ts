@@ -54,8 +54,8 @@ export const filters: CategoryFilterBatch = {
         title: 'Brand',
         key: 'brand',
         options: [
-          { value: 'INTEL', key: 'intel' },
-          { value: 'AMD', key: 'amd' },
+          { value: 'INTEL', key: 'Intel' },
+          { value: 'AMD', key: 'AMD' },
         ],
       },
     ],

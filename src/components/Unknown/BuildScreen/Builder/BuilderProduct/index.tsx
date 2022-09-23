@@ -5,6 +5,7 @@ import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import useStyles from './styles';
+import { PriceRange } from '../../../../../../types';
 
 export type BuilderProductSpec = {
   name: string;
@@ -16,6 +17,7 @@ export type BuildProduct = {
   name: string;
   mainImage: string;
   specs: BuilderProductSpec[];
+  priceRange: PriceRange;
 };
 
 export type ProductSpecPropType<T> = { propName: keyof T; name: string };
@@ -68,7 +70,9 @@ const BuilderProduct: React.FC<ProductProps> = ({
         </Box>
       </Box>
       <Box className={styles.rightWrapper}>
-        <Typography variant="h5">~300$</Typography>
+        <Typography variant="h5">
+          {product.priceRange.minPrice}₴ - {product.priceRange.maxPrice}₴
+        </Typography>
         {selectedId ? (
           <CheckIcon />
         ) : (
