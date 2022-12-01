@@ -16,7 +16,9 @@ const DescriptionBlock: React.FC<DescriptionBlockProps> = ({ description }) => {
         Description
       </Typography>
       <Paper>
-        <Typography className={styles.description}>{description}</Typography>
+        <Typography className={styles.description} gutterBottom>
+          {description}
+        </Typography>
       </Paper>
     </Box>
   );

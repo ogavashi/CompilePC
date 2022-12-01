@@ -1,10 +1,11 @@
 import { Box } from '@mui/system';
 import React from 'react';
-import { Product } from '../../../../../types';
+import { GraphicsCard } from '../../../../../types';
 import DescriptionBlock from '../DescriptionBlock';
+import SpecsTable from '../SpecsTable';
 
 type OverviewTabProps = {
-  product: Product;
+  product: GraphicsCard;
 };
 
 const OverviewTab: React.FC<OverviewTabProps> = ({ product }) => {
@@ -13,6 +14,7 @@ const OverviewTab: React.FC<OverviewTabProps> = ({ product }) => {
       {product.description && (
         <DescriptionBlock description={product.description} />
       )}
+      <SpecsTable product={product} />
     </Box>
   );
 };

@@ -67,7 +67,7 @@ export type GraphicsCard = Product & {
   memoryType: string;
   memoryBus: string;
   GPUClockSpeed: string;
-  litography: string;
+  litography?: string;
   maxResolution: string;
   HDMI: string;
   HDMIVersion: string;
@@ -279,3 +279,14 @@ export type BuilderCategory =
   | 'Motherboard'
   | 'RAM'
   | 'HDD';
+
+export type ProductCategory =
+  | CPU
+  | GraphicsCard
+  | Motherboard
+  | RAM
+  | HardDrive
+  | SolidStateDrive
+  | Case
+  | Cooling
+  | PSU;

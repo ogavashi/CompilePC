@@ -1,25 +1,18 @@
 import { Tab, Tabs, Typography } from '@mui/material';
 import { Box } from '@mui/system';
-import { get } from 'http';
+
 import React, { useCallback, useContext, useEffect, useState } from 'react';
-import {
-  Navigate,
-  Route,
-  Routes,
-  useNavigate,
-  useParams,
-} from 'react-router-dom';
+import { Route, Routes, useNavigate, useParams } from 'react-router-dom';
 import { useFirebaseApp } from 'reactfire';
-import { Store } from '../../../../types';
+import { GraphicsCard, Store } from '../../../../types';
 import { DEFAULT_REGION } from '../../../common/constants';
 
-import NotFoundScreen from '../NotFoundScreen';
 import { UIContext } from '../UIContext';
 import OverviewTab from './OverviewTab';
 import PriceTable from './PriceTable';
 import useStyles from './styles';
 
-const mockProduct = {
+const mockProduct: GraphicsCard = {
   id: 'ASUS-GEFORCE-RTX-3060-DUAL-V2-OC-LHR',
   name: 'Asus GeForce RTX 3060 Dual V2 OC LHR',
   mainImage: 'https://s.ek.ua/jpg_zoom1/2066429.jpg',
@@ -201,7 +194,7 @@ const ProductScreen: React.FC = () => {
   const { setAlert } = useContext(UIContext);
 
   const [stores, setStores] = useState<Store[] | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [, setIsLoading] = useState<boolean>(false);
 
   const functions = useFirebaseApp().functions(DEFAULT_REGION);
 
