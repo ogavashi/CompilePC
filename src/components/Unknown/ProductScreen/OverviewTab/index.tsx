@@ -1,20 +1,23 @@
 import { Box } from '@mui/system';
 import React from 'react';
-import { GraphicsCard } from '../../../../../types';
+import { ProductCategory } from '../../../../../types';
+import getSpecsTable, { Categories } from '../../../../common/getSpecsTable';
 import DescriptionBlock from '../DescriptionBlock';
 import SpecsTable from '../SpecsTable';
 
 type OverviewTabProps = {
-  product: GraphicsCard;
+  product: ProductCategory;
 };
 
 const OverviewTab: React.FC<OverviewTabProps> = ({ product }) => {
+  const productSpecs = getSpecsTable(product, Categories.GPU);
+
   return (
     <Box>
       {product.description && (
         <DescriptionBlock description={product.description} />
       )}
-      <SpecsTable product={product} />
+      {productSpecs && <SpecsTable specs={productSpecs} />}
     </Box>
   );
 };

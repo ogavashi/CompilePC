@@ -290,3 +290,10 @@ export type ProductCategory =
   | Case
   | Cooling
   | PSU;
+
+export type Spec = { title: string; value: string | boolean | number };
+
+export type SpecBlock = {
+  name: string;
+  specs: Spec[];
+};

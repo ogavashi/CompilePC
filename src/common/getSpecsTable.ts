@@ -1,38 +1,44 @@
-import {
-  ProductCategory,
-  CPU,
-  GraphicsCard,
-  Motherboard,
-  RAM,
-  HardDrive,
-  SolidStateDrive,
-  Case,
-  Cooling,
-  PSU,
-} from '../../types/index';
+import { ProductCategory, SpecBlock, GraphicsCard } from '../../types';
+import formGPUSpecs from '../specTables/gpuSpecs';
 
-export type Spec = { title: string; value: string | boolean | number };
+export enum Categories {
+  CPU = 'CPUs',
+  PSU = 'PSUs',
+  RAM = 'RAM',
+  Case = 'cases',
+  Cooling = 'coolings',
+  GPU = 'graphicsCards',
+  Motherboard = 'motherboards',
+  SSD = 'solidStateDrives',
+  HDD = 'HardDrives',
+}
 
-export type SpecBlock = {
-  name: string;
-  specs: Spec[];
-};
-
-const isCPU = (obj: any): obj is CPU => !!obj.cores;
-const isGPU = (obj: any): obj is GraphicsCard => !!obj.GPUModel;
-const isMotherboard = (obj: any): obj is Motherboard => !!obj.BIOS;
-const isRAM = (obj: any): obj is RAM => !!obj.timing;
-const isHDD = (obj: any): obj is HardDrive => !!obj.RPM;
-const isSSD = (obj: any): obj is SolidStateDrive => !!obj.nVMe;
-const isCase = (obj: any): obj is Case => !!obj.boardPlacement;
-const isCooling = (obj: any): obj is Cooling => !!obj.heatPipes;
-const isPSU = (obj: any): obj is PSU => obj !== undefined;
-
-const getSpecsTable = (product: ProductCategory) => {
-  if (isMotherboard(product)) return 'Motherboard';
-  if (isGPU(product)) return 'GPU';
-  if (isCPU(product)) return 'CPU';
-  return 0;
+const getSpecsTable = (
+  product: ProductCategory,
+  category: Categories,
+): SpecBlock[] | null => {
+  switch (category) {
+    case Categories.CPU:
+      return null;
+    case Categories.GPU:
+      return formGPUSpecs(product as GraphicsCard);
+    case Categories.PSU:
+      return null;
+    case Categories.RAM:
+      return null;
+    case Categories.Case:
+      return null;
+    case Categories.Cooling:
+      return null;
+    case Categories.Motherboard:
+      return null;
+    case Categories.SSD:
+      return null;
+    case Categories.HDD:
+      return null;
+    default:
+      return null;
+  }
 };
 
 export default getSpecsTable;

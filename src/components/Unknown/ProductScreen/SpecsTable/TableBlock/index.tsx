@@ -1,13 +1,9 @@
 import { Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import React from 'react';
-import TableRow, { Spec } from '../TableRow';
+import { SpecBlock } from '../../../../../../types';
+import TableRow from '../TableRow';
 import useStyles from './styles';
-
-export type SpecBlock = {
-  name: string;
-  specs: Spec[];
-};
 
 type TableBlockProps = {
   specBlock: SpecBlock;
