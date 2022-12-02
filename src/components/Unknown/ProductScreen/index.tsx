@@ -2,10 +2,19 @@ import { Tab, Tabs, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 
 import React, { useCallback, useContext, useEffect, useState } from 'react';
-import { Route, Routes, useNavigate, useParams } from 'react-router-dom';
+import {
+  Route,
+  Routes,
+  useLocation,
+  useNavigate,
+  useParams,
+} from 'react-router-dom';
 import { useFirebaseApp } from 'reactfire';
-import { GraphicsCard, Store } from '../../../../types';
-import { DEFAULT_REGION } from '../../../common/constants';
+import { GraphicsCard, ProductCategory, Store } from '../../../../types';
+import {
+  CollectionByProductCategory,
+  DEFAULT_REGION,
+} from '../../../common/constants';
 
 import { UIContext } from '../UIContext';
 import OverviewTab from './OverviewTab';
@@ -180,7 +189,11 @@ const ProductScreen: React.FC = () => {
 
   const navigate = useNavigate();
 
-  const { '*': paramsTab } = useParams();
+  const { '*': paramsTab, id } = useParams();
+
+  const location = useLocation();
+
+  const category = location.pathname.split('/')[2] as ProductCategory;
 
   const selectedTab = paramsTab && tabs.includes(paramsTab) ? paramsTab : '';
 
@@ -207,6 +220,12 @@ const ProductScreen: React.FC = () => {
     const getStoresData = async () => {
       try {
         setIsLoading(true);
+
+        // Will be used to fetch the products
+        const collection = CollectionByProductCategory[category];
+
+        // const {data: product}: {data: FetchedProduct} = await getProduct()({id, collection});
+
         const storesId = mockProduct.price.offers.map((store) => store.storeId);
 
         const { data: newStores }: { data: Store[] } = await getStores()({
@@ -224,7 +243,7 @@ const ProductScreen: React.FC = () => {
     };
 
     getStoresData();
-  }, [getStores, setAlert]);
+  }, [getStores, setAlert, category]);
 
   return (
     <Box className={styles.mainContainer}>
@@ -249,7 +268,10 @@ const ProductScreen: React.FC = () => {
         {stores && <PriceTable price={mockProduct.price} stores={stores} />}
       </Box>
       <Routes>
-        <Route path="/" element={<OverviewTab product={mockProduct} />} />
+        <Route
+          path="/"
+          element={<OverviewTab product={mockProduct} category={category} />}
+        />
         <Route path="/reviews" element={<div>Nothing yet</div>} />
         <Route path="/stores" element={<div>Nothing yet</div>} />
         <Route path="*" element={<></>} />

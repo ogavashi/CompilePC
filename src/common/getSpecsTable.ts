@@ -1,40 +1,45 @@
-import { ProductCategory, SpecBlock, GraphicsCard } from '../../types';
+import {
+  SpecBlock,
+  GraphicsCard,
+  FetchedProduct,
+  ProductCategory,
+} from '../../types';
 import formGPUSpecs from '../specTables/gpuSpecs';
 
-export enum Categories {
-  CPU = 'CPUs',
-  PSU = 'PSUs',
+enum ProductCategories {
+  CPU = 'CPU',
+  GPU = 'GPU',
   RAM = 'RAM',
-  Case = 'cases',
-  Cooling = 'coolings',
-  GPU = 'graphicsCards',
-  Motherboard = 'motherboards',
-  SSD = 'solidStateDrives',
-  HDD = 'HardDrives',
+  HDD = 'HDD',
+  SSD = 'SSD',
+  case = 'case',
+  cooling = 'cooling',
+  motherboard = 'motherboard',
+  PSU = 'PSU',
 }
 
 const getSpecsTable = (
-  product: ProductCategory,
-  category: Categories,
+  product: FetchedProduct,
+  category: ProductCategory,
 ): SpecBlock[] | null => {
   switch (category) {
-    case Categories.CPU:
+    case ProductCategories.CPU:
       return null;
-    case Categories.GPU:
+    case ProductCategories.GPU:
       return formGPUSpecs(product as GraphicsCard);
-    case Categories.PSU:
+    case ProductCategories.PSU:
       return null;
-    case Categories.RAM:
+    case ProductCategories.RAM:
       return null;
-    case Categories.Case:
+    case ProductCategories.case:
       return null;
-    case Categories.Cooling:
+    case ProductCategories.cooling:
       return null;
-    case Categories.Motherboard:
+    case ProductCategories.motherboard:
       return null;
-    case Categories.SSD:
+    case ProductCategories.SSD:
       return null;
-    case Categories.HDD:
+    case ProductCategories.HDD:
       return null;
     default:
       return null;

@@ -281,6 +281,17 @@ export type BuilderCategory =
   | 'HDD';
 
 export type ProductCategory =
+  | 'CPU'
+  | 'GPU'
+  | 'RAM'
+  | 'HDD'
+  | 'SSD'
+  | 'case'
+  | 'cooling'
+  | 'motherboard'
+  | 'PSU';
+
+export type FetchedProduct =
   | CPU
   | GraphicsCard
   | Motherboard
