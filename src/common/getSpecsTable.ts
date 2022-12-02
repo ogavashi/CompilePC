@@ -1,45 +1,31 @@
-import {
-  SpecBlock,
-  GraphicsCard,
-  FetchedProduct,
-  ProductCategory,
-} from '../../types';
+import { SpecBlock, GraphicsCard, FetchedProduct } from '../../types';
 import formGPUSpecs from '../specTables/gpuSpecs';
+import { ProductCategories } from './constants';
 
-enum ProductCategories {
-  CPU = 'CPU',
-  GPU = 'GPU',
-  RAM = 'RAM',
-  HDD = 'HDD',
-  SSD = 'SSD',
-  case = 'case',
-  cooling = 'cooling',
-  motherboard = 'motherboard',
-  PSU = 'PSU',
-}
+export type ProductCategory = keyof typeof ProductCategories;
 
 const getSpecsTable = (
   product: FetchedProduct,
   category: ProductCategory,
 ): SpecBlock[] | null => {
   switch (category) {
-    case ProductCategories.CPU:
+    case 'CPU':
       return null;
-    case ProductCategories.GPU:
+    case 'GPU':
       return formGPUSpecs(product as GraphicsCard);
-    case ProductCategories.PSU:
+    case 'HDD':
       return null;
-    case ProductCategories.RAM:
+    case 'SSD':
       return null;
-    case ProductCategories.case:
+    case 'PSU':
       return null;
-    case ProductCategories.cooling:
+    case 'RAM':
       return null;
-    case ProductCategories.motherboard:
+    case 'motherboard':
       return null;
-    case ProductCategories.SSD:
+    case 'case':
       return null;
-    case ProductCategories.HDD:
+    case 'cooling':
       return null;
     default:
       return null;

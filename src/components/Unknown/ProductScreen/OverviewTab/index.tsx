@@ -1,7 +1,9 @@
 import { Box } from '@mui/system';
 import React from 'react';
-import { FetchedProduct, ProductCategory } from '../../../../../types';
-import getSpecsTable from '../../../../common/getSpecsTable';
+import { FetchedProduct } from '../../../../../types';
+import getSpecsTable, {
+  ProductCategory,
+} from '../../../../common/getSpecsTable';
 import DescriptionBlock from '../DescriptionBlock';
 import SpecsTable from '../SpecsTable';
 

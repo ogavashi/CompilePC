@@ -1,4 +1,4 @@
-import { BuilderCategory, ProductCategory } from '../../types';
+import { BuilderCategory } from '../../types';
 
 const DEFAULT_REGION = 'europe-central2';
 
@@ -10,30 +10,53 @@ const ProductCategoryByCollection: Record<string, BuilderCategory> = {
   HardDrives: 'HDD',
 };
 
-enum ProductCollections {
-  CPU = 'CPUs',
-  GPU = 'graphicsCards',
-  PSU = 'PSUs',
-  RAM = 'RAM',
-  case = 'cases',
-  cooling = 'coolings',
-  motherboard = 'motherboards',
-  ssd = 'solidStateDrives',
-  hdd = 'hardDrives',
-}
-
-const CollectionByProductCategory: Record<ProductCategory, ProductCollections> =
-  {
-    CPU: ProductCollections.CPU,
-    GPU: ProductCollections.GPU,
-    PSU: ProductCollections.PSU,
-    RAM: ProductCollections.RAM,
-    case: ProductCollections.case,
-    cooling: ProductCollections.cooling,
-    motherboard: ProductCollections.motherboard,
-    SSD: ProductCollections.ssd,
-    HDD: ProductCollections.hdd,
-  };
+const ProductCategories = {
+  CPU: {
+    categoryName: 'CPU',
+    builderTitle: 'CPU',
+    collectionName: 'CPUs',
+  },
+  GPU: {
+    categoryName: 'GPU',
+    builderTitle: 'Graphic card',
+    collectionName: 'graphicsCards',
+  },
+  PSU: {
+    categoryName: 'PSU',
+    builderTitle: 'Power suply unit',
+    collectionName: 'PSUs',
+  },
+  RAM: {
+    categoryName: 'RAM',
+    builderTitle: 'RAM',
+    collectionName: 'RAM',
+  },
+  case: {
+    categoryName: 'case',
+    builderTitle: 'Case',
+    collectionName: 'cases',
+  },
+  cooling: {
+    categoryName: 'cooling',
+    builderTitle: 'Cooling',
+    collectionName: 'coolings',
+  },
+  motherboard: {
+    categoryName: 'motherboard',
+    builderTitle: 'Motherboards',
+    collectionName: 'motherboards',
+  },
+  SSD: {
+    categoryName: 'SSD',
+    builderTitle: 'Solid state drive, SSD',
+    collectionName: 'SSD',
+  },
+  HDD: {
+    categoryName: 'HDD',
+    builderTitle: 'HDD',
+    collectionName: 'HDD',
+  },
+} as const;
 
 const NUMERIC_FORMAT = /^[0-9]*$/;
 
@@ -42,7 +65,7 @@ const MIN_PRICE_SLIDER_DISTANCE = 1000;
 export {
   DEFAULT_REGION,
   ProductCategoryByCollection,
-  CollectionByProductCategory,
+  ProductCategories,
   MIN_PRICE_SLIDER_DISTANCE,
   NUMERIC_FORMAT,
 };

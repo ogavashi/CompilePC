@@ -10,11 +10,8 @@ import {
   useParams,
 } from 'react-router-dom';
 import { useFirebaseApp } from 'reactfire';
-import { GraphicsCard, ProductCategory, Store } from '../../../../types';
-import {
-  CollectionByProductCategory,
-  DEFAULT_REGION,
-} from '../../../common/constants';
+import { GraphicsCard, Store } from '../../../../types';
+import { DEFAULT_REGION, ProductCategories } from '../../../common/constants';
 
 import { UIContext } from '../UIContext';
 import OverviewTab from './OverviewTab';
@@ -193,7 +190,12 @@ const ProductScreen: React.FC = () => {
 
   const location = useLocation();
 
-  const category = location.pathname.split('/')[2] as ProductCategory;
+  const categoryName = location.pathname.split(
+    '/',
+  )[2] as keyof typeof ProductCategories;
+
+  const { collectionName: collection, categoryName: category } =
+    ProductCategories[categoryName];
 
   const selectedTab = paramsTab && tabs.includes(paramsTab) ? paramsTab : '';
 
@@ -222,8 +224,6 @@ const ProductScreen: React.FC = () => {
         setIsLoading(true);
 
         // Will be used to fetch the products
-        const collection = CollectionByProductCategory[category];
-
         // const {data: product}: {data: FetchedProduct} = await getProduct()({id, collection});
 
         const storesId = mockProduct.price.offers.map((store) => store.storeId);
