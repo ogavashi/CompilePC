@@ -1,4 +1,4 @@
-import { Tab, Tabs, Typography } from '@mui/material';
+import { Skeleton, Tab, Tabs, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 
 import React, { useCallback, useContext, useEffect, useState } from 'react';
@@ -6,11 +6,13 @@ import { Route, Routes, useNavigate, useParams } from 'react-router-dom';
 import { useFirebaseApp } from 'reactfire';
 import {
   CategoryName,
+  FetchedProduct,
   GraphicsCard,
   ProductCategory,
   Store,
 } from '../../../../types';
 import { DEFAULT_REGION, ProductCategories } from '../../../common/constants';
+import CircularLoader from '../CircularLoader';
 
 import { UIContext } from '../UIContext';
 import OverviewTab from './OverviewTab';
@@ -180,6 +182,13 @@ const mockProduct: GraphicsCard = {
 
 const tabs = ['', 'stores', 'reviews'];
 
+// Func for testing
+
+const getProduct = (): Promise<FetchedProduct> =>
+  new Promise((resolve) => {
+    setTimeout(() => resolve(mockProduct), Math.random() * 5000);
+  });
+
 const ProductScreen: React.FC = () => {
   const styles = useStyles();
 
@@ -192,6 +201,7 @@ const ProductScreen: React.FC = () => {
     null,
   );
   const [stores, setStores] = useState<Store[] | null>(null);
+  const [product, setProduct] = useState<FetchedProduct | null>(null);
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isError, setIsError] = useState<boolean>(false);
@@ -231,7 +241,12 @@ const ProductScreen: React.FC = () => {
         // Will be used to fetch the products
         // const {data: product}: {data: FetchedProduct} = await getProduct()({id, category.collectionName});
 
-        const storesId = mockProduct.price.offers.map((store) => store.storeId);
+        const fetchedProduct = await getProduct();
+        setProduct(fetchedProduct);
+
+        const storesId = fetchedProduct.price.offers.map(
+          (store) => store.storeId,
+        );
 
         const { data: newStores }: { data: Store[] } = await getStores()({
           storesId,
@@ -253,39 +268,56 @@ const ProductScreen: React.FC = () => {
   return (
     <Box className={styles.mainContainer}>
       <Typography variant="h2" gutterBottom>
-        {mockProduct.name}
+        {product ? (
+          product.name
+        ) : (
+          <Skeleton animation="wave" variant="text" width={800} />
+        )}
       </Typography>
       <Box>
         <Tabs value={value} onChange={handleChange}>
-          <Tab label="Overview" value="" />
-          <Tab label="Reviews" value="reviews" />
-          <Tab label="Stores" value="stores" />
+          <Tab label="Overview" value="" disabled={!product} />
+          <Tab label="Reviews" value="reviews" disabled={!product} />
+          <Tab label="Stores" value="stores" disabled={!product} />
         </Tabs>
       </Box>
       <Box display="flex" justifyContent="space-between">
         <Box>
-          <img
-            className={styles.image}
-            alt={mockProduct.name}
-            src={mockProduct.mainImage}
-          />
+          {product ? (
+            <img
+              className={styles.image}
+              alt={mockProduct.name}
+              src={mockProduct.mainImage}
+            />
+          ) : (
+            <Skeleton
+              animation="wave"
+              variant="rectangular"
+              width={560}
+              height={364}
+            />
+          )}
         </Box>
         {stores && <PriceTable price={mockProduct.price} stores={stores} />}
       </Box>
-      {productCetgory && (
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <OverviewTab
-                product={mockProduct}
-                categoryName={productCetgory.categoryName}
-              />
-            }
-          />
-          <Route path="/reviews" element={<div>Nothing yet</div>} />
-          <Route path="/stores" element={<div>Nothing yet</div>} />
-        </Routes>
+      {isLoading ? (
+        <CircularLoader />
+      ) : (
+        productCetgory && (
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <OverviewTab
+                  product={mockProduct}
+                  categoryName={productCetgory.categoryName}
+                />
+              }
+            />
+            <Route path="/reviews" element={<div>Nothing yet</div>} />
+            <Route path="/stores" element={<div>Nothing yet</div>} />
+          </Routes>
+        )
       )}
     </Box>
   );
