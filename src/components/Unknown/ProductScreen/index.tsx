@@ -13,6 +13,7 @@ import {
 } from '../../../../types';
 import { DEFAULT_REGION, ProductCategories } from '../../../common/constants';
 import CircularLoader from '../CircularLoader';
+import { ErrorLoading } from '../Icons';
 
 import { UIContext } from '../UIContext';
 import OverviewTab from './OverviewTab';
@@ -253,10 +254,11 @@ const ProductScreen: React.FC = () => {
         });
         setStores(newStores);
       } catch (error) {
+        setIsError(true);
         setAlert({
           show: true,
           severity: 'error',
-          message: 'Could not fetch stores',
+          message: 'Could not load data from server. Please try again later',
         });
       }
       setIsLoading(false);
@@ -265,13 +267,26 @@ const ProductScreen: React.FC = () => {
     getStoresData();
   }, [getStores, setAlert]);
 
+  const productTitle = isError ? "Couldn't load product's name" : product?.name;
+
+  const ProductImage = () =>
+    isError ? (
+      <ErrorLoading className={styles.image} />
+    ) : (
+      <img
+        className={styles.image}
+        alt={mockProduct.name}
+        src={mockProduct.mainImage}
+      />
+    );
+
   return (
     <Box className={styles.mainContainer}>
       <Typography variant="h2" gutterBottom>
-        {product ? (
-          product.name
-        ) : (
+        {isLoading ? (
           <Skeleton animation="wave" variant="text" width={800} />
+        ) : (
+          productTitle
         )}
       </Typography>
       <Box>
@@ -283,41 +298,38 @@ const ProductScreen: React.FC = () => {
       </Box>
       <Box display="flex" justifyContent="space-between">
         <Box>
-          {product ? (
-            <img
-              className={styles.image}
-              alt={mockProduct.name}
-              src={mockProduct.mainImage}
-            />
-          ) : (
+          {isLoading ? (
             <Skeleton
               animation="wave"
               variant="rectangular"
               width={560}
               height={364}
             />
+          ) : (
+            <ProductImage />
           )}
         </Box>
-        {stores && <PriceTable price={mockProduct.price} stores={stores} />}
+        <PriceTable
+          product={product}
+          stores={stores}
+          isError={isError}
+          isLoading={isLoading}
+        />
       </Box>
-      {isLoading ? (
-        <CircularLoader />
-      ) : (
-        productCetgory && (
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <OverviewTab
-                  product={mockProduct}
-                  categoryName={productCetgory.categoryName}
-                />
-              }
-            />
-            <Route path="/reviews" element={<div>Nothing yet</div>} />
-            <Route path="/stores" element={<div>Nothing yet</div>} />
-          </Routes>
-        )
+      {productCetgory && (
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <OverviewTab
+                product={mockProduct}
+                categoryName={productCetgory.categoryName}
+              />
+            }
+          />
+          <Route path="/reviews" element={<div>Nothing yet</div>} />
+          <Route path="/stores" element={<div>Nothing yet</div>} />
+        </Routes>
       )}
     </Box>
   );

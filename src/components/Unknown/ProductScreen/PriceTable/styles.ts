@@ -8,6 +8,15 @@ const useStyles = makeStyles((theme: Theme) =>
       maxWidth: 850,
       backgroundColor: theme.palette.grey,
     },
+    empty: {
+      margin: `${theme.spacing(3)} ${theme.spacing(6)}`,
+      width: 850,
+      height: 395,
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    errorText: {},
     topRow: {
       display: 'flex',
       color: theme.palette.green,

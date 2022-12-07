@@ -1,47 +1,92 @@
-import { Grid, Paper, Typography } from '@mui/material';
+import clsx from 'clsx';
+import { Grid, Paper, Typography, Skeleton } from '@mui/material';
 import { Box } from '@mui/system';
 import React from 'react';
 import useStyles from './styles';
 import TableElement from './TableElement';
-import { Price, Store } from '../../../../../types';
+import { FetchedProduct, Store } from '../../../../../types';
 
 type PriceTableProps = {
-  price: Price;
-  stores: Store[];
+  product: FetchedProduct | null;
+  stores: Store[] | null;
+  isError: boolean;
+  isLoading: boolean;
 };
 
-const PriceTable: React.FC<PriceTableProps> = ({ price, stores }) => {
+const PriceTable: React.FC<PriceTableProps> = ({
+  product,
+  stores,
+  isError,
+  isLoading,
+}) => {
   const styles = useStyles();
 
-  const columns = price.offers.length > 8 ? 3 : 2;
+  const columns = product?.price.offers.length || 15 > 8 ? 3 : 2;
+
+  const offers = product?.price.offers || [];
+
+  const tableTitle = isError ? "Couldn't load stores" : 'No stores available';
 
   return (
     <Paper>
-      <Box className={styles.tableWrapper}>
-        <Box className={styles.topRow} gap={4}>
-          <Typography variant="h4" gutterBottom>
-            {price.range.minPrice.toLocaleString()} ₴ -
-            {price.range.maxPrice.toLocaleString()} ₴
-          </Typography>
-        </Box>
-        <Grid
-          container
-          rowSpacing={{ xs: 1, sm: 2, md: 2 }}
-          columnSpacing={{ xs: 1, sm: 2, md: 5 }}
-          columns={{ xs: 1, sm: 2, md: columns }}
-        >
-          {price.offers.map((offer) => (
-            <TableElement
-              offer={offer}
-              store={
-                (stores &&
-                  stores.find((store) => store.id === offer.storeId)) ||
-                null
-              }
-              key={offer.storeId}
-            />
-          ))}
-        </Grid>
+      <Box
+        className={clsx({
+          [styles.empty]: isError,
+          [styles.tableWrapper]: isError === false,
+        })}
+      >
+        {!stores && !isLoading ? (
+          <Typography variant="h2">{tableTitle}</Typography>
+        ) : (
+          <>
+            <Box className={styles.topRow} gap={4}>
+              <Typography variant="h4" gutterBottom>
+                {isLoading ? (
+                  <Skeleton variant="text" animation="wave" width={400} />
+                ) : (
+                  `${product?.price.range.minPrice.toLocaleString()} ₴ -
+                ${product?.price.range.maxPrice.toLocaleString()} ₴`
+                )}
+              </Typography>
+            </Box>
+            <Grid
+              container
+              rowSpacing={{ xs: 1, sm: 2, md: 2 }}
+              columnSpacing={{ xs: 1, sm: 2, md: 5 }}
+              columns={{ xs: 1, sm: 2, md: columns }}
+            >
+              {(isLoading ? Array.from(new Array(15)) : offers).map(
+                (offer, index) =>
+                  offer ? (
+                    <TableElement
+                      offer={offer}
+                      store={
+                        (stores &&
+                          stores.find((store) => store.id === offer.storeId)) ||
+                        null
+                      }
+                      key={offer.storeId}
+                    />
+                  ) : (
+                    <Grid
+                      item
+                      xs={2}
+                      sm={2}
+                      md={1} // eslint-disable-next-line react/no-array-index-key
+                      key={index}
+                    >
+                      <Skeleton
+                        variant="text"
+                        animation="wave"
+                        width={270}
+                        height={60}
+                      />
+                    </Grid>
+                  ),
+              )}
+            </Grid>
+          </>
+        )}
       </Box>
     </Paper>
   );
