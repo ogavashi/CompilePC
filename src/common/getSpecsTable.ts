@@ -1,12 +1,14 @@
-import { SpecBlock, GraphicsCard, FetchedProduct } from '../../types';
+import {
+  SpecBlock,
+  GraphicsCard,
+  FetchedProduct,
+  CategoryName,
+} from '../../types';
 import formGPUSpecs from '../specTables/gpuSpecs';
-import { ProductCategories } from './constants';
-
-export type ProductCategory = keyof typeof ProductCategories;
 
 const getSpecsTable = (
   product: FetchedProduct,
-  category: ProductCategory,
+  category: CategoryName,
 ): SpecBlock[] | null => {
   switch (category) {
     case 'CPU':

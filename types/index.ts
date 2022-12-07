@@ -1,3 +1,5 @@
+import { ProductCategories } from '../src/common/constants';
+
 // collection categories
 export type Category = {
   id: string;
@@ -272,24 +274,14 @@ export type PSU = Product & {
   PCIECableLength: string;
 };
 
+export type CategoryName = keyof typeof ProductCategories;
+
 // Product builders
 export type BuilderCategory =
-  | 'CPU'
-  | 'Graphic card'
-  | 'Motherboard'
-  | 'RAM'
-  | 'HDD';
+  typeof ProductCategories[CategoryName]['builderTitle'];
 
-export type ProductCategory =
-  | 'CPU'
-  | 'GPU'
-  | 'RAM'
-  | 'HDD'
-  | 'SSD'
-  | 'case'
-  | 'cooling'
-  | 'motherboard'
-  | 'PSU';
+export type CollectionName =
+  typeof ProductCategories[CategoryName]['collectionName'];
 
 export type FetchedProduct =
   | CPU
@@ -307,4 +299,10 @@ export type Spec = { title: string; value: string | boolean | number };
 export type SpecBlock = {
   name: string;
   specs: Spec[];
+};
+
+export type ProductCategory = {
+  categoryName: CategoryName;
+  builderTitle: BuilderCategory;
+  collectionName: CollectionName;
 };

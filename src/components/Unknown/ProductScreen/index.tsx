@@ -2,15 +2,14 @@ import { Tab, Tabs, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 
 import React, { useCallback, useContext, useEffect, useState } from 'react';
-import {
-  Route,
-  Routes,
-  useLocation,
-  useNavigate,
-  useParams,
-} from 'react-router-dom';
+import { Route, Routes, useNavigate, useParams } from 'react-router-dom';
 import { useFirebaseApp } from 'reactfire';
-import { GraphicsCard, Store } from '../../../../types';
+import {
+  CategoryName,
+  GraphicsCard,
+  ProductCategory,
+  Store,
+} from '../../../../types';
 import { DEFAULT_REGION, ProductCategories } from '../../../common/constants';
 
 import { UIContext } from '../UIContext';
@@ -186,20 +185,16 @@ const ProductScreen: React.FC = () => {
 
   const navigate = useNavigate();
 
-  const { '*': paramsTab, id } = useParams();
+  const { id, category: paramsCategory, '*': paramsTab } = useParams();
 
-  const location = useLocation();
+  const [value, setValue] = useState<string>('');
+  const [productCetgory, setProductCategory] = useState<ProductCategory | null>(
+    null,
+  );
+  const [stores, setStores] = useState<Store[] | null>(null);
 
-  const categoryName = location.pathname.split(
-    '/',
-  )[2] as keyof typeof ProductCategories;
-
-  const { collectionName: collection, categoryName: category } =
-    ProductCategories[categoryName];
-
-  const selectedTab = paramsTab && tabs.includes(paramsTab) ? paramsTab : '';
-
-  const [value, setValue] = useState<string>(selectedTab);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isError, setIsError] = useState<boolean>(false);
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
@@ -207,9 +202,6 @@ const ProductScreen: React.FC = () => {
   };
 
   const { setAlert } = useContext(UIContext);
-
-  const [stores, setStores] = useState<Store[] | null>(null);
-  const [, setIsLoading] = useState<boolean>(false);
 
   const functions = useFirebaseApp().functions(DEFAULT_REGION);
 
@@ -219,12 +211,25 @@ const ProductScreen: React.FC = () => {
   );
 
   useEffect(() => {
+    const tab = paramsTab || '';
+    const category: ProductCategory =
+      ProductCategories[paramsCategory as CategoryName];
+    const tabExists = tabs.includes(tab);
+    if (category && tabExists) {
+      setValue(tab);
+      setProductCategory(category);
+    } else {
+      navigate('/404');
+    }
+  }, [paramsCategory, paramsTab, navigate]);
+
+  useEffect(() => {
     const getStoresData = async () => {
       try {
         setIsLoading(true);
 
         // Will be used to fetch the products
-        // const {data: product}: {data: FetchedProduct} = await getProduct()({id, collection});
+        // const {data: product}: {data: FetchedProduct} = await getProduct()({id, category.collectionName});
 
         const storesId = mockProduct.price.offers.map((store) => store.storeId);
 
@@ -243,7 +248,7 @@ const ProductScreen: React.FC = () => {
     };
 
     getStoresData();
-  }, [getStores, setAlert, category]);
+  }, [getStores, setAlert]);
 
   return (
     <Box className={styles.mainContainer}>
@@ -267,15 +272,21 @@ const ProductScreen: React.FC = () => {
         </Box>
         {stores && <PriceTable price={mockProduct.price} stores={stores} />}
       </Box>
-      <Routes>
-        <Route
-          path="/"
-          element={<OverviewTab product={mockProduct} category={category} />}
-        />
-        <Route path="/reviews" element={<div>Nothing yet</div>} />
-        <Route path="/stores" element={<div>Nothing yet</div>} />
-        <Route path="*" element={<></>} />
-      </Routes>
+      {productCetgory && (
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <OverviewTab
+                product={mockProduct}
+                categoryName={productCetgory.categoryName}
+              />
+            }
+          />
+          <Route path="/reviews" element={<div>Nothing yet</div>} />
+          <Route path="/stores" element={<div>Nothing yet</div>} />
+        </Routes>
+      )}
     </Box>
   );
 };

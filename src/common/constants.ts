@@ -1,14 +1,4 @@
-import { BuilderCategory } from '../../types';
-
 const DEFAULT_REGION = 'europe-central2';
-
-const ProductCategoryByCollection: Record<string, BuilderCategory> = {
-  CPUs: 'CPU',
-  GraphicsCards: 'Graphic card',
-  Motherboards: 'Motherboard',
-  RAM: 'RAM',
-  HardDrives: 'HDD',
-};
 
 const ProductCategories = {
   CPU: {
@@ -48,7 +38,7 @@ const ProductCategories = {
   },
   SSD: {
     categoryName: 'SSD',
-    builderTitle: 'Solid state drive, SSD',
+    builderTitle: 'SSD',
     collectionName: 'SSD',
   },
   HDD: {
@@ -64,7 +54,6 @@ const MIN_PRICE_SLIDER_DISTANCE = 1000;
 // eslint-disable-next-line import/prefer-default-export
 export {
   DEFAULT_REGION,
-  ProductCategoryByCollection,
   ProductCategories,
   MIN_PRICE_SLIDER_DISTANCE,
   NUMERIC_FORMAT,
