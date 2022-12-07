@@ -31,8 +31,8 @@ const PriceTable: React.FC<PriceTableProps> = ({
     <Paper>
       <Box
         className={clsx({
-          [styles.empty]: isError,
-          [styles.tableWrapper]: isError === false,
+          [styles.empty]: isError || (!isLoading && !stores),
+          [styles.tableWrapper]: isLoading || stores,
         })}
       >
         {!stores && !isLoading ? (

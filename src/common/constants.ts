@@ -48,6 +48,12 @@ const ProductCategories = {
   },
 } as const;
 
+const ProductPageTabs = [
+  { value: '', label: 'Overview' },
+  { value: 'stores', label: 'Stores' },
+  { value: 'reviews', label: 'Reviews' },
+];
+
 const NUMERIC_FORMAT = /^[0-9]*$/;
 
 const MIN_PRICE_SLIDER_DISTANCE = 1000;
@@ -55,6 +61,7 @@ const MIN_PRICE_SLIDER_DISTANCE = 1000;
 export {
   DEFAULT_REGION,
   ProductCategories,
+  ProductPageTabs,
   MIN_PRICE_SLIDER_DISTANCE,
   NUMERIC_FORMAT,
 };

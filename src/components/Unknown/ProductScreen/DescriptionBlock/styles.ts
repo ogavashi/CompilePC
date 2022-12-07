@@ -7,6 +7,9 @@ const useStyles = makeStyles((theme: Theme) =>
       padding: theme.spacing(4),
       textAlign: 'justify',
     },
+    descriptionPaper: {
+      width: '100% !important',
+    },
   }),
 );
 

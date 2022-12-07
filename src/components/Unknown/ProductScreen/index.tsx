@@ -11,8 +11,11 @@ import {
   ProductCategory,
   Store,
 } from '../../../../types';
-import { DEFAULT_REGION, ProductCategories } from '../../../common/constants';
-import CircularLoader from '../CircularLoader';
+import {
+  DEFAULT_REGION,
+  ProductCategories,
+  ProductPageTabs,
+} from '../../../common/constants';
 import { ErrorLoading } from '../Icons';
 
 import { UIContext } from '../UIContext';
@@ -181,8 +184,6 @@ const mockProduct: GraphicsCard = {
   size: '200 mm / 200x123x38 /',
 };
 
-const tabs = ['', 'stores', 'reviews'];
-
 // Func for testing
 
 const getProduct = (): Promise<FetchedProduct> =>
@@ -197,7 +198,7 @@ const ProductScreen: React.FC = () => {
 
   const { id, category: paramsCategory, '*': paramsTab } = useParams();
 
-  const [value, setValue] = useState<string>('');
+  const [currentTab, setCurrentTab] = useState<string>('');
   const [productCetgory, setProductCategory] = useState<ProductCategory | null>(
     null,
   );
@@ -208,7 +209,7 @@ const ProductScreen: React.FC = () => {
   const [isError, setIsError] = useState<boolean>(false);
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
-    setValue(newValue);
+    setCurrentTab(newValue);
     navigate(newValue);
   };
 
@@ -225,9 +226,9 @@ const ProductScreen: React.FC = () => {
     const tab = paramsTab || '';
     const category: ProductCategory =
       ProductCategories[paramsCategory as CategoryName];
-    const tabExists = tabs.includes(tab);
+    const tabExists = ProductPageTabs.find(({ value }) => value === tab);
     if (category && tabExists) {
-      setValue(tab);
+      setCurrentTab(tab);
       setProductCategory(category);
     } else {
       navigate('/404');
@@ -275,8 +276,8 @@ const ProductScreen: React.FC = () => {
     ) : (
       <img
         className={styles.image}
-        alt={mockProduct.name}
-        src={mockProduct.mainImage}
+        alt={product?.name}
+        src={product?.mainImage}
       />
     );
 
@@ -290,10 +291,10 @@ const ProductScreen: React.FC = () => {
         )}
       </Typography>
       <Box>
-        <Tabs value={value} onChange={handleChange}>
-          <Tab label="Overview" value="" disabled={!product} />
-          <Tab label="Reviews" value="reviews" disabled={!product} />
-          <Tab label="Stores" value="stores" disabled={!product} />
+        <Tabs value={currentTab} onChange={handleChange}>
+          {ProductPageTabs.map(({ label, value }) => (
+            <Tab label={label} value={value} disabled={!product} key={value} />
+          ))}
         </Tabs>
       </Box>
       <Box display="flex" justifyContent="space-between">
@@ -322,8 +323,10 @@ const ProductScreen: React.FC = () => {
             path="/"
             element={
               <OverviewTab
-                product={mockProduct}
+                product={product}
                 categoryName={productCetgory.categoryName}
+                isError={isError}
+                isLoading={isLoading}
               />
             }
           />

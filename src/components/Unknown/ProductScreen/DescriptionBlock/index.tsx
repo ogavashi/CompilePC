@@ -1,13 +1,17 @@
-import { Paper, Typography } from '@mui/material';
+import { Paper, Typography, Skeleton } from '@mui/material';
 import { Box } from '@mui/system';
 import React from 'react';
 import useStyles from './styles';
 
 type DescriptionBlockProps = {
   description: string;
+  isLoading: boolean;
 };
 
-const DescriptionBlock: React.FC<DescriptionBlockProps> = ({ description }) => {
+const DescriptionBlock: React.FC<DescriptionBlockProps> = ({
+  description,
+  isLoading,
+}) => {
   const styles = useStyles();
 
   return (
@@ -15,9 +19,14 @@ const DescriptionBlock: React.FC<DescriptionBlockProps> = ({ description }) => {
       <Typography variant="h4" gutterBottom>
         Description
       </Typography>
-      <Paper>
+      <Paper className={styles.descriptionPaper}>
         <Typography className={styles.description} gutterBottom>
-          {description}
+          {isLoading
+            ? Array.from(new Array(8)).map((element, index) => (
+                // eslint-disable-next-line react/no-array-index-key
+                <Skeleton variant="text" animation="wave" key={index} />
+              ))
+            : description}
         </Typography>
       </Paper>
     </Box>

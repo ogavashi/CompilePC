@@ -1,6 +1,7 @@
 import React, { createContext, useState } from 'react';
 import { AlertColor } from '@mui/lab/Alert';
-import { Alert, Snackbar } from '@mui/material';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 
 export const UIContext = createContext<UIContextProps>({} as UIContextProps);
 
@@ -20,18 +21,15 @@ export const UIContextProvider: React.FC = ({ children }) => {
     severity: 'info',
     message: '',
   });
-  const handleClose = () =>
-    setAlert({
-      show: false,
-    });
+  const handleClose = () => setAlert((prev) => ({ ...prev, show: false }));
 
   return (
     <UIContext.Provider value={{ setAlert }}>
       {children}
       <Snackbar open={alert.show} autoHideDuration={4000} onClose={handleClose}>
-        <Alert elevation={6} variant="filled" severity={alert.severity}>
+        <MuiAlert elevation={6} variant="filled" severity={alert.severity}>
           {alert.message}
-        </Alert>
+        </MuiAlert>
       </Snackbar>
     </UIContext.Provider>
   );

@@ -7,9 +7,10 @@ import {
 import formGPUSpecs from '../specTables/gpuSpecs';
 
 const getSpecsTable = (
-  product: FetchedProduct,
+  product: FetchedProduct | null,
   category: CategoryName,
 ): SpecBlock[] | null => {
+  if (!product) return null;
   switch (category) {
     case 'CPU':
       return null;
