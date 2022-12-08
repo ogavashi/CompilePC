@@ -2,12 +2,26 @@ import React from 'react';
 import { Box } from '@mui/system';
 import { Typography, Paper } from '@mui/material';
 import useStyles from './styles';
-import Builder from './Builder';
+
 import Filter from './Filter';
 import { BuildScreenContextProvider } from '../BuildScreenContext';
+import { ProductCategories } from '../../../common/constants';
+import { CategoryName } from '../../../../types';
+import Builder from './Builder';
 
 const BuildScreen: React.FC = () => {
   const styles = useStyles();
+
+  const MainBuilder = () => (
+    <>
+      {Object.keys(ProductCategories).map((category) => (
+        <Builder
+          category={ProductCategories[category as CategoryName]}
+          key={category}
+        />
+      ))}
+    </>
+  );
 
   return (
     <BuildScreenContextProvider>
@@ -34,7 +48,7 @@ const BuildScreen: React.FC = () => {
             <Typography gutterBottom variant="h2">
               Main Parts
             </Typography>
-            <Builder />
+            <MainBuilder />
           </Box>
           <Box>
             <Typography gutterBottom variant="h2">

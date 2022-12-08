@@ -1,4 +1,4 @@
-import { BuilderCategory } from '../../../../../types/index';
+import { CategoryName } from '../../../../../types/index';
 
 export type FilterOption = {
   key: string;
@@ -12,7 +12,7 @@ export type Filter = {
 };
 
 export type CategoryFilterBatch = {
-  [key in BuilderCategory]: { accordion?: Filter[]; switcher?: Filter[] };
+  [key in CategoryName]: { accordion?: Filter[]; switcher?: Filter[] };
 };
 
 export const filters: CategoryFilterBatch = {
@@ -60,12 +60,12 @@ export const filters: CategoryFilterBatch = {
       },
     ],
   },
-  'Graphic card': {},
-  Motherboards: {},
+  GPU: {},
+  motherboard: {},
   RAM: {},
   HDD: {},
   SSD: {},
-  'Power suply unit': {},
-  Case: {},
-  Cooling: {},
+  PSU: {},
+  case: {},
+  cooling: {},
 };

@@ -29,7 +29,7 @@ const SwitchFilter: React.FC<SwitchFilterProps> = ({ filter }) => {
 
   return (
     <Box className={styles.filterWrapper}>
-      <Typography gutterBottom variant="h3" className={styles.filterTitle}>
+      <Typography gutterBottom variant="h3">
         {filter.title}:
       </Typography>
       <Switcher

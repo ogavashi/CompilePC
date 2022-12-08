@@ -25,9 +25,11 @@ const Filter: React.FC = () => {
     handleParamsChange(selectedFilters);
   };
 
-  const accordions = selectedBuilder && filters[selectedBuilder].accordion;
+  const accordions =
+    selectedBuilder && filters[selectedBuilder.categoryName].accordion;
 
-  const switchers = selectedBuilder && filters[selectedBuilder].switcher;
+  const switchers =
+    selectedBuilder && filters[selectedBuilder.categoryName].switcher;
 
   const accordionFilters =
     accordions &&

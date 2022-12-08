@@ -2,6 +2,7 @@ import React from 'react';
 import AppBar from '@mui/material/AppBar';
 import { Button } from '@mui/material';
 import { Box, Container } from '@mui/system';
+import { Link } from 'react-router-dom';
 import { AppLogo } from '../Icons';
 
 const Header: React.FC = () => {
@@ -14,7 +15,9 @@ const Header: React.FC = () => {
           justifyContent="space-between"
           paddingY={2}
         >
-          <AppLogo />
+          <Link to="/">
+            <AppLogo />
+          </Link>
           <Box display="flex" gap={4}>
             <Button color="primary" variant="contained">
               Log In

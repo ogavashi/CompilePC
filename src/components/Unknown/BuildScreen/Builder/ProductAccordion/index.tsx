@@ -12,11 +12,11 @@ import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded';
 import useStyles from './styles';
 import { BuildProduct } from '../BuilderProduct';
 import { BuildScreenContext } from '../../../BuildScreenContext';
-import { BuilderCategory } from '../../../../../../types';
+import { ProductCategory } from '../../../../../../types';
 
 type ProductAccordionProps = {
   icon: React.FC;
-  category: BuilderCategory;
+  category: ProductCategory;
   selectedId: string;
   // eslint-disable-next-line react/require-default-props
   selectedProduct?: BuildProduct;
@@ -72,7 +72,9 @@ const ProductAccordion: React.FC<ProductAccordionProps> = ({
           <Icon />
         )}
         <Typography variant="h5" className={styles.title}>
-          {selectedId ? selectedProduct?.name : `${category} is not selected`}
+          {selectedId
+            ? selectedProduct?.name
+            : `${category.builderTitle} is not selected`}
         </Typography>
       </AccordionSummary>
       <AccordionDetails>{children}</AccordionDetails>
