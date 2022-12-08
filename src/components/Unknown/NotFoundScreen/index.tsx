@@ -33,7 +33,7 @@ const NotFoundScreen: React.FC = () => {
         color="primary"
         size="large"
         component={Link}
-        to="/about"
+        to="/"
       >
         Go home
       </Button>

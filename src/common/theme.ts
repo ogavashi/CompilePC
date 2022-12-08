@@ -141,6 +141,32 @@ const defaultTheme = createTheme({
         },
       },
     },
+    MuiTabs: {
+      styleOverrides: {
+        indicator: {
+          display: 'none',
+        },
+      },
+    },
+    MuiTab: {
+      styleOverrides: {
+        root: {
+          textTransform: 'none',
+          width: theme.spacing(32),
+          height: theme.spacing(8),
+          minHeight: theme.spacing(8),
+          backgroundColor: colors.grey,
+          color: colors.white,
+          borderRadius: 10,
+          marginRight: theme.spacing(3),
+
+          '&.Mui-selected': {
+            backgroundColor: colors.green,
+            color: colors.white,
+          },
+        },
+      },
+    },
   },
 });
 

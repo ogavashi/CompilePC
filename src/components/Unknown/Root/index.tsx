@@ -9,6 +9,7 @@ import { DEFAULT_REGION } from '../../../common/constants';
 import Layout from '../Layout';
 import BuildScreen from '../BuildScreen';
 import NotFoundScreen from '../NotFoundScreen';
+import ProductScreen from '../ProductScreen';
 
 const Root: React.FC = () => {
   const functions = useFirebaseApp().functions(DEFAULT_REGION);
@@ -33,12 +34,12 @@ const Root: React.FC = () => {
     <Layout>
       <Routes>
         <Route path="/" element={<BuildScreen />} />
-        <Route path="login" element={<div>Sign In</div>} />
-        <Route path="register" element={<div>Sign Up</div>} />
-        <Route path="product/:id" element={<div>Product</div>} />
+        <Route path="/login" element={<div>Sign In</div>} />
+        <Route path="/register" element={<div>Sign Up</div>} />
+        <Route path="/product/:category/:id/*" element={<ProductScreen />} />
         {/* Protected route */}
-        <Route path="assemblies" element={<div>Assemblies</div>} />
-        <Route path="*" element={<NotFoundScreen />} />
+        <Route path="/assemblies" element={<div>Assemblies</div>} />
+        <Route path="/*" element={<NotFoundScreen />} />
       </Routes>
     </Layout>
   );

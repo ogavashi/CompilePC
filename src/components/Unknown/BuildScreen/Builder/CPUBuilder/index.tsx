@@ -11,7 +11,7 @@ import { CPUIcon } from '../../../Icons';
 import BuilderProduct, { ProductSpecPropType } from '../BuilderProduct';
 import {
   DEFAULT_REGION,
-  ProductCategoryByCollection,
+  ProductCategories,
 } from '../../../../../common/constants';
 import { CPU } from '../../../../../../types';
 import normalizeProducts from '../../../../../common/normalizeProduct';
@@ -38,7 +38,7 @@ const CPUBuilder: React.FC = () => {
     [],
   );
   const handleAddProduct = (productId: string) => {
-    handleSelectBuilder(ProductCategoryByCollection.CPUs);
+    handleSelectBuilder(ProductCategories.CPU.builderTitle);
     setSelectedId(productId);
   };
 
@@ -85,7 +85,7 @@ const CPUBuilder: React.FC = () => {
   return (
     <ProductAccordion
       icon={CPUIcon}
-      category={ProductCategoryByCollection.CPUs}
+      category={ProductCategories.CPU.builderTitle}
       selectedId={selectedId}
       selectedProduct={selectedProduct}
     >

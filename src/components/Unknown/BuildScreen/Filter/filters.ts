@@ -61,7 +61,11 @@ export const filters: CategoryFilterBatch = {
     ],
   },
   'Graphic card': {},
-  Motherboard: {},
+  Motherboards: {},
   RAM: {},
   HDD: {},
+  SSD: {},
+  'Power suply unit': {},
+  Case: {},
+  Cooling: {},
 };
