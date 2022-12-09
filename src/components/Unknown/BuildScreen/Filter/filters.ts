@@ -60,7 +60,18 @@ export const filters: CategoryFilterBatch = {
       },
     ],
   },
-  GPU: {},
+  GPU: {
+    switcher: [
+      {
+        title: 'Brand',
+        key: 'brand',
+        options: [
+          { value: 'NVIDIA', key: 'Nvidia' },
+          { value: 'AMD', key: 'AMD' },
+        ],
+      },
+    ],
+  },
   motherboard: {},
   RAM: {},
   HDD: {},

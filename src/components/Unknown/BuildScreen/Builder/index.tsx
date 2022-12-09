@@ -9,7 +9,7 @@ import { useFirebaseApp } from 'reactfire';
 import ProductAccordion from './ProductAccordion';
 import { CPUIcon } from '../../Icons';
 import BuilderProduct, { ProductSpecPropType } from './BuilderProduct';
-import { DEFAULT_REGION } from '../../../../common/constants';
+import { DEFAULT_REGION, IconByCategory } from '../../../../common/constants';
 import { CPU, FetchedProduct, ProductCategory } from '../../../../../types';
 import normalizeProducts from '../../../../common/normalizeProduct';
 import { UIContext } from '../../UIContext';
@@ -47,10 +47,11 @@ const Builder: React.FC<BuilderProps> = ({ category }) => {
       try {
         const filter = parseCurrentParams();
         setIsLoading(true);
-        const { data: newProducts }: { data: CPU[] } = await getProducts()({
-          collectionName: 'CPUs',
-          filter,
-        });
+        const { data: newProducts }: { data: FetchedProduct[] } =
+          await getProducts()({
+            collectionName: category.collectionName,
+            filter,
+          });
         setProducts(newProducts);
       } catch (error) {
         setAlert({
@@ -63,7 +64,7 @@ const Builder: React.FC<BuilderProps> = ({ category }) => {
     };
 
     getCPUs();
-  }, [getProducts, setAlert, parseCurrentParams]);
+  }, [getProducts, setAlert, parseCurrentParams, category.collectionName]);
 
   // const normalizedProducts = useMemo(
   //   () => products && normalizeProducts(products, category.shortSpecs),
@@ -79,7 +80,7 @@ const Builder: React.FC<BuilderProps> = ({ category }) => {
 
   return (
     <ProductAccordion
-      icon={CPUIcon}
+      icon={IconByCategory[category.categoryName]}
       category={category}
       selectedId={selectedId}
       selectedProduct={selectedProduct}

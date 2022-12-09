@@ -71,6 +71,7 @@ const ProductAccordion: React.FC<ProductAccordionProps> = ({
         ) : (
           <Icon />
         )}
+
         <Typography variant="h5" className={styles.title}>
           {selectedId
             ? selectedProduct?.name
