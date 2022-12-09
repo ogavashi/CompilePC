@@ -10,16 +10,15 @@ import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded';
 import useStyles from './styles';
-import { BuildProduct } from '../BuilderProduct';
 import { BuildScreenContext } from '../../../BuildScreenContext';
-import { ProductCategory } from '../../../../../../types';
+import { FetchedProduct, ProductCategory } from '../../../../../../types';
 
 type ProductAccordionProps = {
   icon: React.FC;
   category: ProductCategory;
   selectedId: string;
   // eslint-disable-next-line react/require-default-props
-  selectedProduct?: BuildProduct;
+  selectedProduct?: FetchedProduct;
 };
 
 const ProductAccordion: React.FC<ProductAccordionProps> = ({

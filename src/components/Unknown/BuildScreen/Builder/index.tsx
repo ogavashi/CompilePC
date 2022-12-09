@@ -7,11 +7,9 @@ import React, {
 } from 'react';
 import { useFirebaseApp } from 'reactfire';
 import ProductAccordion from './ProductAccordion';
-import { CPUIcon } from '../../Icons';
-import BuilderProduct, { ProductSpecPropType } from './BuilderProduct';
+import BuilderProduct from './BuilderProduct';
 import { DEFAULT_REGION, IconByCategory } from '../../../../common/constants';
-import { CPU, FetchedProduct, ProductCategory } from '../../../../../types';
-import normalizeProducts from '../../../../common/normalizeProduct';
+import { FetchedProduct, ProductCategory } from '../../../../../types';
 import { UIContext } from '../../UIContext';
 import { BuildScreenContext } from '../../BuildScreenContext';
 import useQuery from '../../../../hooks/useQuery';
@@ -57,7 +55,7 @@ const Builder: React.FC<BuilderProps> = ({ category }) => {
         setAlert({
           show: true,
           severity: 'error',
-          message: 'Could not fetch products',
+          message: 'Could not fetch products. Try again later',
         });
       }
       setIsLoading(false);
@@ -66,17 +64,10 @@ const Builder: React.FC<BuilderProps> = ({ category }) => {
     getCPUs();
   }, [getProducts, setAlert, parseCurrentParams, category.collectionName]);
 
-  // const normalizedProducts = useMemo(
-  //   () => products && normalizeProducts(products, category.shortSpecs),
-  //   [products, specs],
-  // );
-
-  // const selectedProduct = useMemo(
-  //   () => normalizedProducts?.find((product) => product.id === selectedId),
-  //   [normalizedProducts, selectedId],
-  // );
-
-  const selectedProduct = undefined;
+  const selectedProduct = useMemo(
+    () => products?.find((product) => product.id === selectedId),
+    [products, selectedId],
+  );
 
   return (
     <ProductAccordion
@@ -85,15 +76,16 @@ const Builder: React.FC<BuilderProps> = ({ category }) => {
       selectedId={selectedId}
       selectedProduct={selectedProduct}
     >
-      {/* {!isLoading &&
-        normalizedProducts?.map((product) => (
+      {!isLoading &&
+        products?.map((product) => (
           <BuilderProduct
             product={product}
             key={product.id}
             handleSelect={handleAddProduct}
             selectedId={selectedId}
+            category={category.categoryName}
           />
-        ))} */}
+        ))}
     </ProductAccordion>
   );
 };

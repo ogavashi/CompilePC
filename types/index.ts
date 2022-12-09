@@ -306,3 +306,5 @@ export type ProductCategory = {
   builderTitle: BuilderCategory;
   collectionName: CollectionName;
 };
+
+export type ShortSpec = { name: string; value?: string };
