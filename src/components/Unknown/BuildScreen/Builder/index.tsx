@@ -1,18 +1,14 @@
-import React, {
-  useState,
-  useMemo,
-  useEffect,
-  useContext,
-  useCallback,
-} from 'react';
-import { useFirebaseApp } from 'reactfire';
+import React, { useState, useMemo, useContext } from 'react';
+import { Typography } from '@mui/material';
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
+import { Box } from '@mui/system';
 import ProductAccordion from './ProductAccordion';
 import BuilderProduct from './BuilderProduct';
-import { DEFAULT_REGION, IconByCategory } from '../../../../common/constants';
-import { FetchedProduct, ProductCategory } from '../../../../../types';
-import { UIContext } from '../../UIContext';
+import { IconByCategory } from '../../../../common/constants';
+import { ProductCategory } from '../../../../../types';
 import { BuildScreenContext } from '../../BuildScreenContext';
-import useQuery from '../../../../hooks/useQuery';
+import useProducts from '../../../../api/products';
+import SkeletonProduct from './SkeletonProduct';
 
 type BuilderProps = {
   category: ProductCategory;
@@ -20,53 +16,39 @@ type BuilderProps = {
 
 const Builder: React.FC<BuilderProps> = ({ category }) => {
   const { handleSelectBuilder } = useContext(BuildScreenContext);
-  const { setAlert } = useContext(UIContext);
 
   const [selectedId, setSelectedId] = useState<string>('');
-  const [products, setProducts] = useState<FetchedProduct[] | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  const { parseCurrentParams } = useQuery();
 
   const handleAddProduct = (productId: string) => {
     handleSelectBuilder(category);
     setSelectedId(productId);
   };
 
-  const functions = useFirebaseApp().functions(DEFAULT_REGION);
-
-  const getProducts = useCallback(
-    () => functions.httpsCallable('getProducts'),
-    [functions],
-  );
-
-  useEffect(() => {
-    const getCPUs = async () => {
-      try {
-        const filter = parseCurrentParams();
-        setIsLoading(true);
-        const { data: newProducts }: { data: FetchedProduct[] } =
-          await getProducts()({
-            collectionName: category.collectionName,
-            filter,
-          });
-        setProducts(newProducts);
-      } catch (error) {
-        setAlert({
-          show: true,
-          severity: 'error',
-          message: 'Could not fetch products. Try again later',
-        });
-      }
-      setIsLoading(false);
-    };
-
-    getCPUs();
-  }, [getProducts, setAlert, parseCurrentParams, category.collectionName]);
+  const { data: products, isLoading, isError } = useProducts(category);
 
   const selectedProduct = useMemo(
     () => products?.find((product) => product.id === selectedId),
     [products, selectedId],
+  );
+
+  const BuilderProducts = () => (
+    <>
+      {(isLoading ? Array.from(new Array(5)) : products || []).map(
+        (product, index) =>
+          product ? (
+            <BuilderProduct
+              product={product}
+              key={product.id}
+              handleSelect={handleAddProduct}
+              selectedId={selectedId}
+              category={category.categoryName}
+            />
+          ) : (
+            // eslint-disable-next-line react/no-array-index-key
+            <SkeletonProduct key={index} />
+          ),
+      )}
+    </>
   );
 
   return (
@@ -76,16 +58,21 @@ const Builder: React.FC<BuilderProps> = ({ category }) => {
       selectedId={selectedId}
       selectedProduct={selectedProduct}
     >
-      {!isLoading &&
-        products?.map((product) => (
-          <BuilderProduct
-            product={product}
-            key={product.id}
-            handleSelect={handleAddProduct}
-            selectedId={selectedId}
-            category={category.categoryName}
-          />
-        ))}
+      {isError ? (
+        <Box
+          display="flex"
+          flexDirection="column"
+          justifyContent="center"
+          alignItems="center"
+        >
+          <ErrorOutlineIcon />
+          <Typography variant="h3">
+            Couldn&#39;t load {category.categoryName}
+          </Typography>
+        </Box>
+      ) : (
+        <BuilderProducts />
+      )}
     </ProductAccordion>
   );
 };

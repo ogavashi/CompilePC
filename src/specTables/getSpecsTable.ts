@@ -1,16 +1,16 @@
-import { FetchedProduct, CategoryName, CPU, ShortSpec } from '../../types';
-import CPUFormer from '../components/Unknown/BuildScreen/Builder/ShortSpecs/CPUformer';
+import { SpecBlock, GraphicsCard, Part, CategoryName } from '../../types';
+import formGPUSpecs from './gpuSpecs';
 
-const getShortSpecs = (
-  product: FetchedProduct | null,
+const getSpecsTable = (
+  product: Part | null,
   category: CategoryName,
-): ShortSpec[] | null => {
+): SpecBlock[] | null => {
   if (!product) return null;
   switch (category) {
     case 'CPU':
-      return CPUFormer(product as CPU);
-    case 'GPU':
       return null;
+    case 'GPU':
+      return formGPUSpecs(product as GraphicsCard);
     case 'HDD':
       return null;
     case 'SSD':
@@ -30,4 +30,4 @@ const getShortSpecs = (
   }
 };
 
-export default getShortSpecs;
+export default getSpecsTable;

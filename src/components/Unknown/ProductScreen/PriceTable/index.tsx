@@ -4,10 +4,10 @@ import { Box } from '@mui/system';
 import React from 'react';
 import useStyles from './styles';
 import TableElement from './TableElement';
-import { FetchedProduct, Store } from '../../../../../types';
+import { Part, Store } from '../../../../../types';
 
 type PriceTableProps = {
-  product: FetchedProduct | null;
+  product: Part | null;
   stores: Store[] | null;
   isError: boolean;
   isLoading: boolean;

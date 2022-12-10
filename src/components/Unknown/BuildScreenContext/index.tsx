@@ -1,5 +1,5 @@
 import React, { createContext, useCallback, useState } from 'react';
-import useQuery from '../../../hooks/useQuery';
+import useQueryParams from '../../../hooks/useQueryParams';
 import { ProductCategory } from '../../../../types';
 
 export const BuildScreenContext = createContext<BuildScreenProps>(
@@ -23,7 +23,7 @@ export const BuildScreenContextProvider: React.FC = ({ children }) => {
   const [selectedFilter, setSelectedFilter] = useState<string | null>(null);
   const [filters, setFilters] = useState<Record<string, string> | null>(null);
 
-  const { setSearchParams } = useQuery();
+  const { setSearchParams } = useQueryParams();
 
   const handleSelectBuilder = (panel: ProductCategory) => {
     // Erase query string and filters in state whenever new builder is opened

@@ -1,7 +1,7 @@
 import { Button } from '@mui/material';
 import { Box } from '@mui/system';
 import React, { useContext } from 'react';
-import useQuery from '../../../../hooks/useQuery';
+import useQueryParams from '../../../../hooks/useQueryParams';
 import { BuildScreenContext } from '../../BuildScreenContext';
 import AccordionFilter from './AccordionFilter';
 import { filters } from './filters';
@@ -13,7 +13,7 @@ import SwitchFilter from './SwitchFilter';
 const Filter: React.FC = () => {
   const styles = useStyles();
 
-  const { handleParamsChange } = useQuery();
+  const { handleParamsChange } = useQueryParams();
   const {
     filters: selectedFilters,
     selectedBuilder,

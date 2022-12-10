@@ -283,7 +283,7 @@ export type BuilderCategory =
 export type CollectionName =
   typeof ProductCategories[CategoryName]['collectionName'];
 
-export type FetchedProduct =
+export type Part =
   | CPU
   | GraphicsCard
   | Motherboard

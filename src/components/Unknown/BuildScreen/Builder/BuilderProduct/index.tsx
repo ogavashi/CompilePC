@@ -5,11 +5,11 @@ import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import useStyles from './styles';
-import { CategoryName, FetchedProduct } from '../../../../../../types';
-import getShortSpecs from '../../../../../common/getShortSpecs';
+import { CategoryName, Part } from '../../../../../../types';
+import getShortSpecs from '../ShortSpecs/getShortSpecs';
 
 type ProductProps = {
-  product: FetchedProduct;
+  product: Part;
   handleSelect: (id: string) => void;
   selectedId: string;
   category: CategoryName;

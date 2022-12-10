@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import useQuery from './useQuery';
+import useQueryParams from './useQueryParams';
 
 const useFilterAccordion = (name: string) => {
-  const { parseCurrentParams } = useQuery();
+  const { parseCurrentParams } = useQueryParams();
 
   const parsedParams = parseCurrentParams();
 
