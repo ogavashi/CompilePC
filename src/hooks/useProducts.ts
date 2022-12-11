@@ -5,7 +5,7 @@ import { Part, ProductCategory } from '../../types/index';
 import useQueryParams from './useQueryParams';
 import { UIContext } from '../components/Unknown/UIContext';
 import Products from '../api/products';
-import QUERY_KEY_FACTORIES from '../common/queryKeyFactory';
+import QUERY_KEY_FACTORIES from '../common/queryKeyFactories';
 
 const useProducts = (category: ProductCategory): UseQueryResult<Part[]> => {
   const { parseCurrentParams } = useQueryParams();
