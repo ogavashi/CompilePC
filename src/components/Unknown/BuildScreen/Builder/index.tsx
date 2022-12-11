@@ -7,8 +7,8 @@ import BuilderProduct from './BuilderProduct';
 import { IconByCategory } from '../../../../common/constants';
 import { ProductCategory } from '../../../../../types';
 import { BuildScreenContext } from '../../BuildScreenContext';
-import useProducts from '../../../../api/products';
 import SkeletonProduct from './SkeletonProduct';
+import useProducts from '../../../../hooks/useProducts';
 
 type BuilderProps = {
   category: ProductCategory;
