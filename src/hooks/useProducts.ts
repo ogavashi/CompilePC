@@ -4,20 +4,23 @@ import { BuildScreenContext } from '../components/Unknown/BuildScreenContext/ind
 import { Part, ProductCategory } from '../../types/index';
 import useQueryParams from './useQueryParams';
 import { UIContext } from '../components/Unknown/UIContext';
-import fetchProducts from '../api/products';
+import Products from '../api/products';
+import QUERY_KEY_FACTORIES from '../common/queryKeyFactory';
 
 const useProducts = (category: ProductCategory): UseQueryResult<Part[]> => {
   const { parseCurrentParams } = useQueryParams();
   const { selectedBuilder } = useContext(BuildScreenContext);
   const { setAlert } = useContext(UIContext);
 
-  const isEnabled = selectedBuilder?.categoryName === category.categoryName;
+  const { categoryName, collectionName } = category;
+
+  const isEnabled = selectedBuilder?.categoryName === categoryName;
 
   const filter = parseCurrentParams();
 
   return useQuery(
-    [category.categoryName],
-    () => fetchProducts(category.collectionName, filter),
+    QUERY_KEY_FACTORIES.PRODUCTS.byCategory(categoryName),
+    () => Products.getByCategory(collectionName, filter),
     {
       enabled: isEnabled,
       onError: () =>
