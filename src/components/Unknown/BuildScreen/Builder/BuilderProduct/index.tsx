@@ -5,33 +5,21 @@ import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import useStyles from './styles';
-import { PriceRange } from '../../../../../../types';
-
-export type BuilderProductSpec = {
-  name: string;
-  value: string;
-};
-
-export type BuildProduct = {
-  id: string;
-  name: string;
-  mainImage: string;
-  specs: BuilderProductSpec[];
-  priceRange: PriceRange;
-};
-
-export type ProductSpecPropType<T> = { propName: keyof T; name: string };
+import { CategoryName, Part } from '../../../../../../types';
+import getShortSpecs from '../ShortSpecs/getShortSpecs';
 
 type ProductProps = {
-  product: BuildProduct;
+  product: Part;
   handleSelect: (id: string) => void;
   selectedId: string;
+  category: CategoryName;
 };
 
 const BuilderProduct: React.FC<ProductProps> = ({
   product,
   handleSelect,
   selectedId,
+  category,
 }) => {
   const styles = useStyles();
 
@@ -46,6 +34,8 @@ const BuilderProduct: React.FC<ProductProps> = ({
       </IconButton>
     );
 
+  const specs = getShortSpecs(product, category);
+
   return (
     <Box className={styles.wrapper}>
       <Box className={styles.leftWrapper}>
@@ -57,21 +47,24 @@ const BuilderProduct: React.FC<ProductProps> = ({
         <Box>
           <Typography variant="h5">{product.name}</Typography>
           <Box>
-            {product.specs.map((spec) => (
-              <Box key={spec.name} className={styles.specsWrapper}>
-                <Typography
-                  variant="h6"
-                  marginRight={1}
-                >{`${spec.name}: `}</Typography>
-                <Typography fontWeight="bold">{spec.value}</Typography>
-              </Box>
-            ))}
+            {specs?.map(
+              (spec) =>
+                spec.value && (
+                  <Box key={spec.name} className={styles.specsWrapper}>
+                    <Typography
+                      variant="h6"
+                      marginRight={1}
+                    >{`${spec.name}: `}</Typography>
+                    <Typography fontWeight="bold">{spec.value}</Typography>
+                  </Box>
+                ),
+            )}
           </Box>
         </Box>
       </Box>
       <Box className={styles.rightWrapper}>
         <Typography variant="h5">
-          {product.priceRange.minPrice}₴ - {product.priceRange.maxPrice}₴
+          {product.price.range.minPrice}₴ - {product.price.range.maxPrice}₴
         </Typography>
         {selectedId ? (
           <CheckIcon />

@@ -10,9 +10,6 @@ const useStyles = makeStyles((theme: Theme) =>
       alignItems: 'flex-start',
       justifyContent: 'center',
     },
-    filterTitle: {
-      textTransform: 'uppercase',
-    },
   }),
 );
 

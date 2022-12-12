@@ -6,8 +6,8 @@ import { Route, Routes, useNavigate, useParams } from 'react-router-dom';
 import { useFirebaseApp } from 'reactfire';
 import {
   CategoryName,
-  FetchedProduct,
   GraphicsCard,
+  Part,
   ProductCategory,
   Store,
 } from '../../../../types';
@@ -186,7 +186,7 @@ const mockProduct: GraphicsCard = {
 
 // Func for testing
 
-const getProduct = (): Promise<FetchedProduct> =>
+const getProduct = (): Promise<Part> =>
   new Promise((resolve) => {
     setTimeout(() => resolve(mockProduct), Math.random() * 5000);
   });
@@ -203,7 +203,7 @@ const ProductScreen: React.FC = () => {
     null,
   );
   const [stores, setStores] = useState<Store[] | null>(null);
-  const [product, setProduct] = useState<FetchedProduct | null>(null);
+  const [product, setProduct] = useState<Part | null>(null);
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isError, setIsError] = useState<boolean>(false);

@@ -1,4 +1,32 @@
+import {
+  CaseIcon,
+  CoolingIcon,
+  CPUIcon,
+  GPUIcon,
+  HDDIcon,
+  MotherboardIcon,
+  PSUIcon,
+  RAMIcon,
+  SSDIcon,
+} from '../components/Unknown/Icons';
+
 const DEFAULT_REGION = 'europe-central2';
+
+const IconByCategory: {
+  [key in keyof typeof ProductCategories]: React.FunctionComponent<
+    React.SVGProps<SVGSVGElement>
+  >;
+} = {
+  CPU: CPUIcon,
+  GPU: GPUIcon,
+  RAM: RAMIcon,
+  SSD: SSDIcon,
+  HDD: HDDIcon,
+  cooling: CoolingIcon,
+  case: CaseIcon,
+  motherboard: MotherboardIcon,
+  PSU: PSUIcon,
+};
 
 const ProductCategories = {
   CPU: {
@@ -60,6 +88,7 @@ const MIN_PRICE_SLIDER_DISTANCE = 1000;
 // eslint-disable-next-line import/prefer-default-export
 export {
   DEFAULT_REGION,
+  IconByCategory,
   ProductCategories,
   ProductPageTabs,
   MIN_PRICE_SLIDER_DISTANCE,

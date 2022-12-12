@@ -1,7 +1,6 @@
 import { Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import React, { useContext, useState } from 'react';
-import useQuery from '../../../../../hooks/useQuery';
 import { BuildScreenContext } from '../../../BuildScreenContext';
 import Switcher from '../../../Switcher';
 import { Filter } from '../filters';
@@ -15,25 +14,19 @@ type SwitchFilterProps = {
 const SwitchFilter: React.FC<SwitchFilterProps> = ({ filter }) => {
   const styles = useStyles();
 
-  const { searchParams } = useQuery();
-  const { handleChangeFilters } = useContext(BuildScreenContext);
-
-  const [value, setValue] = useState<string>(
-    searchParams.get(filter.key) || '',
-  );
+  const { handleChangeFilters, filters } = useContext(BuildScreenContext);
 
   const handleSwitch = (param: string) => {
-    setValue(param);
     handleChangeFilters({ [filter.key]: param });
   };
 
   return (
     <Box className={styles.filterWrapper}>
-      <Typography gutterBottom variant="h3" className={styles.filterTitle}>
+      <Typography gutterBottom variant="h3">
         {filter.title}:
       </Typography>
       <Switcher
-        value={value}
+        value={filters ? filters[filter.key] : ''}
         onSwitch={handleSwitch}
         options={filter.options}
       />

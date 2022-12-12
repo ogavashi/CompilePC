@@ -1,21 +1,22 @@
 import {
-  SpecBlock,
-  GraphicsCard,
-  FetchedProduct,
+  Part,
   CategoryName,
-} from '../../types';
-import formGPUSpecs from '../specTables/gpuSpecs';
+  ShortSpec,
+  CPU,
+} from '../../../../../../types/index';
 
-const getSpecsTable = (
-  product: FetchedProduct | null,
+import CPUFormer from './CPUformer';
+
+const getShortSpecs = (
+  product: Part | null,
   category: CategoryName,
-): SpecBlock[] | null => {
+): ShortSpec[] | null => {
   if (!product) return null;
   switch (category) {
     case 'CPU':
-      return null;
+      return CPUFormer(product as CPU);
     case 'GPU':
-      return formGPUSpecs(product as GraphicsCard);
+      return null;
     case 'HDD':
       return null;
     case 'SSD':
@@ -35,4 +36,4 @@ const getSpecsTable = (
   }
 };
 
-export default getSpecsTable;
+export default getShortSpecs;

@@ -1,12 +1,12 @@
 import { Box } from '@mui/system';
 import React from 'react';
-import { CategoryName, FetchedProduct } from '../../../../../types';
-import getSpecsTable from '../../../../common/getSpecsTable';
+import { CategoryName, Part } from '../../../../../types';
+import getSpecsTable from '../../../../specTables/getSpecsTable';
 import DescriptionBlock from '../DescriptionBlock';
 import SpecsTable from '../SpecsTable';
 
 type OverviewTabProps = {
-  product: FetchedProduct | null;
+  product: Part | null;
   categoryName: CategoryName;
   isLoading: boolean;
   isError: boolean;

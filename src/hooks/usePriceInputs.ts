@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { MIN_PRICE_SLIDER_DISTANCE, NUMERIC_FORMAT } from '../common/constants';
-import useQuery from './useQuery';
+import useQueryParams from './useQueryParams';
 
 export type PriceRange = {
   minPrice: number;
@@ -8,7 +8,7 @@ export type PriceRange = {
 };
 
 const usePriceInputs = () => {
-  const { parseCurrentParams } = useQuery();
+  const { parseCurrentParams } = useQueryParams();
 
   const parsedParams = parseCurrentParams();
 

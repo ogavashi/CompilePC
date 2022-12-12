@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
-const useQuery = () => {
+const useQueryParams = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const handleParamsChange = (filters: Record<string, string> | null) => {
@@ -46,4 +46,4 @@ const useQuery = () => {
   };
 };
 
-export default useQuery;
+export default useQueryParams;
