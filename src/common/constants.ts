@@ -61,7 +61,7 @@ const ProductCategories = {
   },
   motherboard: {
     categoryName: 'motherboard',
-    builderTitle: 'Motherboards',
+    builderTitle: 'Motherboard',
     collectionName: 'motherboards',
   },
   SSD: {
