@@ -18,6 +18,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     image: {
       margin: theme.spacing(4),
+      width: 150,
     },
     divider: {
       borderColor: `${theme.palette.backgroundGrey} !important`,

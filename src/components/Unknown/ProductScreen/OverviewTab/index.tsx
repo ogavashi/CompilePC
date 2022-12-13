@@ -6,7 +6,7 @@ import DescriptionBlock from './DescriptionBlock';
 import SpecsTable from './SpecsTable';
 
 type OverviewTabProps = {
-  product: Part | null;
+  product: Part | undefined;
   categoryName: CategoryName;
   isLoading: boolean;
   isError: boolean;

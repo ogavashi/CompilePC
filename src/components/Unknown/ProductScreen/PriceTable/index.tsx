@@ -7,8 +7,8 @@ import TableElement from './TableElement';
 import { Part, Store } from '../../../../../types';
 
 type PriceTableProps = {
-  product: Part | null;
-  stores: Store[] | null;
+  product: Part | undefined;
+  stores: Store[] | undefined;
   isError: boolean;
   isLoading: boolean;
 };

@@ -3,19 +3,12 @@ import { CategoryName } from '../../types/index';
 const QUERY_KEY_FACTORIES = {
   PRODUCTS: {
     all: () => ['products'],
-    byCategory: (category: CategoryName) => [
+    list: (category: CategoryName) => [
       { ...QUERY_KEY_FACTORIES.PRODUCTS.all(), category },
     ],
-  },
-  PRODUCT: {
-    base: () => ['product'],
-    byID: (id: string, category: CategoryName) => [
-      { ...QUERY_KEY_FACTORIES.PRODUCT.base(), id, category },
+    get: (id: string, category: CategoryName) => [
+      { ...QUERY_KEY_FACTORIES.PRODUCTS.list(category), id },
     ],
-  },
-  STORES: {
-    all: () => ['stores'],
-    byIDs: (ids: string[]) => [{ ...QUERY_KEY_FACTORIES.STORES.all(), ...ids }],
   },
 };
 

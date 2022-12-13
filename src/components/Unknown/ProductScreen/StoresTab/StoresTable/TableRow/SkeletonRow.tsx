@@ -13,7 +13,7 @@ const SkeletonRow = () => {
         className={styles.image}
         variant="rounded"
         width={150}
-        height={100}
+        height={140}
         animation="wave"
       />
       <Typography variant="h5">

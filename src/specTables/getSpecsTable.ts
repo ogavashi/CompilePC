@@ -2,7 +2,7 @@ import { SpecBlock, GraphicsCard, Part, CategoryName } from '../../types';
 import formGPUSpecs from './gpuSpecs';
 
 const getSpecsTable = (
-  product: Part | null,
+  product: Part | undefined,
   category: CategoryName,
 ): SpecBlock[] | null => {
   if (!product) return null;

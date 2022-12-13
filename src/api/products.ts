@@ -1,10 +1,21 @@
-import { CollectionName, Part } from '../../types';
+import { CollectionName, FullProduct, Part } from '../../types';
 import functions from '../common/firebaseFunctons';
 
 type Filter = Record<string, string | string[]>;
 
 const Products = {
-  getByCategory: async (
+  get: async (
+    id: string,
+    collectionName: CollectionName,
+  ): Promise<FullProduct> => {
+    const getProduct = functions.httpsCallable('getProduct');
+    const { data: product }: { data: FullProduct } = await getProduct({
+      id,
+      collectionName,
+    });
+    return product;
+  },
+  list: async (
     collectionName: CollectionName,
     filter: Filter,
   ): Promise<Part[]> => {

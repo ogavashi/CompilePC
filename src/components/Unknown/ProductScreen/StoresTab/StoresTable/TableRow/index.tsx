@@ -2,32 +2,46 @@ import React from 'react';
 import { Paper, Typography, Button } from '@mui/material';
 import Divider from '@mui/material/Divider';
 import { Box } from '@mui/system';
+import { Link } from 'react-router-dom';
 import useStyles from './styles';
+import { FullProduct, Store } from '../../../../../../../types';
 
-const TableRow = () => {
+type TableRowProps = {
+  product: FullProduct;
+  store: Store;
+};
+
+const TableRow: React.FC<TableRowProps> = ({ product, store }) => {
   const styles = useStyles();
+
+  const shop = product.price.offers.find((offer) => offer.storeId === store.id);
 
   return (
     <Paper className={styles.tableRow}>
       <img
+        className={product.mainImage}
         src="https://content1.rozetka.com.ua/goods/images/big/292785228.png"
         alt="biba"
       />
-      <Typography variant="h5">
-        MSI GeForce GTX1660 SUPER 6GB GDDR6 VENTUS XS OC
-      </Typography>
+      <Typography variant="h5">{product.name}</Typography>
       <Divider
         className={styles.divider}
         orientation="vertical"
         variant="middle"
         flexItem
       />
-      <Typography variant="h5">FOXTROT.UA</Typography>
+      <Typography variant="h5">{store.name}</Typography>
       <Box className={styles.buyBlock}>
         <Typography variant="h4" className={styles.price}>
-          14 556 ₴
+          {shop?.price} ₴
         </Typography>
-        <Button color="secondary" variant="contained" fullWidth>
+        <Button
+          color="secondary"
+          variant="contained"
+          component={Link}
+          to={shop?.link || '/404'}
+          fullWidth
+        >
           Buy in shop
         </Button>
       </Box>
