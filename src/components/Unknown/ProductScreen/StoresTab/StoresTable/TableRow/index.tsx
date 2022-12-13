@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Paper, Typography, Button } from '@mui/material';
 import Divider from '@mui/material/Divider';
 import { Box } from '@mui/system';
@@ -14,15 +14,14 @@ type TableRowProps = {
 const TableRow: React.FC<TableRowProps> = ({ product, store }) => {
   const styles = useStyles();
 
-  const shop = product.price.offers.find((offer) => offer.storeId === store.id);
+  const shop = useMemo(
+    () => product.price.offers.find((offer) => offer.storeId === store.id),
+    [product.price.offers, store.id],
+  );
 
   return (
     <Paper className={styles.tableRow}>
-      <img
-        className={product.mainImage}
-        src="https://content1.rozetka.com.ua/goods/images/big/292785228.png"
-        alt="biba"
-      />
+      <img className={styles.image} src={product.mainImage} alt="biba" />
       <Typography variant="h5">{product.name}</Typography>
       <Divider
         className={styles.divider}
@@ -39,7 +38,7 @@ const TableRow: React.FC<TableRowProps> = ({ product, store }) => {
           color="secondary"
           variant="contained"
           component={Link}
-          to={shop?.link || '/404'}
+          to={shop?.link as string}
           fullWidth
         >
           Buy in shop

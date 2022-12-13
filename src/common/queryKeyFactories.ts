@@ -7,7 +7,7 @@ const QUERY_KEY_FACTORIES = {
       { ...QUERY_KEY_FACTORIES.PRODUCTS.all(), category },
     ],
     get: (id: string, category: CategoryName) => [
-      { ...QUERY_KEY_FACTORIES.PRODUCTS.list(category), id },
+      { ...QUERY_KEY_FACTORIES.PRODUCTS.all(), id, category },
     ],
   },
 };

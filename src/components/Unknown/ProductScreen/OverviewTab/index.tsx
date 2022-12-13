@@ -6,7 +6,7 @@ import DescriptionBlock from './DescriptionBlock';
 import SpecsTable from './SpecsTable';
 
 type OverviewTabProps = {
-  product: Part | undefined;
+  product?: Part;
   categoryName: CategoryName;
   isLoading: boolean;
   isError: boolean;
@@ -34,6 +34,10 @@ const OverviewTab: React.FC<OverviewTabProps> = ({
       />
     </Box>
   );
+};
+
+OverviewTab.defaultProps = {
+  product: undefined,
 };
 
 export default OverviewTab;
