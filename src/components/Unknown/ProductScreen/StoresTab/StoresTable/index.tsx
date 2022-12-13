@@ -24,10 +24,10 @@ const StoresTable: React.FC<StoresTableProps> = ({
       {(isLoading ? Array.from(new Array(5)) : product?.stores || []).map(
         (store: Store, index) =>
           store && product ? (
-            // eslint-disable-next-line react/no-array-index-key
-            <TableRow key={index} store={store} product={product} />
+            <TableRow key={store.id} store={store} product={product} />
           ) : (
-            <SkeletonRow />
+            // eslint-disable-next-line react/no-array-index-key
+            <SkeletonRow key={index} />
           ),
       )}
     </>
