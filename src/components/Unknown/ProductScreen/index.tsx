@@ -2,7 +2,6 @@ import { Skeleton, Tab, Tabs, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import React, { useEffect, useState } from 'react';
 import { Route, Routes, useNavigate, useParams } from 'react-router-dom';
-
 import { CategoryName, ProductCategory } from '../../../../types';
 import { ProductCategories, ProductPageTabs } from '../../../common/constants';
 import useProduct from '../../../hooks/useProduct';
