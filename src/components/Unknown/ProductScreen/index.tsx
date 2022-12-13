@@ -16,6 +16,8 @@ import {
   ProductCategories,
   ProductPageTabs,
 } from '../../../common/constants';
+import useProduct from '../../../hooks/useProduct';
+import useStores from '../../../hooks/useStores';
 import { ErrorLoading } from '../Icons';
 
 import { UIContext } from '../UIContext';
@@ -203,11 +205,8 @@ const ProductScreen: React.FC = () => {
   const [productCetgory, setProductCategory] = useState<ProductCategory | null>(
     null,
   );
-  const [stores, setStores] = useState<Store[] | null>(null);
-  const [product, setProduct] = useState<Part | null>(null);
 
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [isError, setIsError] = useState<boolean>(false);
+  const [product, setProduct] = useState<Part | null>(null);
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setCurrentTab(newValue);
@@ -236,38 +235,16 @@ const ProductScreen: React.FC = () => {
     }
   }, [paramsCategory, paramsTab, navigate]);
 
-  useEffect(() => {
-    const getStoresData = async () => {
-      try {
-        setIsLoading(true);
+  const {
+    data: product,
+    isError,
+    isLoading,
+  } = useProduct(id, productCetgory?.categoryName);
 
-        // Will be used to fetch the products
-        // const {data: product}: {data: FetchedProduct} = await getProduct()({id, category.collectionName});
+  const storeIDs =
+    product && product.price.offers.map((store) => store.storeId);
 
-        const fetchedProduct = await getProduct();
-        setProduct(fetchedProduct);
-
-        const storesId = fetchedProduct.price.offers.map(
-          (store) => store.storeId,
-        );
-
-        const { data: newStores }: { data: Store[] } = await getStores()({
-          storesId,
-        });
-        setStores(newStores);
-      } catch (error) {
-        setIsError(true);
-        setAlert({
-          show: true,
-          severity: 'error',
-          message: 'Could not load data from server. Please try again later',
-        });
-      }
-      setIsLoading(false);
-    };
-
-    getStoresData();
-  }, [getStores, setAlert]);
+  const { data: stores } = useStores(storeIDs);
 
   const productTitle = isError ? "Couldn't load product's name" : product?.name;
 
