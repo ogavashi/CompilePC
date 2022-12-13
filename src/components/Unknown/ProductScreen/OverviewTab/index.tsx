@@ -2,8 +2,8 @@ import { Box } from '@mui/system';
 import React from 'react';
 import { CategoryName, Part } from '../../../../../types';
 import getSpecsTable from '../../../../specTables/getSpecsTable';
-import DescriptionBlock from '../DescriptionBlock';
-import SpecsTable from '../SpecsTable';
+import DescriptionBlock from './DescriptionBlock';
+import SpecsTable from './SpecsTable';
 
 type OverviewTabProps = {
   product: Part | null;

@@ -21,6 +21,7 @@ import { ErrorLoading } from '../Icons';
 import { UIContext } from '../UIContext';
 import OverviewTab from './OverviewTab';
 import PriceTable from './PriceTable';
+import StoresTab from './StoresTab';
 import useStyles from './styles';
 
 const mockProduct: GraphicsCard = {
@@ -331,7 +332,7 @@ const ProductScreen: React.FC = () => {
             }
           />
           <Route path="/reviews" element={<div>Nothing yet</div>} />
-          <Route path="/stores" element={<div>Nothing yet</div>} />
+          <Route path="/stores" element={<StoresTab />} />
         </Routes>
       )}
     </Box>
