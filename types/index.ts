@@ -308,3 +308,7 @@ export type ProductCategory = {
 };
 
 export type ShortSpec = { name: string; value?: string };
+
+export type FullProduct = Product & {
+  stores: Store[];
+};

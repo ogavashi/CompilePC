@@ -19,8 +19,8 @@ const useProducts = (category: ProductCategory): UseQueryResult<Part[]> => {
   const filter = parseCurrentParams();
 
   return useQuery(
-    QUERY_KEY_FACTORIES.PRODUCTS.byCategory(categoryName),
-    () => Products.getByCategory(collectionName, filter),
+    QUERY_KEY_FACTORIES.PRODUCTS.list(categoryName),
+    () => Products.list(collectionName, filter),
     {
       enabled: isEnabled,
       onError: () =>

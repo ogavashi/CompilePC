@@ -1,7 +1,7 @@
 import { Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import React from 'react';
-import { SpecBlock } from '../../../../../../types';
+import { SpecBlock } from '../../../../../../../types';
 import TableRow from '../TableRow';
 import useStyles from './styles';
 
