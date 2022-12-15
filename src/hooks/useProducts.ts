@@ -1,9 +1,9 @@
 import { useQuery, UseQueryResult } from '@tanstack/react-query';
 import { useContext } from 'react';
-import { BuildScreenContext } from '../components/Unknown/BuildScreenContext/index';
+import { BuildScreenContext } from '../components/BuildScreenContext/index';
 import { Part, ProductCategory } from '../../types/index';
 import useQueryParams from './useQueryParams';
-import { UIContext } from '../components/Unknown/UIContext';
+import { UIContext } from '../components/UIContext';
 import Products from '../api/products';
 import QUERY_KEY_FACTORIES from '../common/queryKeyFactories';
 

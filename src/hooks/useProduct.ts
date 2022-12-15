@@ -1,7 +1,7 @@
 import { useQuery, UseQueryResult } from '@tanstack/react-query';
 import { useContext } from 'react';
 import { FullProduct, ProductCategory } from '../../types/index';
-import { UIContext } from '../components/Unknown/UIContext';
+import { UIContext } from '../components/UIContext';
 import QUERY_KEY_FACTORIES from '../common/queryKeyFactories';
 import Products from '../api/products';
 

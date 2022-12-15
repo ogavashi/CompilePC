@@ -9,7 +9,7 @@ import {
   PSUIcon,
   RAMIcon,
   SSDIcon,
-} from '../components/Unknown/Icons';
+} from '../components/Icons';
 
 const DEFAULT_REGION = 'europe-central2';
 
