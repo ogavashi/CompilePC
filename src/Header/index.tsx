@@ -3,7 +3,7 @@ import AppBar from '@mui/material/AppBar';
 import { Button } from '@mui/material';
 import { Box, Container } from '@mui/system';
 import { Link } from 'react-router-dom';
-import { AppLogo } from '../Icons';
+import { AppLogo } from '../components/Unknown/Icons';
 
 const Header: React.FC = () => {
   return (

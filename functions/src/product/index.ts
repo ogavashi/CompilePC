@@ -2,28 +2,29 @@ import Joi = require('joi');
 import { getDB } from '../bootstrap';
 import { DEFAULT_REGION } from '../common/constants';
 import * as functions from 'firebase-functions';
-import naormalizeFilter from '../common/normalizeFilter';
+import { Offer } from '../../../types';
+import getStores from '../store';
 
-const schema = Joi.object({
-  minPrice: Joi.number(),
-  maxPrice: Joi.number(),
-}).pattern(
-  Joi.string(),
-  Joi.alternatives(Joi.array().items(Joi.string()), Joi.string()),
-);
+const getProductSchema = Joi.object({
+  id: Joi.string(),
+});
 
-const getProducts = functions
+const getProduct = functions
   .region(DEFAULT_REGION)
   .https.onCall(async (data) => {
-    const { collectionName, filter } = data;
-    await schema.validateAsync(filter);
+    const { id, collectionName } = data;
+
+    await getProductSchema.validateAsync({ id });
 
     const db = await getDB();
-    const normalizedFilter = naormalizeFilter(filter);
-    const cursor = await db.collection(collectionName).find(normalizedFilter);
-    const result = await cursor.toArray();
 
-    return result;
+    const product = await db.collection(collectionName).findOne({ id });
+
+    const storesId = product?.price.offers.map((store: Offer) => store.storeId);
+
+    const stores = await getStores(storesId);
+
+    return { ...product, stores };
   });
 
-export default getProducts;
+export default getProduct;
