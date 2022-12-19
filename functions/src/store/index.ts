@@ -1,7 +1,8 @@
 import { getDB } from '../bootstrap';
 import { ObjectId, WithId } from 'mongodb';
+import { Store } from '../../../types';
 
-interface Store extends WithId<Document> {
+interface RawStore extends WithId<Document> {
   _id: ObjectId;
   name: string;
   imageUrl: string;
@@ -12,21 +13,18 @@ const getStores = async (storeIDs: string[]) => {
 
   const mongofiedIds = storeIDs.map((storeId: string) => new ObjectId(storeId));
 
-  const rawStores: Store[] = await Promise.all(
+  const rawStores: RawStore[] = await Promise.all(
     mongofiedIds.map(
       (storeId: ObjectId) =>
-        db.collection('stores').findOne({ _id: storeId }) as Promise<Store>,
+        db.collection('stores').findOne({ _id: storeId }) as Promise<RawStore>,
     ),
   );
 
-  const stores = rawStores.map((rawStore: Store) =>
-    Object.fromEntries(
-      Object.entries(rawStore).map(([key, value]) => [
-        key === '_id' ? 'id' : key,
-        key === '_id' ? value.toString() : value,
-      ]),
-    ),
-  );
+  const stores: Store[] = rawStores.map((rawStore: RawStore) => ({
+    id: rawStore['_id'].toString(),
+    name: rawStore.name,
+    imageUrl: rawStore.imageUrl,
+  }));
 
   return stores;
 };
