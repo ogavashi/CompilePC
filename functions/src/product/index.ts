@@ -18,15 +18,21 @@ const getProduct = functions
 
     const db = await getDB();
 
-    const product = (await db
-      .collection<Part>(collectionName)
-      .findOne({ id })) as Part;
+    try {
+      const product = (await db
+        .collection<Part>(collectionName)
+        .findOne({ id })) as Part;
 
-    const storesId = product?.price.offers.map((store: Offer) => store.storeId);
+      const storesId = product.price.offers.map(
+        (store: Offer) => store.storeId,
+      );
 
-    const stores = await getStores(storesId as string[]);
+      const stores = await getStores(storesId);
 
-    return { ...product, stores };
+      return { ...product, stores };
+    } catch (error) {
+      throw new functions.https.HttpsError('not-found', 'Product not found');
+    }
   });
 
 export default getProduct;
