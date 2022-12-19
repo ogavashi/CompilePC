@@ -2,7 +2,7 @@ import { ButtonBase, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import clsx from 'clsx';
 import React, { useContext } from 'react';
-import { BuildScreenContext } from '../../../BuildScreenContext';
+import { AppContext } from '../../../AppContext';
 import { FilterOption } from '../filters';
 import useStyles from './styles';
 
@@ -18,7 +18,7 @@ const FilterItem: React.FC<FilterItemProps> = ({
   selectedFilters,
 }) => {
   const styles = useStyles();
-  const { handleChangeFilters } = useContext(BuildScreenContext);
+  const { handleChangeFilters } = useContext(AppContext);
 
   const isSelected = selectedFilters && selectedFilters.includes(option.key);
 

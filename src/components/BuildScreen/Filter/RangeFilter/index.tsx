@@ -4,7 +4,7 @@ import React, { useContext, useEffect } from 'react';
 import { NUMERIC_FORMAT } from '../../../../common/constants';
 import useDebounce from '../../../../hooks/useDebounce';
 import usePriceInputs, { PriceRange } from '../../../../hooks/usePriceInputs';
-import { BuildScreenContext } from '../../../BuildScreenContext';
+import { AppContext } from '../../../AppContext';
 
 export type Param = {
   [key: string]: string;
@@ -15,7 +15,7 @@ type RangeFilterProps = {
 };
 
 const RangeFilter: React.FC<RangeFilterProps> = ({ title }) => {
-  const { handleChangeFilters } = useContext(BuildScreenContext);
+  const { handleChangeFilters } = useContext(AppContext);
 
   const {
     priceRange,

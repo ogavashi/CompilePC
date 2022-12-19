@@ -10,13 +10,12 @@ import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded';
 import useStyles from './styles';
-import { BuildScreenContext } from '../../../BuildScreenContext';
+import { AppContext } from '../../../AppContext';
 import { Part, ProductCategory } from '../../../../../types';
 
 type ProductAccordionProps = {
   icon: React.FC;
   category: ProductCategory;
-  selectedId: string;
   // eslint-disable-next-line react/require-default-props
   selectedProduct?: Part;
 };
@@ -25,13 +24,14 @@ const ProductAccordion: React.FC<ProductAccordionProps> = ({
   icon: Icon,
   category,
   children,
-  selectedId,
   selectedProduct,
 }) => {
   const styles = useStyles();
 
-  const { selectedBuilder, handleSelectBuilder } =
-    useContext(BuildScreenContext);
+  const { selectedBuilder, handleSelectBuilder, build } =
+    useContext(AppContext);
+
+  const selectedId = category.categoryName && build[category.categoryName];
 
   const DisplayReplace = () =>
     selectedId ? (

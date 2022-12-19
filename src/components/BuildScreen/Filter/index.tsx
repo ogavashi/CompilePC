@@ -2,7 +2,7 @@ import { Button } from '@mui/material';
 import { Box } from '@mui/system';
 import React, { useContext } from 'react';
 import useQueryParams from '../../../hooks/useQueryParams';
-import { BuildScreenContext } from '../../BuildScreenContext';
+import { AppContext } from '../../AppContext';
 import AccordionFilter from './AccordionFilter';
 import { filters } from './filters';
 import RangeFilter from './RangeFilter';
@@ -18,7 +18,7 @@ const Filter: React.FC = () => {
     filters: selectedFilters,
     selectedBuilder,
     setSelectedFilter,
-  } = useContext(BuildScreenContext);
+  } = useContext(AppContext);
 
   const handleApplyFilters = () => {
     setSelectedFilter(null);

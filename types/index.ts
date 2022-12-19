@@ -312,3 +312,15 @@ export type ShortSpec = { name: string; value?: string };
 export type FullProduct = Product & {
   stores: Store[];
 };
+
+export type Build = {
+  CPU: CPU | null;
+  GPU: GraphicsCard | null;
+  PSU: PSU | null;
+  RAM: RAM | null;
+  case: Case | null;
+  cooling: Cooling | null;
+  motherboard: Motherboard | null;
+  SSD: SolidStateDrive | null;
+  HDD: HardDrive | null;
+};

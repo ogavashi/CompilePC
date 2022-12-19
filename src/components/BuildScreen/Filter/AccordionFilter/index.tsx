@@ -13,7 +13,7 @@ import React, { useContext } from 'react';
 import useStyles from './styles';
 import FilterItem from '../FilterItem';
 import useFilterAccordion from '../../../../hooks/useFilterAccordion';
-import { BuildScreenContext } from '../../../BuildScreenContext';
+import { AppContext } from '../../../AppContext';
 import { Filter } from '../filters';
 
 type AccordionFilterProps = {
@@ -25,7 +25,7 @@ const AccordionFilter: React.FC<AccordionFilterProps> = ({ filter }) => {
 
   const { selectedFilters, handleAddFilter } = useFilterAccordion(filter.key);
 
-  const { selectedFilter, handleSelectFilter } = useContext(BuildScreenContext);
+  const { selectedFilter, handleSelectFilter } = useContext(AppContext);
 
   const isSelected = Boolean(selectedFilters?.length);
 

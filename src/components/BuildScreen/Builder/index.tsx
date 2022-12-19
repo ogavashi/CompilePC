@@ -6,7 +6,7 @@ import ProductAccordion from './ProductAccordion';
 import BuilderProduct from './BuilderProduct';
 import { IconByCategory } from '../../../common/constants';
 import { ProductCategory } from '../../../../types';
-import { BuildScreenContext } from '../../BuildScreenContext';
+import { AppContext } from '../../AppContext';
 import SkeletonProduct from './SkeletonProduct';
 import useProducts from '../../../hooks/useProducts';
 
@@ -15,20 +15,16 @@ type BuilderProps = {
 };
 
 const Builder: React.FC<BuilderProps> = ({ category }) => {
-  const { handleSelectBuilder } = useContext(BuildScreenContext);
-
-  const [selectedId, setSelectedId] = useState<string>('');
-
-  const handleAddProduct = (productId: string) => {
-    handleSelectBuilder(category);
-    setSelectedId(productId);
-  };
+  const { build } = useContext(AppContext);
 
   const { data: products, isLoading, isError } = useProducts(category);
 
   const selectedProduct = useMemo(
-    () => products?.find((product) => product.id === selectedId),
-    [products, selectedId],
+    () =>
+      products?.find(
+        (product) => product.id === build[category.categoryName]?.id,
+      ),
+    [build, category.categoryName, products],
   );
 
   const BuilderProducts = () => (
@@ -39,8 +35,6 @@ const Builder: React.FC<BuilderProps> = ({ category }) => {
             <BuilderProduct
               product={product}
               key={product.id}
-              handleSelect={handleAddProduct}
-              selectedId={selectedId}
               category={category.categoryName}
             />
           ) : (
@@ -55,7 +49,6 @@ const Builder: React.FC<BuilderProps> = ({ category }) => {
     <ProductAccordion
       icon={IconByCategory[category.categoryName]}
       category={category}
-      selectedId={selectedId}
       selectedProduct={selectedProduct}
     >
       {isError ? (

@@ -1,6 +1,6 @@
 import { useQuery, UseQueryResult } from '@tanstack/react-query';
 import { useContext } from 'react';
-import { BuildScreenContext } from '../components/BuildScreenContext/index';
+import { AppContext } from '../components/AppContext/index';
 import { Part, ProductCategory } from '../../types/index';
 import useQueryParams from './useQueryParams';
 import { UIContext } from '../components/UIContext';
@@ -9,7 +9,7 @@ import QUERY_KEY_FACTORIES from '../common/queryKeyFactories';
 
 const useProducts = (category: ProductCategory): UseQueryResult<Part[]> => {
   const { parseCurrentParams } = useQueryParams();
-  const { selectedBuilder } = useContext(BuildScreenContext);
+  const { selectedBuilder } = useContext(AppContext);
   const { setAlert } = useContext(UIContext);
 
   const { categoryName, collectionName } = category;

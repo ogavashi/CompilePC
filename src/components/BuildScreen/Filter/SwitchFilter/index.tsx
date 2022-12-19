@@ -1,7 +1,7 @@
 import { Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import React, { useContext } from 'react';
-import { BuildScreenContext } from '../../../BuildScreenContext';
+import { AppContext } from '../../../AppContext';
 import Switcher from '../../../Switcher';
 import { Filter } from '../filters';
 
@@ -14,7 +14,7 @@ type SwitchFilterProps = {
 const SwitchFilter: React.FC<SwitchFilterProps> = ({ filter }) => {
   const styles = useStyles();
 
-  const { handleChangeFilters, filters } = useContext(BuildScreenContext);
+  const { handleChangeFilters, filters } = useContext(AppContext);
 
   const handleSwitch = (param: string) => {
     handleChangeFilters({ [filter.key]: param });

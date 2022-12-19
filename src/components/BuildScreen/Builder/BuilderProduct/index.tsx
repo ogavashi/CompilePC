@@ -1,35 +1,33 @@
 import { IconButton, Typography } from '@mui/material';
 import { Box } from '@mui/system';
-import React from 'react';
+import React, { useContext } from 'react';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import useStyles from './styles';
 import { CategoryName, Part } from '../../../../../types';
 import getShortSpecs from '../ShortSpecs/getShortSpecs';
+import { AppContext } from '../../../AppContext';
 
 type ProductProps = {
   product: Part;
-  handleSelect: (id: string) => void;
-  selectedId: string;
   category: CategoryName;
 };
 
-const BuilderProduct: React.FC<ProductProps> = ({
-  product,
-  handleSelect,
-  selectedId,
-  category,
-}) => {
+const BuilderProduct: React.FC<ProductProps> = ({ product, category }) => {
   const styles = useStyles();
 
+  const { addPart, removePart, build } = useContext(AppContext);
+
+  const selectedId = build[category]?.id;
+
   const CheckIcon = () =>
-    selectedId === product.id ? (
-      <IconButton onClick={() => handleSelect('')}>
+    selectedId && selectedId === product.id ? (
+      <IconButton onClick={() => removePart(category)}>
         <CloseRoundedIcon className={styles.redIcon} fontSize="large" />
       </IconButton>
     ) : (
-      <IconButton onClick={() => handleSelect(product.id)}>
+      <IconButton onClick={() => addPart(product, category)}>
         <SwapHorizIcon className={styles.greenIcon} fontSize="large" />
       </IconButton>
     );
@@ -69,7 +67,7 @@ const BuilderProduct: React.FC<ProductProps> = ({
         {selectedId ? (
           <CheckIcon />
         ) : (
-          <IconButton onClick={() => handleSelect(product.id)}>
+          <IconButton onClick={() => addPart(product, category)}>
             <AddRoundedIcon
               className={styles.greenIcon}
               fontSize="large"
