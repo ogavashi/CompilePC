@@ -28,7 +28,7 @@ module.exports = {
     sourceType: 'module',
     project: './tsconfig.json',
   },
-  ignorePatterns: ['.eslintrc.js'],
+  ignorePatterns: ['.eslintrc.js', 'src/custom.d.ts'],
   rules: {
     'linebreak-style': 'off',
     'react/jsx-props-no-spreading': 'off',

@@ -1,4 +1,5 @@
 {
+  "include": ["src", "../src/custom.d.ts"],
   "compilerOptions": {
     "module": "commonjs",
     "noImplicitReturns": true,
@@ -8,12 +9,7 @@
     "strict": true,
     "target": "es2019",
     "esModuleInterop": true,
-    "typeRoots": [
-      "./node_modules/@types"
-    ]
+    "typeRoots": ["./node_modules/@types"]
   },
-  "compileOnSave": true,
-  "include": [
-    "src"
-  ]
+  "compileOnSave": true
 }

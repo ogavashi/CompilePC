@@ -1,3 +1,4 @@
+import { FunctionComponent, SVGProps } from 'react';
 import {
   CaseIcon,
   CoolingIcon,
@@ -8,13 +9,13 @@ import {
   PSUIcon,
   RAMIcon,
   SSDIcon,
-} from '../components/Unknown/Icons';
+} from '../components/Icons';
 
 const DEFAULT_REGION = 'europe-central2';
 
 const IconByCategory: {
-  [key in keyof typeof ProductCategories]: React.FunctionComponent<
-    React.SVGProps<SVGSVGElement>
+  [key in keyof typeof ProductCategories]: FunctionComponent<
+    SVGProps<SVGSVGElement>
   >;
 } = {
   CPU: CPUIcon,
