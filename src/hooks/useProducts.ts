@@ -1,7 +1,7 @@
 import { useQuery, UseQueryResult } from '@tanstack/react-query';
 import { useContext } from 'react';
 import { AppContext } from '../components/AppContext/index';
-import { Part, ProductCategory } from '../../types/index';
+import { Part, ProductCategory, QueryFilter } from '../../types/index';
 import useQueryParams from './useQueryParams';
 import { UIContext } from '../components/UIContext';
 import Products from '../api/products';
@@ -16,10 +16,10 @@ const useProducts = (category: ProductCategory): UseQueryResult<Part[]> => {
 
   const isEnabled = selectedBuilder?.categoryName === categoryName;
 
-  const filter = parseCurrentParams();
+  const filter: QueryFilter = parseCurrentParams();
 
   return useQuery(
-    QUERY_KEY_FACTORIES.PRODUCTS.list(categoryName),
+    QUERY_KEY_FACTORIES.PRODUCTS.list(categoryName, filter),
     () => Products.list(collectionName, filter),
     {
       enabled: isEnabled,

@@ -14,8 +14,6 @@ const Build = () => {
 
   const { clearBuild, getAverageSum, isEmpty } = useBuild();
 
-  console.log(isEmpty);
-
   return (
     <Box className={styles.wrapper}>
       {Object.keys(ProductCategories).map((category) => (

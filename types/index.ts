@@ -324,3 +324,5 @@ export type Build = {
   SSD: SolidStateDrive | null;
   HDD: HardDrive | null;
 };
+
+export type QueryFilter = { [k: string]: string | string[] };

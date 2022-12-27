@@ -44,10 +44,8 @@ export const AppContextProvider: React.FC = ({ children }) => {
 
   const handleSelectBuilder = (panel: ProductCategory) => {
     // Erase query string and filters in state whenever new builder is opened
-    if (panel !== selectedBuilder && selectedBuilder !== null) {
-      setSearchParams({});
-      setFilters(null);
-    }
+    setSearchParams({});
+    setFilters(null);
     setSelectedBuilder((prev) => (prev === panel ? null : panel));
   };
 

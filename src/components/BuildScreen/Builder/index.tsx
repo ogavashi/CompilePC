@@ -15,17 +15,7 @@ type BuilderProps = {
 };
 
 const Builder: React.FC<BuilderProps> = ({ category }) => {
-  const { build } = useContext(AppContext);
-
   const { data: products, isLoading, isError } = useProducts(category);
-
-  const selectedProduct = useMemo(
-    () =>
-      products?.find(
-        (product) => product.id === build[category.categoryName]?.id,
-      ),
-    [build, category.categoryName, products],
-  );
 
   const BuilderProducts = () => (
     <>
@@ -49,7 +39,6 @@ const Builder: React.FC<BuilderProps> = ({ category }) => {
     <ProductAccordion
       icon={IconByCategory[category.categoryName]}
       category={category}
-      selectedProduct={selectedProduct}
     >
       {isError ? (
         <Box

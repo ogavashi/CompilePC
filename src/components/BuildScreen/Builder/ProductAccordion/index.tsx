@@ -16,25 +16,22 @@ import { Part, ProductCategory } from '../../../../../types';
 type ProductAccordionProps = {
   icon: React.FC;
   category: ProductCategory;
-  // eslint-disable-next-line react/require-default-props
-  selectedProduct?: Part;
 };
 
 const ProductAccordion: React.FC<ProductAccordionProps> = ({
   icon: Icon,
   category,
   children,
-  selectedProduct,
 }) => {
   const styles = useStyles();
 
   const { selectedBuilder, handleSelectBuilder, build } =
     useContext(AppContext);
 
-  const selectedId = category.categoryName && build[category.categoryName];
+  const selectedProduct = build[category.categoryName];
 
   const DisplayReplace = () =>
-    selectedId ? (
+    selectedProduct ? (
       <IconButton onClick={() => handleSelectBuilder(category)}>
         <SwapHorizIcon className={styles.greenIcon} fontSize="large" />
       </IconButton>
@@ -61,7 +58,7 @@ const ProductAccordion: React.FC<ProductAccordionProps> = ({
           )
         }
       >
-        {selectedId ? (
+        {selectedProduct ? (
           <img
             className={styles.productIcon}
             src={selectedProduct?.mainImage}
@@ -72,7 +69,7 @@ const ProductAccordion: React.FC<ProductAccordionProps> = ({
         )}
 
         <Typography variant="h5" className={styles.title}>
-          {selectedId
+          {selectedProduct
             ? selectedProduct?.name
             : `${category.builderTitle} is not selected`}
         </Typography>
