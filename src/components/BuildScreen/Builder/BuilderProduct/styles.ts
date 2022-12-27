@@ -13,6 +13,9 @@ const useStyles = makeStyles((theme: Theme) =>
         border: 'none',
       },
     },
+    productName: {
+      cursor: 'pointer',
+    },
     leftWrapper: {
       display: 'flex',
       alignItems: 'center',
@@ -25,6 +28,7 @@ const useStyles = makeStyles((theme: Theme) =>
     image: {
       width: '90px',
       margin: theme.spacing(5),
+      cursor: 'pointer',
     },
     greenIcon: {
       backgroundColor: theme.palette.green,

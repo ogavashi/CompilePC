@@ -1,30 +1,20 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Box } from '@mui/system';
 import Button from '@mui/material/Button/Button';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
-import { AppContext } from '../../AppContext';
 import { CategoryName } from '../../../../types';
 import BuildProduct from './BuildProduct';
 import { ProductCategories } from '../../../common/constants';
 import useStyles from './styles';
+import useBuild from '../../../hooks/useBuild';
 
 const Build = () => {
   const styles = useStyles();
 
-  const { clearBuild, build } = useContext(AppContext);
+  const { clearBuild, getAverageSum, isEmpty } = useBuild();
 
-  const minPrice = Object.keys(build).reduce((sum, key) => {
-    const part = build[key as CategoryName];
-    return part ? sum + part.price.range.minPrice : 0;
-  }, 0);
-
-  const maxPrice = Object.keys(build).reduce((sum, key) => {
-    const part = build[key as CategoryName];
-    return part ? sum + part.price.range.maxPrice : 0;
-  }, 0);
-
-  const avaragePrice = (maxPrice + minPrice) / 2;
+  console.log(isEmpty);
 
   return (
     <Box className={styles.wrapper}>
@@ -36,7 +26,7 @@ const Build = () => {
       ))}
       <Box className={styles.totalWrapper}>
         <Typography className={styles.totalTitle}>Total:</Typography>
-        <Typography className={styles.totalSum}>{avaragePrice} ₴</Typography>
+        <Typography className={styles.totalSum}>{getAverageSum()} ₴</Typography>
       </Box>
       <Divider
         className={styles.divider}
@@ -49,6 +39,7 @@ const Build = () => {
           variant="contained"
           fullWidth
           className={styles.button}
+          disabled={isEmpty}
         >
           Save
         </Button>
@@ -58,6 +49,7 @@ const Build = () => {
           fullWidth
           className={styles.button}
           onClick={() => clearBuild()}
+          disabled={isEmpty}
         >
           Clear
         </Button>

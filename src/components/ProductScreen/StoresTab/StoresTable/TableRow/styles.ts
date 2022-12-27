@@ -16,6 +16,10 @@ const useStyles = makeStyles((theme: Theme) =>
         marginBottom: theme.spacing(0),
       },
     },
+    storeName: {
+      width: theme.spacing(55),
+      textAlign: 'center',
+    },
     image: {
       margin: theme.spacing(4),
       width: 150,

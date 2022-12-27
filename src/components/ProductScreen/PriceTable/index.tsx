@@ -65,7 +65,7 @@ const PriceTable: React.FC<PriceTableProps> = ({
                           stores.find((store) => store.id === offer.storeId)) ||
                         null
                       }
-                      key={offer.storeId}
+                      key={offer.storeId + offer.price}
                     />
                   ) : (
                     <Grid

@@ -33,7 +33,9 @@ const TableRow: React.FC<TableRowProps> = ({ product, store }) => {
         variant="middle"
         flexItem
       />
-      <Typography variant="h5">{store.name}</Typography>
+      <Box className={styles.storeName}>
+        <Typography variant="h5">{store.name}</Typography>
+      </Box>
       <Box className={styles.buyBlock}>
         <Typography variant="h4" className={styles.price}>
           {shop?.price} ₴
@@ -41,8 +43,8 @@ const TableRow: React.FC<TableRowProps> = ({ product, store }) => {
         <Button
           color="secondary"
           variant="contained"
-          component={Link}
-          to={shop?.link as string}
+          href={shop?.link as string}
+          target="blank"
           fullWidth
         >
           Buy in shop

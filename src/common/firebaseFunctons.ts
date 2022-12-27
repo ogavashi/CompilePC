@@ -1,5 +1,6 @@
-import firebase from 'firebase/app';
+import { DEFAULT_REGION } from './constants';
+import app from './firebaseApp';
 
-const functions = firebase.functions();
+const functions = app.functions(DEFAULT_REGION);
 
 export default functions;

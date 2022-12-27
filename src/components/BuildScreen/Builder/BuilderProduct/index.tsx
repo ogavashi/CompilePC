@@ -1,13 +1,14 @@
 import { IconButton, Typography } from '@mui/material';
 import { Box } from '@mui/system';
-import React, { useContext } from 'react';
+import React from 'react';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
+import { Link, useNavigate } from 'react-router-dom';
 import useStyles from './styles';
 import { CategoryName, Part } from '../../../../../types';
 import getShortSpecs from '../ShortSpecs/getShortSpecs';
-import { AppContext } from '../../../AppContext';
+import useBuild from '../../../../hooks/useBuild';
 
 type ProductProps = {
   product: Part;
@@ -17,7 +18,9 @@ type ProductProps = {
 const BuilderProduct: React.FC<ProductProps> = ({ product, category }) => {
   const styles = useStyles();
 
-  const { addPart, removePart, build } = useContext(AppContext);
+  const navigate = useNavigate();
+
+  const { addPart, removePart, build } = useBuild();
 
   const selectedId = build[category]?.id;
 
@@ -36,14 +39,23 @@ const BuilderProduct: React.FC<ProductProps> = ({ product, category }) => {
 
   return (
     <Box className={styles.wrapper}>
-      <Box className={styles.leftWrapper}>
+      <Box
+        onClick={() => navigate(`/product/${category}/${product.id}`)}
+        className={styles.leftWrapper}
+      >
         <img
           className={styles.image}
           src={product.mainImage}
           alt={product.name}
         />
         <Box>
-          <Typography variant="h5">{product.name}</Typography>
+          <Typography
+            onClick={() => navigate(`/product/${category}/${product.id}`)}
+            variant="h5"
+            className={styles.productName}
+          >
+            {product.name}
+          </Typography>
           <Box>
             {specs?.map(
               (spec) =>

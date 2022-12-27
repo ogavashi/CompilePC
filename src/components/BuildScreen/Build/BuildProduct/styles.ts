@@ -15,6 +15,10 @@ const useStyles = makeStyles((theme: Theme) =>
     icon: {
       filter: 'grayscale(100%)',
     },
+    partName: {
+      textAlign: 'center',
+      maxWidth: theme.spacing(40),
+    },
     redIcon: {
       backgroundColor: theme.palette.tomatoRed,
       color: theme.palette.backgroundGrey,
