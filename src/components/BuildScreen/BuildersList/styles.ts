@@ -3,12 +3,8 @@ import { Theme } from '@mui/system';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    mainContainer: {
-      marginTop: theme.spacing(16),
-      gap: theme.spacing(8),
-      '& .MuiPaper-root': {
-        backgroundColor: theme.palette.backgroundGrey,
-      },
+    mainSection: {
+      width: '100%',
     },
   }),
 );

@@ -2,23 +2,25 @@ import clsx from 'clsx';
 import React, { useMemo } from 'react';
 import ClearIcon from '@mui/icons-material/Clear';
 import { IconButton, Typography, Paper } from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
 import { IconByCategory } from '../../../../common/constants';
 import { CategoryName } from '../../../../../types';
 import useStyles from './styles';
-import useBuild from '../../../../hooks/useBuild';
+import { selectAssemblyPart } from '../../../../store/builder/selectors';
+import { removeAssemblyPart } from '../../../../store/builder/slice';
 
-type BuildProductProps = {
+type AssemblyPartProps = {
   category: CategoryName;
 };
 
-const BuildProduct: React.FC<BuildProductProps> = ({ category }) => {
+const AssemblyPart: React.FC<AssemblyPartProps> = ({ category }) => {
   const styles = useStyles();
 
-  const { removePart, build } = useBuild();
+  const dispatch = useDispatch();
+
+  const part = useSelector(selectAssemblyPart(category));
 
   const Icon = useMemo(() => IconByCategory[category], [category]);
-
-  const part = build[category];
 
   return (
     <Paper className={styles.wrapper}>
@@ -27,7 +29,7 @@ const BuildProduct: React.FC<BuildProductProps> = ({ category }) => {
         {part ? part.name : 'Not selected'}
       </Typography>
       {part && (
-        <IconButton onClick={() => removePart(category)}>
+        <IconButton onClick={() => dispatch(removeAssemblyPart(category))}>
           <ClearIcon className={styles.redIcon} />
         </IconButton>
       )}
@@ -35,4 +37,4 @@ const BuildProduct: React.FC<BuildProductProps> = ({ category }) => {
   );
 };
 
-export default BuildProduct;
+export default AssemblyPart;

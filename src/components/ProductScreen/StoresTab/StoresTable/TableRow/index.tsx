@@ -2,7 +2,6 @@ import React, { useMemo } from 'react';
 import { Paper, Typography, Button } from '@mui/material';
 import Divider from '@mui/material/Divider';
 import { Box } from '@mui/system';
-import { Link } from 'react-router-dom';
 import useStyles from './styles';
 import { FullProduct, Store } from '../../../../../../types';
 

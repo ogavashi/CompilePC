@@ -83,6 +83,11 @@ const ProductPageTabs = [
   { value: 'reviews', label: 'Reviews' },
 ];
 
+const ROUTES = {
+  PRODUCT: '/product/:category/:id/',
+  ASSEMBLY: '/assembly/:id',
+};
+
 const NUMERIC_FORMAT = /^[0-9]*$/;
 
 const MIN_PRICE_SLIDER_DISTANCE = 1000;
@@ -94,4 +99,5 @@ export {
   ProductPageTabs,
   MIN_PRICE_SLIDER_DISTANCE,
   NUMERIC_FORMAT,
+  ROUTES,
 };

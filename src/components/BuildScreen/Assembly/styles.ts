@@ -3,6 +3,10 @@ import { createStyles, makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
+    sideSection: {
+      width: '100%',
+      maxWidth: 300,
+    },
     wrapper: {
       display: 'flex',
       flexDirection: 'column',
@@ -12,19 +16,24 @@ const useStyles = makeStyles((theme: Theme) =>
       alignItems: 'center',
       margin: theme.spacing(2),
     },
+    emptyTitle: {
+      fontSize: `${30}px !important`,
+      textAlign: 'center',
+    },
     totalTitle: {
-      fontWeight: 'bold',
-      fontSize: 30,
-      marginRight: theme.spacing(2),
+      fontWeight: 'bold !important',
+      fontSize: `${30}px !important`,
+      marginRight: `${theme.spacing(2)} !important`,
     },
     totalSum: {
-      fontSize: 30,
+      fontSize: `${30}px !important`,
+      fontWeight: 'regular !important',
     },
     divider: {
       borderColor: `${theme.palette.backgroundBlack} !important`,
     },
     button: {
-      margin: theme.spacing(2),
+      margin: `${theme.spacing(2)} !important`,
     },
   }),
 );

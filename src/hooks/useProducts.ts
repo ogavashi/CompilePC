@@ -1,20 +1,22 @@
 import { useQuery, UseQueryResult } from '@tanstack/react-query';
 import { useContext } from 'react';
-import { AppContext } from '../components/AppContext/index';
-import { Part, ProductCategory, QueryFilter } from '../../types/index';
+import { useSelector } from 'react-redux';
+import { Part, QueryFilter, Builder } from '../../types/index';
 import useQueryParams from './useQueryParams';
 import { UIContext } from '../components/UIContext';
 import Products from '../api/products';
 import QUERY_KEY_FACTORIES from '../common/queryKeyFactories';
+import { selectOpenedBuilder } from '../store/builder/selectors';
 
-const useProducts = (category: ProductCategory): UseQueryResult<Part[]> => {
+const useProducts = (builder: Builder): UseQueryResult<Part[]> => {
   const { parseCurrentParams } = useQueryParams();
-  const { selectedBuilder } = useContext(AppContext);
   const { setAlert } = useContext(UIContext);
 
-  const { categoryName, collectionName } = category;
+  const openedBuilder = useSelector(selectOpenedBuilder);
 
-  const isEnabled = selectedBuilder?.categoryName === categoryName;
+  const { categoryName, collectionName } = builder;
+
+  const isEnabled = openedBuilder === categoryName;
 
   const filter: QueryFilter = parseCurrentParams();
 

@@ -14,7 +14,10 @@ const useStyles = makeStyles((theme: Theme) =>
       },
     },
     productName: {
-      cursor: 'pointer',
+      textDecoration: 'none',
+      color: theme.palette.white,
+      maxWidth: 450,
+      width: '100%',
     },
     leftWrapper: {
       display: 'flex',

@@ -1,4 +1,4 @@
-import { CPU, ShortSpec } from '../../../../../types/index';
+import { CPU, ShortSpec } from '../../../../../../types/index';
 
 const CPUFormer = (product: CPU): ShortSpec[] => [
   { name: 'Series', value: product.series },

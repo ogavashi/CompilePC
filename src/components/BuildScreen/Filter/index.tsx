@@ -1,4 +1,4 @@
-import { Button } from '@mui/material';
+import { Button, Paper, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import React, { useContext } from 'react';
 import useQueryParams from '../../../hooks/useQueryParams';
@@ -44,19 +44,26 @@ const Filter: React.FC = () => {
     ));
 
   return (
-    <Box className={styles.wrapper}>
-      <RangeFilter title="Budget" />
-      {switchFilters}
-      {accordionFilters}
-      <Button
-        fullWidth
-        variant="contained"
-        color="secondary"
-        className={styles.button}
-        onClick={handleApplyFilters}
-      >
-        Apply
-      </Button>
+    <Box className={styles.sideSection}>
+      <Typography gutterBottom variant="h2">
+        Filters
+      </Typography>
+      <Paper>
+        <Box className={styles.wrapper}>
+          <RangeFilter title="Budget" />
+          {switchFilters}
+          {accordionFilters}
+          <Button
+            fullWidth
+            variant="contained"
+            color="secondary"
+            className={styles.button}
+            onClick={handleApplyFilters}
+          >
+            Apply
+          </Button>
+        </Box>
+      </Paper>
     </Box>
   );
 };

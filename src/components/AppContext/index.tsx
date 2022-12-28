@@ -1,8 +1,8 @@
 import React, { createContext, useCallback, useState } from 'react';
 import useQueryParams from '../../hooks/useQueryParams';
-import { Build, CategoryName, Part, ProductCategory } from '../../../types';
+import { Assembly, CategoryName, Part, ProductCategory } from '../../../types';
 
-const emptyBuild: Build = {
+const emptyBuild: Assembly = {
   CPU: null,
   GPU: null,
   PSU: null,
@@ -22,7 +22,7 @@ interface BuildScreenProps {
   selectedBuilder: ProductCategory | null;
   selectedFilter: string | null;
   filters: Record<string, string> | null;
-  build: Build;
+  build: Assembly;
   addPart: (part: Part, category: CategoryName) => void;
   removePart: (category: CategoryName) => void;
   clearBuild: () => void;
@@ -44,7 +44,7 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
     useState<ProductCategory | null>(null);
   const [selectedFilter, setSelectedFilter] = useState<string | null>(null);
   const [filters, setFilters] = useState<Record<string, string> | null>(null);
-  const [build, setBuild] = useState<Build>(emptyBuild);
+  const [build, setBuild] = useState<Assembly>(emptyBuild);
 
   const { setSearchParams } = useQueryParams();
 

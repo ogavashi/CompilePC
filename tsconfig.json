@@ -1,9 +1,5 @@
 {
-  "include": [
-    "src",
-    "src/custom.d.ts",
-    "types/index.ts"
-  ],
+  "include": ["src", "src/custom.d.ts", "types/index.ts"],
   "compilerOptions": {
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],

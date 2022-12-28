@@ -313,7 +313,7 @@ export type FullProduct = Product & {
   stores: Store[];
 };
 
-export type Build = {
+export type Assembly = {
   CPU: CPU | null;
   GPU: GraphicsCard | null;
   PSU: PSU | null;
@@ -326,3 +326,10 @@ export type Build = {
 };
 
 export type QueryFilter = { [k: string]: string | string[] };
+
+export type Builder = {
+  categoryName: CategoryName;
+  builderTitle: BuilderCategory;
+  collectionName: CollectionName;
+  filter: QueryFilter;
+};

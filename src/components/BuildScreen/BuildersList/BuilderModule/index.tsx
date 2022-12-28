@@ -1,21 +1,20 @@
-import React, { useState, useMemo, useContext } from 'react';
+import React from 'react';
 import { Typography } from '@mui/material';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import { Box } from '@mui/system';
 import ProductAccordion from './ProductAccordion';
 import BuilderProduct from './BuilderProduct';
-import { IconByCategory } from '../../../common/constants';
-import { ProductCategory } from '../../../../types';
-import { AppContext } from '../../AppContext';
+import { IconByCategory } from '../../../../common/constants';
+import { Builder } from '../../../../../types';
 import SkeletonProduct from './SkeletonProduct';
-import useProducts from '../../../hooks/useProducts';
+import useProducts from '../../../../hooks/useProducts';
 
 type BuilderProps = {
-  category: ProductCategory;
+  builder: Builder;
 };
 
-const Builder: React.FC<BuilderProps> = ({ category }) => {
-  const { data: products, isLoading, isError } = useProducts(category);
+const BuilderModule: React.FC<BuilderProps> = ({ builder }) => {
+  const { data: products, isLoading, isError } = useProducts(builder);
 
   const BuilderProducts = () => (
     <>
@@ -25,7 +24,7 @@ const Builder: React.FC<BuilderProps> = ({ category }) => {
             <BuilderProduct
               product={product}
               key={product.id}
-              category={category.categoryName}
+              category={builder.categoryName}
             />
           ) : (
             // eslint-disable-next-line react/no-array-index-key
@@ -37,8 +36,8 @@ const Builder: React.FC<BuilderProps> = ({ category }) => {
 
   return (
     <ProductAccordion
-      icon={IconByCategory[category.categoryName]}
-      category={category}
+      icon={IconByCategory[builder.categoryName]}
+      builder={builder}
     >
       {isError ? (
         <Box
@@ -49,7 +48,7 @@ const Builder: React.FC<BuilderProps> = ({ category }) => {
         >
           <ErrorOutlineIcon />
           <Typography variant="h3">
-            Couldn&#39;t load {category.categoryName}
+            Couldn&#39;t load {builder.categoryName}
           </Typography>
         </Box>
       ) : (
@@ -59,4 +58,4 @@ const Builder: React.FC<BuilderProps> = ({ category }) => {
   );
 };
 
-export default Builder;
+export default BuilderModule;

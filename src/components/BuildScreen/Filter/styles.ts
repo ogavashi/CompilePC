@@ -3,6 +3,10 @@ import { Theme } from '@mui/system';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
+    sideSection: {
+      width: '100%',
+      maxWidth: 300,
+    },
     wrapper: {
       display: 'flex',
       flexDirection: 'column',

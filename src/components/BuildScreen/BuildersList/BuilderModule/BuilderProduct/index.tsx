@@ -4,11 +4,17 @@ import React from 'react';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
-import { Link, useNavigate } from 'react-router-dom';
+import { generatePath, Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import useStyles from './styles';
-import { CategoryName, Part } from '../../../../../types';
+import { CategoryName, Part } from '../../../../../../types';
 import getShortSpecs from '../ShortSpecs/getShortSpecs';
-import useBuild from '../../../../hooks/useBuild';
+import { selectAssemblyPart } from '../../../../../store/builder/selectors';
+import {
+  addAssemblyPart,
+  removeAssemblyPart,
+} from '../../../../../store/builder/slice';
+import { ROUTES } from '../../../../../common/constants';
 
 type ProductProps = {
   product: Part;
@@ -18,19 +24,19 @@ type ProductProps = {
 const BuilderProduct: React.FC<ProductProps> = ({ product, category }) => {
   const styles = useStyles();
 
-  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const { addPart, removePart, build } = useBuild();
-
-  const selectedId = build[category]?.id;
+  const selectedPart = useSelector(selectAssemblyPart(category));
 
   const CheckIcon = () =>
-    selectedId && selectedId === product.id ? (
-      <IconButton onClick={() => removePart(category)}>
+    selectedPart && selectedPart.id === product.id ? (
+      <IconButton onClick={() => dispatch(removeAssemblyPart(category))}>
         <CloseRoundedIcon className={styles.redIcon} fontSize="large" />
       </IconButton>
     ) : (
-      <IconButton onClick={() => addPart(product, category)}>
+      <IconButton
+        onClick={() => dispatch(addAssemblyPart({ part: product, category }))}
+      >
         <SwapHorizIcon className={styles.greenIcon} fontSize="large" />
       </IconButton>
     );
@@ -39,23 +45,26 @@ const BuilderProduct: React.FC<ProductProps> = ({ product, category }) => {
 
   return (
     <Box className={styles.wrapper}>
-      <Box
-        onClick={() => navigate(`/product/${category}/${product.id}`)}
-        className={styles.leftWrapper}
-      >
-        <img
-          className={styles.image}
-          src={product.mainImage}
-          alt={product.name}
-        />
+      <Box className={styles.leftWrapper}>
+        <Link
+          style={{ textDecoration: 'none' }}
+          to={generatePath(ROUTES.PRODUCT, { category, id: product.id })}
+        >
+          <img
+            className={styles.image}
+            src={product.mainImage}
+            alt={product.name}
+          />
+        </Link>
         <Box>
-          <Typography
-            onClick={() => navigate(`/product/${category}/${product.id}`)}
-            variant="h5"
-            className={styles.productName}
+          <Link
+            style={{ textDecoration: 'none' }}
+            to={generatePath(ROUTES.PRODUCT, { category, id: product.id })}
           >
-            {product.name}
-          </Typography>
+            <Typography variant="h5" className={styles.productName}>
+              {product.name}
+            </Typography>
+          </Link>
           <Box>
             {specs?.map(
               (spec) =>
@@ -76,15 +85,15 @@ const BuilderProduct: React.FC<ProductProps> = ({ product, category }) => {
         <Typography variant="h5">
           {product.price.range.minPrice}₴ - {product.price.range.maxPrice}₴
         </Typography>
-        {selectedId ? (
+        {selectedPart ? (
           <CheckIcon />
         ) : (
-          <IconButton onClick={() => addPart(product, category)}>
-            <AddRoundedIcon
-              className={styles.greenIcon}
-              fontSize="large"
-              color="secondary"
-            />
+          <IconButton
+            onClick={() =>
+              dispatch(addAssemblyPart({ part: product, category }))
+            }
+          >
+            <AddRoundedIcon className={styles.greenIcon} fontSize="large" />
           </IconButton>
         )}
       </Box>
