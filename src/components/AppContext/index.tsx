@@ -32,7 +32,13 @@ interface BuildScreenProps {
   setSelectedFilter: (value: string | null) => void;
 }
 
-export const AppContextProvider: React.FC = ({ children }) => {
+type AppContextProviderProps = {
+  children: React.ReactNode;
+};
+
+export const AppContextProvider: React.FC<AppContextProviderProps> = ({
+  children,
+}) => {
   // TODO: Move selectedBuilder to query string
   const [selectedBuilder, setSelectedBuilder] =
     useState<ProductCategory | null>(null);

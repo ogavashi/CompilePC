@@ -2,7 +2,11 @@ import React from 'react';
 import { Container } from '@mui/system';
 import Header from '../Header';
 
-const Layout: React.FC = ({ children }) => {
+type LayoutProps = {
+  children: React.ReactNode;
+};
+
+const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
     <>
       <Header />

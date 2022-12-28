@@ -16,6 +16,7 @@ import { Part, ProductCategory } from '../../../../../types';
 type ProductAccordionProps = {
   icon: React.FC;
   category: ProductCategory;
+  children: React.ReactNode;
 };
 
 const ProductAccordion: React.FC<ProductAccordionProps> = ({

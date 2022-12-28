@@ -21,11 +21,7 @@ const TableRow: React.FC<TableRowProps> = ({ product, store }) => {
 
   return (
     <Paper className={styles.tableRow}>
-      <img
-        className={styles.image}
-        src={product.mainImage}
-        alt={product.name}
-      />
+      <img className={styles.image} src={store.imageUrl} alt={product.name} />
       <Typography variant="h5">{product.name}</Typography>
       <Divider
         className={styles.divider}
