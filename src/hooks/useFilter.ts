@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect, useRef } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { CategoryName, SelectedFilter } from '../../types';
 import { selectFilter } from '../store/builder/selectors';

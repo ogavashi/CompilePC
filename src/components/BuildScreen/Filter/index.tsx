@@ -83,6 +83,7 @@ const Filter: React.FC = () => {
             color="secondary"
             className={styles.button}
             onClick={handleApplyFilters}
+            disabled={!openedBuilder}
           >
             Apply
           </Button>

@@ -76,6 +76,7 @@ export const builderSlice = createSlice({
     },
     eraseAssembly: (state) => {
       state.assembly = emptyAssembly;
+      state.openedBuilder = null;
     },
   },
 });
