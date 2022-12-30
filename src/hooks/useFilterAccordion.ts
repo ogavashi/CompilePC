@@ -8,28 +8,28 @@ const useFilterAccordion = (name: string) => {
 
   const params = parsedParams[name] ? [parsedParams[name]].flat() : null;
 
-  const [selectedFilters, setSelectedFilters] = useState<string[] | null>(
+  const [selectedOptions, setSelectedOptions] = useState<string[] | null>(
     params,
   );
 
   const handleAddFilter = (value: string) => {
     let updatedFilters;
-    if (selectedFilters) {
-      updatedFilters = selectedFilters.includes(value)
-        ? selectedFilters.filter((filter) => filter !== value)
-        : [...selectedFilters, value];
+    if (selectedOptions) {
+      updatedFilters = selectedOptions.includes(value)
+        ? selectedOptions.filter((filter) => filter !== value)
+        : [...selectedOptions, value];
     } else {
       updatedFilters = [value];
     }
 
-    setSelectedFilters(updatedFilters);
+    setSelectedOptions(updatedFilters);
 
     const selectedParamsQuery = { [name]: updatedFilters.join('_') };
 
     return selectedParamsQuery;
   };
 
-  return { selectedFilters, handleAddFilter };
+  return { selectedOptions, handleAddFilter };
 };
 
 export default useFilterAccordion;

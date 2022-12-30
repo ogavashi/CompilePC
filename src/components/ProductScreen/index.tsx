@@ -88,6 +88,7 @@ const ProductScreen: React.FC = () => {
         </Box>
         <PriceTable
           product={product}
+          category={category.categoryName}
           stores={product?.stores}
           isError={isError}
           isLoading={isLoading}

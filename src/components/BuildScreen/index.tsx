@@ -9,11 +9,7 @@ const BuildScreen: React.FC = () => {
   const styles = useStyles();
 
   return (
-    <Box
-      display="flex"
-      justifyContent="center"
-      className={styles.mainContainer}
-    >
+    <Box className={styles.mainContainer}>
       <Filter />
       <BuildersList />
       <Assembly />

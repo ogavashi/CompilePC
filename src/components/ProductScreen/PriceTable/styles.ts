@@ -6,7 +6,23 @@ const useStyles = makeStyles((theme: Theme) =>
     tableWrapper: {
       margin: `${theme.spacing(3)} ${theme.spacing(6)}`,
       maxWidth: 850,
-      backgroundColor: theme.palette.grey,
+      maxHeight: 395,
+      height: '100%',
+    },
+    pricesList: {
+      maxHeight: 325,
+      height: '100%',
+      overflowY: 'auto',
+      '&::-webkit-scrollbar': {
+        width: 4,
+      },
+      '&::-webkit-scrollbar-thumb': {
+        backgroundColor: theme.palette.green,
+        borderRadius: theme.shape.borderRadius,
+      },
+    },
+    overflow: {
+      paddingRight: 10,
     },
     empty: {
       margin: `${theme.spacing(3)} ${theme.spacing(6)}`,
@@ -19,7 +35,11 @@ const useStyles = makeStyles((theme: Theme) =>
     errorText: {},
     topRow: {
       display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      marginBottom: theme.spacing(6),
       color: theme.palette.green,
+      position: 'relative',
     },
   }),
 );

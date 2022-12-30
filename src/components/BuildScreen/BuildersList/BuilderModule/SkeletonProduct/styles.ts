@@ -23,16 +23,16 @@ const useStyles = makeStyles((theme: Theme) =>
       alignItems: 'flex-end',
     },
     image: {
-      width: '100px',
-      height: '150px',
+      width: '100px !important',
+      height: '150px !important',
       margin: theme.spacing(5),
       variant: 'rounded',
       animation: 'wave',
     },
     button: {
       animation: 'wave',
-      width: '35px',
-      height: '55px ',
+      width: '35px !important',
+      height: '55px !important',
       borderRadius: '4px',
     },
     specsWrapper: {

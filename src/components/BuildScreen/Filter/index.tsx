@@ -1,46 +1,70 @@
 import { Button, Paper, Typography } from '@mui/material';
 import { Box } from '@mui/system';
-import React, { useContext } from 'react';
-import useQueryParams from '../../../hooks/useQueryParams';
-import { AppContext } from '../../AppContext';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import useFilter from '../../../hooks/useFilter';
+import { selectOpenedBuilder } from '../../../store/builder/selectors';
+import { setFilter } from '../../../store/builder/slice';
 import AccordionFilter from './AccordionFilter';
 import { filters } from './filters';
 import RangeFilter from './RangeFilter';
-
 import useStyles from './styles';
 import SwitchFilter from './SwitchFilter';
 
 const Filter: React.FC = () => {
   const styles = useStyles();
 
-  const { handleParamsChange } = useQueryParams();
+  const dispatch = useDispatch();
+
+  const openedBuilder = useSelector(selectOpenedBuilder);
+
   const {
-    filters: selectedFilters,
-    selectedBuilder,
-    setSelectedFilter,
-  } = useContext(AppContext);
+    selectedFilters,
+    addAccordionFilter,
+    addSwitchFilter,
+    handleOpenFilter,
+    setOpenedFilter,
+    openedFilter,
+  } = useFilter(openedBuilder);
 
   const handleApplyFilters = () => {
-    setSelectedFilter(null);
-    handleParamsChange(selectedFilters);
+    if (openedBuilder && selectedFilters) {
+      dispatch(
+        setFilter({
+          category: openedBuilder,
+          filter: selectedFilters,
+        }),
+      );
+    }
+    setOpenedFilter(null);
   };
 
-  const accordions =
-    selectedBuilder && filters[selectedBuilder.categoryName].accordion;
+  const accordions = openedBuilder && filters[openedBuilder].accordion;
 
-  const switchers =
-    selectedBuilder && filters[selectedBuilder.categoryName].switcher;
+  const switchers = openedBuilder && filters[openedBuilder].switcher;
 
   const accordionFilters =
     accordions &&
     accordions.map((filter) => (
-      <AccordionFilter filter={filter} key={filter.key} />
+      <AccordionFilter
+        addAccordionFilter={addAccordionFilter}
+        selectedFilters={selectedFilters}
+        filter={filter}
+        key={filter.key}
+        handleOpenFilter={handleOpenFilter}
+        openedFilter={openedFilter}
+      />
     ));
 
   const switchFilters =
     switchers &&
     switchers.map((filter) => (
-      <SwitchFilter filter={filter} key={filter.key} />
+      <SwitchFilter
+        addSwitchFilter={addSwitchFilter}
+        selectedFilters={selectedFilters}
+        filter={filter}
+        key={filter.key}
+      />
     ));
 
   return (

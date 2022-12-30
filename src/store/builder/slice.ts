@@ -1,5 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Part, Assembly, Builder, CategoryName } from '../../../types/index';
+import {
+  Part,
+  Assembly,
+  Builder,
+  CategoryName,
+  SelectedFilter,
+} from '../../../types/index';
 import { ProductCategories } from '../../common/constants';
 
 export interface BuilderState {
@@ -44,6 +50,15 @@ export const builderSlice = createSlice({
       }
       state.openedBuilder = action.payload;
     },
+    setFilter: (
+      state,
+      action: PayloadAction<{ category: CategoryName; filter: SelectedFilter }>,
+    ) => {
+      const { category, filter } = action.payload;
+      state.builders = state.builders.map((builder) =>
+        builder.categoryName === category ? { ...builder, filter } : builder,
+      );
+    },
     addAssemblyPart: (
       state,
       action: PayloadAction<{ part: Part; category: CategoryName }>,
@@ -52,7 +67,6 @@ export const builderSlice = createSlice({
         ...state.assembly,
         [action.payload.category]: action.payload.part,
       };
-      state.openedBuilder = null;
     },
     removeAssemblyPart: (state, action: PayloadAction<CategoryName>) => {
       state.assembly = {
@@ -68,6 +82,7 @@ export const builderSlice = createSlice({
 
 export const {
   openBuilder,
+  setFilter,
   addAssemblyPart,
   removeAssemblyPart,
   eraseAssembly,

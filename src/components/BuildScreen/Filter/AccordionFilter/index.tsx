@@ -5,37 +5,42 @@ import {
   IconButton,
   Typography,
 } from '@mui/material';
-
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import React, { useContext } from 'react';
 import useStyles from './styles';
 import FilterItem from '../FilterItem';
-import useFilterAccordion from '../../../../hooks/useFilterAccordion';
 import { AppContext } from '../../../AppContext';
 import { Filter } from '../filters';
+import { SelectedFilter } from '../../../../../types';
 
 type AccordionFilterProps = {
   filter: Filter;
+  addAccordionFilter: CallableFunction;
+  selectedFilters: SelectedFilter | null;
+  openedFilter: string | null;
+  handleOpenFilter: (value: string) => void;
 };
 
-const AccordionFilter: React.FC<AccordionFilterProps> = ({ filter }) => {
+const AccordionFilter: React.FC<AccordionFilterProps> = ({
+  filter,
+  addAccordionFilter,
+  selectedFilters,
+  openedFilter,
+  handleOpenFilter,
+}) => {
   const styles = useStyles();
 
-  const { selectedFilters, handleAddFilter } = useFilterAccordion(filter.key);
-
-  const { selectedFilter, handleSelectFilter } = useContext(AppContext);
-
-  const isSelected = Boolean(selectedFilters?.length);
+  const isSelected = Boolean(selectedFilters && selectedFilters[filter.key]);
 
   const DisplayReplace = () =>
     isSelected ? (
-      <IconButton onClick={() => handleSelectFilter(filter.key)}>
+      <IconButton onClick={() => handleOpenFilter(filter.key)}>
         <SwapHorizIcon className={styles.greenIcon} />
       </IconButton>
     ) : (
-      <IconButton onClick={() => handleSelectFilter(filter.key)}>
+      <IconButton onClick={() => handleOpenFilter(filter.key)}>
         <AddRoundedIcon className={styles.greenIcon} />
       </IconButton>
     );
@@ -43,13 +48,13 @@ const AccordionFilter: React.FC<AccordionFilterProps> = ({ filter }) => {
   return (
     <Accordion
       className={styles.wrapper}
-      expanded={selectedFilter === filter.key}
+      expanded={openedFilter === filter.key}
     >
       <AccordionSummary
         className={styles.accordionSummary}
         expandIcon={
-          selectedFilter === filter.key ? (
-            <IconButton onClick={() => handleSelectFilter(filter.key)}>
+          openedFilter === filter.key ? (
+            <IconButton onClick={() => handleOpenFilter(filter.key)}>
               <RemoveRoundedIcon className={styles.redIcon} />
             </IconButton>
           ) : (
@@ -63,7 +68,8 @@ const AccordionFilter: React.FC<AccordionFilterProps> = ({ filter }) => {
         {filter.options.map((option) => (
           <FilterItem
             option={option}
-            handleAddFilter={handleAddFilter}
+            filterKey={filter.key}
+            addAccordionFilter={addAccordionFilter}
             selectedFilters={selectedFilters}
             key={option.key}
           />

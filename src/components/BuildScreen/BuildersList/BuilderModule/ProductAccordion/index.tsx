@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import {
   Accordion,
   AccordionDetails,
@@ -11,7 +11,6 @@ import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded';
 import { useSelector, useDispatch } from 'react-redux';
 import useStyles from './styles';
-import { AppContext } from '../../../../AppContext';
 import { Builder } from '../../../../../../types';
 import {
   selectAssemblyPart,

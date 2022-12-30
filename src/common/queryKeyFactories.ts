@@ -1,9 +1,9 @@
-import { CategoryName, QueryFilter } from '../../types/index';
+import { CategoryName, SelectedFilter } from '../../types/index';
 
 const QUERY_KEY_FACTORIES = {
   PRODUCTS: {
     all: () => ['products'],
-    list: (category: CategoryName, filter: QueryFilter) => [
+    list: (category: CategoryName, filter: SelectedFilter) => [
       { ...QUERY_KEY_FACTORIES.PRODUCTS.all(), category, filter },
     ],
     get: (id: string, category: CategoryName) => [

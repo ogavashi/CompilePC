@@ -325,11 +325,11 @@ export type Assembly = {
   HDD: HardDrive | null;
 };
 
-export type QueryFilter = { [k: string]: string | string[] };
+export type SelectedFilter = { [k: string]: string | string[] };
 
 export type Builder = {
   categoryName: CategoryName;
   builderTitle: BuilderCategory;
   collectionName: CollectionName;
-  filter: QueryFilter;
+  filter: SelectedFilter;
 };
