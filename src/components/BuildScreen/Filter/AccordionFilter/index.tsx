@@ -8,10 +8,9 @@ import {
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
-import React, { useContext } from 'react';
+import React from 'react';
 import useStyles from './styles';
 import FilterItem from '../FilterItem';
-import { AppContext } from '../../../AppContext';
 import { Filter } from '../filters';
 import { SelectedFilter } from '../../../../../types';
 

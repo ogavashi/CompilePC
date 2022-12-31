@@ -1,8 +1,7 @@
 import { Typography } from '@mui/material';
 import { Box } from '@mui/system';
-import React, { useContext, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { SelectedFilter } from '../../../../../types';
-import { AppContext } from '../../../AppContext';
 import Switcher from '../../../Switcher';
 import { Filter } from '../filters';
 

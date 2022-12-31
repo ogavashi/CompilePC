@@ -16,6 +16,10 @@ const useStyles = makeStyles((theme: Theme) =>
     button: {
       marginTop: theme.spacing(4),
     },
+    emptyTitle: {
+      fontSize: `${30}px !important`,
+      textAlign: 'center',
+    },
   }),
 );
 

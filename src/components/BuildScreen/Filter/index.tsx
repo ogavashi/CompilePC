@@ -1,10 +1,7 @@
 import { Button, Paper, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import useFilter from '../../../hooks/useFilter';
-import { selectOpenedBuilder } from '../../../store/builder/selectors';
-import { setFilter } from '../../../store/builder/slice';
 import AccordionFilter from './AccordionFilter';
 import { filters } from './filters';
 import RangeFilter from './RangeFilter';
@@ -14,30 +11,16 @@ import SwitchFilter from './SwitchFilter';
 const Filter: React.FC = () => {
   const styles = useStyles();
 
-  const dispatch = useDispatch();
-
-  const openedBuilder = useSelector(selectOpenedBuilder);
-
   const {
     selectedFilters,
     addAccordionFilter,
     addSwitchFilter,
     handleOpenFilter,
-    setOpenedFilter,
     openedFilter,
-  } = useFilter(openedBuilder);
-
-  const handleApplyFilters = () => {
-    if (openedBuilder && selectedFilters) {
-      dispatch(
-        setFilter({
-          category: openedBuilder,
-          filter: selectedFilters,
-        }),
-      );
-    }
-    setOpenedFilter(null);
-  };
+    addRangeFilter,
+    openedBuilder,
+    handleApplyFilters,
+  } = useFilter();
 
   const accordions = openedBuilder && filters[openedBuilder].accordion;
 
@@ -74,9 +57,17 @@ const Filter: React.FC = () => {
       </Typography>
       <Paper>
         <Box className={styles.wrapper}>
-          <RangeFilter title="Budget" />
-          {switchFilters}
-          {accordionFilters}
+          {openedBuilder ? (
+            <>
+              <RangeFilter title="Budget" addRangeFilter={addRangeFilter} />
+              {switchFilters}
+              {accordionFilters}
+            </>
+          ) : (
+            <Typography className={styles.emptyTitle}>
+              Please, select any builder
+            </Typography>
+          )}
           <Button
             fullWidth
             variant="contained"

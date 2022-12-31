@@ -1,10 +1,10 @@
 import { InputBase, Slider, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import React, { useContext, useEffect } from 'react';
+import { PriceRange, SelectedFilter } from '../../../../../types';
 import { NUMERIC_FORMAT } from '../../../../common/constants';
 import useDebounce from '../../../../hooks/useDebounce';
-import usePriceInputs, { PriceRange } from '../../../../hooks/usePriceInputs';
-import { AppContext } from '../../../AppContext';
+import usePriceInputs from '../../../../hooks/usePriceInputs';
 
 export type Param = {
   [key: string]: string;
@@ -12,11 +12,10 @@ export type Param = {
 
 type RangeFilterProps = {
   title: string;
+  addRangeFilter: (value: SelectedFilter) => void;
 };
 
-const RangeFilter: React.FC<RangeFilterProps> = ({ title }) => {
-  const { handleChangeFilters } = useContext(AppContext);
-
+const RangeFilter: React.FC<RangeFilterProps> = ({ title, addRangeFilter }) => {
   const {
     priceRange,
     handleMinPrice,
@@ -28,11 +27,11 @@ const RangeFilter: React.FC<RangeFilterProps> = ({ title }) => {
   const debouncedValue = useDebounce<PriceRange>(priceRange, 30);
 
   useEffect(() => {
-    handleChangeFilters({
+    addRangeFilter({
       minPrice: String(debouncedValue.minPrice),
       maxPrice: String(debouncedValue.maxPrice),
     });
-  }, [debouncedValue, handleChangeFilters]);
+  }, [debouncedValue, addRangeFilter]);
 
   return (
     <Box

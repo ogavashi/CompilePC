@@ -1,10 +1,15 @@
 import { useState, useCallback, useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { CategoryName, SelectedFilter } from '../../types';
-import { selectFilter } from '../store/builder/selectors';
+import { useSelector, useDispatch } from 'react-redux';
+import { SelectedFilter } from '../../types';
+import { selectFilter, selectOpenedBuilder } from '../store/builder/selectors';
+import { setFilter } from '../store/builder/slice';
 
-const useFilter = (category: CategoryName | null) => {
-  const savedFilter = useSelector(selectFilter(category));
+const useFilter = () => {
+  const dispatch = useDispatch();
+
+  const openedBuilder = useSelector(selectOpenedBuilder);
+
+  const savedFilter = useSelector(selectFilter(openedBuilder));
 
   const [selectedFilters, setSelectedFilters] = useState<SelectedFilter | null>(
     savedFilter,
@@ -91,14 +96,34 @@ const useFilter = (category: CategoryName | null) => {
     [selectedFilters],
   );
 
+  const addRangeFilter = useCallback(
+    (value: SelectedFilter) =>
+      setSelectedFilters((prev) => ({ ...prev, ...value })),
+    [],
+  );
+
+  const handleApplyFilters = useCallback(() => {
+    if (openedBuilder && selectedFilters) {
+      dispatch(
+        setFilter({
+          category: openedBuilder,
+          filter: selectedFilters,
+        }),
+      );
+    }
+    setOpenedFilter(null);
+  }, [dispatch, openedBuilder, selectedFilters]);
+
   return {
     selectedFilters,
-    setSelectedFilters,
     addAccordionFilter,
     addSwitchFilter,
     openedFilter,
     setOpenedFilter,
     handleOpenFilter,
+    addRangeFilter,
+    openedBuilder,
+    handleApplyFilters,
   };
 };
 

@@ -3,7 +3,6 @@ import { Box } from '@mui/system';
 import clsx from 'clsx';
 import React, { useMemo } from 'react';
 import { SelectedFilter } from '../../../../../types';
-import { AppContext } from '../../../AppContext';
 import { FilterOption } from '../filters';
 import useStyles from './styles';
 

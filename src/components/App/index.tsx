@@ -9,7 +9,6 @@ import firebaseApp from '../../common/firebaseApp';
 import theme from '../../common/theme';
 import Root from '../Root';
 import { UIContextProvider } from '../UIContext';
-import { AppContextProvider } from '../AppContext';
 import { persistor, store } from '../../store';
 
 const queryClient = new QueryClient();
@@ -22,12 +21,10 @@ const App: React.FC = () => {
           <QueryClientProvider client={queryClient}>
             <ThemeProvider theme={theme}>
               <BrowserRouter basename={process.env.PUBLIC_URL || '/'}>
-                <AppContextProvider>
-                  <CssBaseline />
-                  <UIContextProvider>
-                    <Root />
-                  </UIContextProvider>
-                </AppContextProvider>
+                <CssBaseline />
+                <UIContextProvider>
+                  <Root />
+                </UIContextProvider>
               </BrowserRouter>
             </ThemeProvider>
           </QueryClientProvider>
