@@ -2,7 +2,6 @@ import React, { useMemo } from 'react';
 import { Paper, Typography, Button } from '@mui/material';
 import Divider from '@mui/material/Divider';
 import { Box } from '@mui/system';
-import { Link } from 'react-router-dom';
 import useStyles from './styles';
 import { FullProduct, Store } from '../../../../../../types';
 
@@ -21,11 +20,7 @@ const TableRow: React.FC<TableRowProps> = ({ product, store }) => {
 
   return (
     <Paper className={styles.tableRow}>
-      <img
-        className={styles.image}
-        src={product.mainImage}
-        alt={product.name}
-      />
+      <img className={styles.image} src={store.imageUrl} alt={product.name} />
       <Typography variant="h5">{product.name}</Typography>
       <Divider
         className={styles.divider}
@@ -33,7 +28,9 @@ const TableRow: React.FC<TableRowProps> = ({ product, store }) => {
         variant="middle"
         flexItem
       />
-      <Typography variant="h5">{store.name}</Typography>
+      <Box className={styles.storeName}>
+        <Typography variant="h5">{store.name}</Typography>
+      </Box>
       <Box className={styles.buyBlock}>
         <Typography variant="h4" className={styles.price}>
           {shop?.price} ₴
@@ -41,8 +38,8 @@ const TableRow: React.FC<TableRowProps> = ({ product, store }) => {
         <Button
           color="secondary"
           variant="contained"
-          component={Link}
-          to={shop?.link as string}
+          href={shop?.link as string}
+          target="blank"
           fullWidth
         >
           Buy in shop

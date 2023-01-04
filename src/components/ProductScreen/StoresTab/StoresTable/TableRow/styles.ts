@@ -16,9 +16,14 @@ const useStyles = makeStyles((theme: Theme) =>
         marginBottom: theme.spacing(0),
       },
     },
+    storeName: {
+      maxWidth: 300,
+      width: '100%',
+      textAlign: 'center',
+    },
     image: {
       margin: theme.spacing(4),
-      width: 150,
+      width: 120,
     },
     divider: {
       borderColor: `${theme.palette.backgroundGrey} !important`,

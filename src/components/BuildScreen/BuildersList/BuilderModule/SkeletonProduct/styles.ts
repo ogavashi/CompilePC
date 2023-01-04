@@ -23,18 +23,17 @@ const useStyles = makeStyles((theme: Theme) =>
       alignItems: 'flex-end',
     },
     image: {
-      width: '90px',
+      width: '100px !important',
+      height: '150px !important',
       margin: theme.spacing(5),
+      variant: 'rounded',
+      animation: 'wave',
     },
-    greenIcon: {
-      backgroundColor: theme.palette.green,
-      color: theme.palette.backgroundGrey,
-      borderRadius: theme.spacing(1),
-    },
-    redIcon: {
-      backgroundColor: theme.palette.tomatoRed,
-      color: theme.palette.backgroundGrey,
-      borderRadius: theme.spacing(1),
+    button: {
+      animation: 'wave',
+      width: '35px !important',
+      height: '55px !important',
+      borderRadius: '4px',
     },
     specsWrapper: {
       display: 'flex',

@@ -5,12 +5,16 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     switcherButton: {
       minWidth: 120,
-      borderRadius: theme.shape.borderRadius,
-      color: theme.palette.white,
+      borderRadius: `${theme.shape.borderRadius}px !important`,
+      color: `${theme.palette.white} !important`,
+      '& .MuiToggleButton': {
+        color: theme.palette.white,
+      },
     },
     toggleButtonGroup: {
       padding: theme.spacing(2),
       backgroundColor: theme.palette.backgroundBlack,
+      color: theme.palette.white,
       '& .MuiToggleButtonGroup-grouped': {
         border: 0,
         '&.Mui-disabled': {

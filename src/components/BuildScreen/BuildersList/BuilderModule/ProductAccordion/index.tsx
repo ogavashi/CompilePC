@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import {
   Accordion,
   AccordionDetails,
@@ -9,37 +9,41 @@ import {
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded';
+import { useSelector, useDispatch } from 'react-redux';
 import useStyles from './styles';
-import { BuildScreenContext } from '../../../BuildScreenContext';
-import { Part, ProductCategory } from '../../../../../types';
+import { Builder } from '../../../../../../types';
+import {
+  selectAssemblyPart,
+  selectOpenedBuilder,
+} from '../../../../../store/builder/selectors';
+import { openBuilder } from '../../../../../store/builder/slice';
 
 type ProductAccordionProps = {
   icon: React.FC;
-  category: ProductCategory;
-  selectedId: string;
-  // eslint-disable-next-line react/require-default-props
-  selectedProduct?: Part;
+  builder: Builder;
+  children: React.ReactNode;
 };
 
 const ProductAccordion: React.FC<ProductAccordionProps> = ({
   icon: Icon,
-  category,
+  builder,
   children,
-  selectedId,
-  selectedProduct,
 }) => {
   const styles = useStyles();
 
-  const { selectedBuilder, handleSelectBuilder } =
-    useContext(BuildScreenContext);
+  const dispatch = useDispatch();
+
+  const openedBuilder = useSelector(selectOpenedBuilder);
+
+  const selectedPart = useSelector(selectAssemblyPart(builder.categoryName));
 
   const DisplayReplace = () =>
-    selectedId ? (
-      <IconButton onClick={() => handleSelectBuilder(category)}>
+    selectedPart ? (
+      <IconButton onClick={() => dispatch(openBuilder(builder.categoryName))}>
         <SwapHorizIcon className={styles.greenIcon} fontSize="large" />
       </IconButton>
     ) : (
-      <IconButton onClick={() => handleSelectBuilder(category)}>
+      <IconButton onClick={() => dispatch(openBuilder(builder.categoryName))}>
         <AddRoundedIcon className={styles.greenIcon} fontSize="large" />
       </IconButton>
     );
@@ -47,13 +51,15 @@ const ProductAccordion: React.FC<ProductAccordionProps> = ({
   return (
     <Accordion
       className={styles.wrapper}
-      expanded={selectedBuilder === category}
+      expanded={openedBuilder === builder.categoryName}
     >
       <AccordionSummary
         className={styles.accordionSummary}
         expandIcon={
-          selectedBuilder === category ? (
-            <IconButton onClick={() => handleSelectBuilder(category)}>
+          openedBuilder === builder.categoryName ? (
+            <IconButton
+              onClick={() => dispatch(openBuilder(builder.categoryName))}
+            >
               <RemoveRoundedIcon fontSize="large" className={styles.redIcon} />
             </IconButton>
           ) : (
@@ -61,20 +67,11 @@ const ProductAccordion: React.FC<ProductAccordionProps> = ({
           )
         }
       >
-        {selectedId ? (
-          <img
-            className={styles.productIcon}
-            src={selectedProduct?.mainImage}
-            alt={selectedProduct?.name}
-          />
-        ) : (
-          <Icon />
-        )}
-
+        <Icon />
         <Typography variant="h5" className={styles.title}>
-          {selectedId
-            ? selectedProduct?.name
-            : `${category.builderTitle} is not selected`}
+          {selectedPart
+            ? selectedPart?.name
+            : `${builder.builderTitle} is not selected`}
         </Typography>
       </AccordionSummary>
       <AccordionDetails>{children}</AccordionDetails>

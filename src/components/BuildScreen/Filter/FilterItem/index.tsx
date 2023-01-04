@@ -1,31 +1,31 @@
 import { ButtonBase, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import clsx from 'clsx';
-import React, { useContext } from 'react';
-import { BuildScreenContext } from '../../../BuildScreenContext';
+import React, { useMemo } from 'react';
+import { SelectedFilter } from '../../../../../types';
 import { FilterOption } from '../filters';
 import useStyles from './styles';
 
 type FilterItemProps = {
   option: FilterOption;
-  handleAddFilter: CallableFunction;
-  selectedFilters: string[] | null;
+  filterKey: string;
+  addAccordionFilter: CallableFunction;
+  selectedFilters: SelectedFilter | null;
 };
 
 const FilterItem: React.FC<FilterItemProps> = ({
   option,
-  handleAddFilter,
+  filterKey,
+  addAccordionFilter,
   selectedFilters,
 }) => {
   const styles = useStyles();
-  const { handleChangeFilters } = useContext(BuildScreenContext);
 
-  const isSelected = selectedFilters && selectedFilters.includes(option.key);
+  const isSelected = useMemo(
+    () => selectedFilters && selectedFilters[filterKey]?.includes(option.key),
 
-  const handleClickFilterItem = (value: string) => {
-    const selectedParamsQuery = handleAddFilter(value);
-    handleChangeFilters(selectedParamsQuery);
-  };
+    [filterKey, option.key, selectedFilters],
+  );
 
   return (
     <Box className={styles.wrapper}>
@@ -33,7 +33,7 @@ const FilterItem: React.FC<FilterItemProps> = ({
         className={clsx(styles.button, {
           [styles.selected]: isSelected,
         })}
-        onClick={() => handleClickFilterItem(option.key)}
+        onClick={() => addAccordionFilter(filterKey, option.key)}
       >
         <Typography textAlign="center">{option.value}</Typography>
       </ButtonBase>

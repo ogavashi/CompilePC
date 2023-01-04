@@ -1,25 +1,23 @@
 import { useQuery, UseQueryResult } from '@tanstack/react-query';
 import { useContext } from 'react';
-import { BuildScreenContext } from '../components/BuildScreenContext/index';
-import { Part, ProductCategory } from '../../types/index';
-import useQueryParams from './useQueryParams';
+import { useSelector } from 'react-redux';
+import { Part, Builder } from '../../types/index';
 import { UIContext } from '../components/UIContext';
 import Products from '../api/products';
 import QUERY_KEY_FACTORIES from '../common/queryKeyFactories';
+import { selectOpenedBuilder } from '../store/builder/selectors';
 
-const useProducts = (category: ProductCategory): UseQueryResult<Part[]> => {
-  const { parseCurrentParams } = useQueryParams();
-  const { selectedBuilder } = useContext(BuildScreenContext);
+const useProducts = (builder: Builder): UseQueryResult<Part[]> => {
   const { setAlert } = useContext(UIContext);
 
-  const { categoryName, collectionName } = category;
+  const openedBuilder = useSelector(selectOpenedBuilder);
 
-  const isEnabled = selectedBuilder?.categoryName === categoryName;
+  const { categoryName, collectionName, filter } = builder;
 
-  const filter = parseCurrentParams();
+  const isEnabled = openedBuilder === categoryName;
 
   return useQuery(
-    QUERY_KEY_FACTORIES.PRODUCTS.list(categoryName),
+    QUERY_KEY_FACTORIES.PRODUCTS.list(categoryName, filter),
     () => Products.list(collectionName, filter),
     {
       enabled: isEnabled,

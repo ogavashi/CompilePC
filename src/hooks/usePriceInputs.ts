@@ -1,21 +1,27 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { PriceRange } from '../../types';
 import { MIN_PRICE_SLIDER_DISTANCE, NUMERIC_FORMAT } from '../common/constants';
-import useQueryParams from './useQueryParams';
-
-export type PriceRange = {
-  minPrice: number;
-  maxPrice: number;
-};
+import { selectFilter, selectOpenedBuilder } from '../store/builder/selectors';
 
 const usePriceInputs = () => {
-  const { parseCurrentParams } = useQueryParams();
+  const openedBuilder = useSelector(selectOpenedBuilder);
 
-  const parsedParams = parseCurrentParams();
+  const savedFilter = useSelector(selectFilter(openedBuilder));
 
   const [priceRange, setPriceRange] = useState<PriceRange>({
-    minPrice: Number(parsedParams.minPrice) || 0,
-    maxPrice: Number(parsedParams.maxPrice) || 50000,
+    minPrice: Number(savedFilter?.minPrice) || 0,
+    maxPrice: Number(savedFilter?.maxPrice) || 50000,
   });
+
+  useEffect(
+    () =>
+      setPriceRange({
+        minPrice: Number(savedFilter?.minPrice) || 0,
+        maxPrice: Number(savedFilter?.maxPrice) || 50000,
+      }),
+    [savedFilter?.maxPrice, savedFilter?.minPrice],
+  );
 
   const handleMinPrice = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (NUMERIC_FORMAT.test(e.target.value)) {

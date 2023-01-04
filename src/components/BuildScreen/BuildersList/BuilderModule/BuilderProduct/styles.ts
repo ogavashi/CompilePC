@@ -13,6 +13,12 @@ const useStyles = makeStyles((theme: Theme) =>
         border: 'none',
       },
     },
+    productName: {
+      textDecoration: 'none',
+      color: theme.palette.white,
+      maxWidth: 450,
+      width: '100%',
+    },
     leftWrapper: {
       display: 'flex',
       alignItems: 'center',
@@ -23,17 +29,19 @@ const useStyles = makeStyles((theme: Theme) =>
       alignItems: 'flex-end',
     },
     image: {
-      width: '100px',
-      height: '150px',
+      width: '90px',
       margin: theme.spacing(5),
-      variant: 'rounded',
-      animation: 'wave',
+      cursor: 'pointer',
     },
-    button: {
-      animation: 'wave',
-      width: '35px',
-      height: '55px ',
-      borderRadius: '4px',
+    greenIcon: {
+      backgroundColor: theme.palette.green,
+      color: theme.palette.backgroundGrey,
+      borderRadius: theme.spacing(1),
+    },
+    redIcon: {
+      backgroundColor: theme.palette.tomatoRed,
+      color: theme.palette.backgroundGrey,
+      borderRadius: theme.spacing(1),
     },
     specsWrapper: {
       display: 'flex',

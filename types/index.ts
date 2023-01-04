@@ -312,3 +312,24 @@ export type ShortSpec = { name: string; value?: string };
 export type FullProduct = Product & {
   stores: Store[];
 };
+
+export type Assembly = {
+  CPU: CPU | null;
+  GPU: GraphicsCard | null;
+  PSU: PSU | null;
+  RAM: RAM | null;
+  case: Case | null;
+  cooling: Cooling | null;
+  motherboard: Motherboard | null;
+  SSD: SolidStateDrive | null;
+  HDD: HardDrive | null;
+};
+
+export type SelectedFilter = { [k: string]: string | string[] };
+
+export type Builder = {
+  categoryName: CategoryName;
+  builderTitle: BuilderCategory;
+  collectionName: CollectionName;
+  filter: SelectedFilter;
+};

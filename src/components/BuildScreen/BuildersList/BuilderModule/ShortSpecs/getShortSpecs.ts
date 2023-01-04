@@ -1,5 +1,4 @@
-import { Part, CategoryName, ShortSpec, CPU } from '../../../../../types/index';
-
+import { CategoryName, CPU, Part, ShortSpec } from '../../../../../../types';
 import CPUFormer from './CPUformer';
 
 const getShortSpecs = (

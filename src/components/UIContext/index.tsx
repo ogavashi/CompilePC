@@ -15,7 +15,13 @@ interface AlertProps {
   message?: string;
 }
 
-export const UIContextProvider: React.FC = ({ children }) => {
+type UIContextProviderProps = {
+  children: React.ReactNode;
+};
+
+export const UIContextProvider: React.FC<UIContextProviderProps> = ({
+  children,
+}) => {
   const [alert, setAlert] = useState<AlertProps>({
     show: false,
     severity: 'info',
