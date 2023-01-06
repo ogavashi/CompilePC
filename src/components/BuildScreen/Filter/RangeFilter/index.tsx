@@ -5,6 +5,7 @@ import { PriceRange, SelectedFilter } from '../../../../../types';
 import { NUMERIC_FORMAT } from '../../../../common/constants';
 import useDebounce from '../../../../hooks/useDebounce';
 import usePriceInputs from '../../../../hooks/usePriceInputs';
+import useStyles from './styles';
 
 export type Param = {
   [key: string]: string;
@@ -16,6 +17,8 @@ type RangeFilterProps = {
 };
 
 const RangeFilter: React.FC<RangeFilterProps> = ({ title, addRangeFilter }) => {
+  const styles = useStyles();
+
   const {
     priceRange,
     handleMinPrice,
@@ -50,12 +53,14 @@ const RangeFilter: React.FC<RangeFilterProps> = ({ title, addRangeFilter }) => {
           onChange={handleMinPrice}
           onBlur={validateRange}
           inputProps={{ inputMode: 'numeric', pattern: NUMERIC_FORMAT }}
+          className={styles.input}
         />
         <InputBase
           value={priceRange.maxPrice}
           onChange={handleMaxPrice}
           onBlur={validateRange}
           inputProps={{ inputMode: 'numeric', pattern: NUMERIC_FORMAT }}
+          className={styles.input}
         />
       </Box>
       <Slider

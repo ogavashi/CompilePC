@@ -59,6 +59,23 @@ export const builderSlice = createSlice({
         builder.categoryName === category ? { ...builder, filter } : builder,
       );
     },
+    setSearch: (
+      state,
+      action: PayloadAction<{ category: CategoryName; value: string }>,
+    ) => {
+      const { category, value } = action.payload;
+
+      state.builders = state.builders.map((builder) => {
+        if (!value) {
+          // Remove empty search filter
+          const { searchValue, ...filters } = builder.filter;
+          return { ...builder, filter: { ...filters } };
+        }
+        return builder.categoryName === category
+          ? { ...builder, filter: { ...builder.filter, searchValue: value } }
+          : builder;
+      });
+    },
     addAssemblyPart: (
       state,
       action: PayloadAction<{ part: Part; category: CategoryName }>,
@@ -84,6 +101,7 @@ export const builderSlice = createSlice({
 export const {
   openBuilder,
   setFilter,
+  setSearch,
   addAssemblyPart,
   removeAssemblyPart,
   eraseAssembly,

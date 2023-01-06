@@ -3,15 +3,20 @@ import { createStyles, makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    wrapper: {
-      display: 'flex',
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-between',
+    item: {
+      maxHeight: '150px',
+      height: '100% !important',
       borderTop: `2px solid ${theme.palette.backgroundBlack}`,
       '&:first-child': {
         border: 'none',
       },
+    },
+    wrapper: {
+      height: '150px',
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
     },
     productName: {
       textDecoration: 'none',
