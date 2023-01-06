@@ -13,7 +13,6 @@ import {
   selectFilter,
   selectOpenedBuilder,
 } from '../../../../../store/builder/selectors';
-
 import { setSearch } from '../../../../../store/builder/slice';
 
 type SearchBarProps = {
@@ -51,7 +50,11 @@ const SearchBar: React.FC<SearchBarProps> = ({ builder }) => {
     dispatch(setSearch({ category: builder.categoryName, value: '' }));
   }, [builder.categoryName, dispatch]);
 
-  const handleSubmit = useCallback(
+  const addSearch = useCallback(() => {
+    dispatch(setSearch({ category: builder.categoryName, value: searchValue }));
+  }, [builder.categoryName, dispatch, searchValue]);
+
+  const handleEnter = useCallback(
     (event: React.KeyboardEvent<HTMLInputElement>) => {
       if (event.key === 'Enter')
         dispatch(
@@ -61,6 +64,8 @@ const SearchBar: React.FC<SearchBarProps> = ({ builder }) => {
     [builder.categoryName, dispatch, searchValue],
   );
 
+  const handleSearch = useCallback(() => addSearch(), [addSearch]);
+
   return (
     <Box display="flex" justifyContent="center" marginBottom={5}>
       <TextField
@@ -68,7 +73,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ builder }) => {
         placeholder={searchLabel}
         value={searchValue}
         onChange={handleChange}
-        onKeyDown={handleSubmit}
+        onKeyDown={handleEnter}
         className={styles.search}
         autoComplete="off"
         InputProps={{
@@ -90,6 +95,14 @@ const SearchBar: React.FC<SearchBarProps> = ({ builder }) => {
           ),
         }}
       />
+      <Button
+        onClick={handleSearch}
+        color="secondary"
+        variant="outlined"
+        className={styles.button}
+      >
+        <SearchIcon />
+      </Button>
     </Box>
   );
 };

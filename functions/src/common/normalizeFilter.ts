@@ -37,22 +37,34 @@ const naormalizeFilter = (params: Record<string, string | string[]>) => {
           ['$in']: parsedFilters[key],
         },
       ])
-      .filter(([key]) => key !== 'maxPrice' && key !== 'minPrice'),
+      .filter(
+        ([key]) =>
+          key !== 'maxPrice' && key !== 'minPrice' && key !== 'searchValue',
+      ),
   );
 
-  const filter =
-    parsedFilters.maxPrice && parsedFilters.minPrice
-      ? Object.assign(properFilter, {
-          ['price.range.maxPrice']: {
-            $lte: Number(parsedFilters.maxPrice) || 50000,
-          },
-          ['price.range.minPrice']: {
-            $gte: Number(parsedFilters.minPrice) || 0,
-          },
-        })
-      : properFilter;
+  if (parsedFilters.maxPrice && parsedFilters.minPrice) {
+    Object.assign(properFilter, {
+      ['price.range.maxPrice']: {
+        $lte: Number(parsedFilters.maxPrice) || 50000,
+      },
+      ['price.range.minPrice']: {
+        $gte: Number(parsedFilters.minPrice) || 0,
+      },
+    });
+  }
 
-  return filter;
+  if (normalizedParams.searchValue) {
+    Object.assign(properFilter, {
+      $text: {
+        $search: normalizedParams.searchValue,
+      },
+    });
+  }
+
+  console.log(properFilter);
+
+  return properFilter;
 };
 
 export default naormalizeFilter;

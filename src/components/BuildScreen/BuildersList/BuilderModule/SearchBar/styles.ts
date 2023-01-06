@@ -8,17 +8,20 @@ const useStyles = makeStyles((theme: Theme) =>
       maxWidth: 700,
       width: '100%',
       border: 'none',
-      borderRadius: theme.shape.borderRadius,
+      borderTopLeftRadius: theme.shape.borderRadius,
+      borderBottomLeftRadius: theme.shape.borderRadius,
       backgroundColor: theme.palette.lightGrey,
       '& .MuiOutlinedInput-notchedOutline': {
         border: 'none',
       },
     },
-    noBorder: {
-      border: 'none',
-    },
+
     icon: {
       color: theme.palette.green,
+    },
+    button: {
+      backgroundColor: `${theme.palette.lightGrey} !important`,
+      borderRadius: `0px ${theme.shape.borderRadius}px ${theme.shape.borderRadius}px 0px !important`,
     },
   }),
 );

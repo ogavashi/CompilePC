@@ -65,11 +65,16 @@ export const builderSlice = createSlice({
     ) => {
       const { category, value } = action.payload;
 
-      state.builders = state.builders.map((builder) =>
-        builder.categoryName === category
+      state.builders = state.builders.map((builder) => {
+        if (!value) {
+          // Remove empty search filter
+          const { searchValue, ...filters } = builder.filter;
+          return { ...builder, filter: { ...filters } };
+        }
+        return builder.categoryName === category
           ? { ...builder, filter: { ...builder.filter, searchValue: value } }
-          : builder,
-      );
+          : builder;
+      });
     },
     addAssemblyPart: (
       state,
