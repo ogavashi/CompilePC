@@ -44,58 +44,60 @@ const BuilderProduct: React.FC<ProductProps> = ({ product, category }) => {
   const specs = getShortSpecs(product, category);
 
   return (
-    <Box className={styles.wrapper}>
-      <Box className={styles.leftWrapper}>
-        <Link
-          style={{ textDecoration: 'none' }}
-          to={generatePath(ROUTES.PRODUCT, { category, id: product.id })}
-        >
-          <img
-            className={styles.image}
-            src={product.mainImage}
-            alt={product.name}
-          />
-        </Link>
-        <Box>
+    <Box className={styles.item}>
+      <Box className={styles.wrapper}>
+        <Box className={styles.leftWrapper}>
           <Link
             style={{ textDecoration: 'none' }}
             to={generatePath(ROUTES.PRODUCT, { category, id: product.id })}
           >
-            <Typography variant="h5" className={styles.productName}>
-              {product.name}
-            </Typography>
+            <img
+              className={styles.image}
+              src={product.mainImage}
+              alt={product.name}
+            />
           </Link>
           <Box>
-            {specs?.map(
-              (spec) =>
-                spec.value && (
-                  <Box key={spec.name} className={styles.specsWrapper}>
-                    <Typography
-                      variant="h6"
-                      marginRight={1}
-                    >{`${spec.name}: `}</Typography>
-                    <Typography fontWeight="bold">{spec.value}</Typography>
-                  </Box>
-                ),
-            )}
+            <Link
+              style={{ textDecoration: 'none' }}
+              to={generatePath(ROUTES.PRODUCT, { category, id: product.id })}
+            >
+              <Typography variant="h5" className={styles.productName}>
+                {product.name}
+              </Typography>
+            </Link>
+            <Box>
+              {specs?.map(
+                (spec) =>
+                  spec.value && (
+                    <Box key={spec.name} className={styles.specsWrapper}>
+                      <Typography
+                        variant="h6"
+                        marginRight={1}
+                      >{`${spec.name}: `}</Typography>
+                      <Typography fontWeight="bold">{spec.value}</Typography>
+                    </Box>
+                  ),
+              )}
+            </Box>
           </Box>
         </Box>
-      </Box>
-      <Box className={styles.rightWrapper}>
-        <Typography variant="h5">
-          {product.price.range.minPrice}₴ - {product.price.range.maxPrice}₴
-        </Typography>
-        {selectedPart ? (
-          <CheckIcon />
-        ) : (
-          <IconButton
-            onClick={() =>
-              dispatch(addAssemblyPart({ part: product, category }))
-            }
-          >
-            <AddRoundedIcon className={styles.greenIcon} fontSize="large" />
-          </IconButton>
-        )}
+        <Box className={styles.rightWrapper}>
+          <Typography variant="h5">
+            {product.price.range.minPrice}₴ - {product.price.range.maxPrice}₴
+          </Typography>
+          {selectedPart ? (
+            <CheckIcon />
+          ) : (
+            <IconButton
+              onClick={() =>
+                dispatch(addAssemblyPart({ part: product, category }))
+              }
+            >
+              <AddRoundedIcon className={styles.greenIcon} fontSize="large" />
+            </IconButton>
+          )}
+        </Box>
       </Box>
     </Box>
   );

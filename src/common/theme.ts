@@ -7,6 +7,7 @@ declare module '@mui/material/styles' {
     green: string;
     tomatoRed: string;
     white: string;
+    lightGrey: string;
   }
   interface PaletteOptions {
     backgroundGrey: string;
@@ -14,6 +15,7 @@ declare module '@mui/material/styles' {
     green: string;
     tomatoRed: string;
     white: string;
+    lightGrey: string;
   }
 }
 
@@ -54,6 +56,7 @@ const defaultTheme = createTheme({
     tomatoRed: colors.red,
     green: colors.green,
     white: colors.white,
+    lightGrey: colors.lightGrey,
   },
   typography: {
     h1: {
@@ -84,23 +87,6 @@ const defaultTheme = createTheme({
     borderRadius: 10,
   },
   components: {
-    MuiInputBase: {
-      styleOverrides: {
-        root: {
-          border: 'none',
-          borderRadius: 10,
-          margin: theme.spacing(1),
-          '& .MuiInputBase-input': {
-            minHeight: 50,
-            backgroundColor: colors.black,
-            borderRadius: 10,
-            border: 'none',
-            fontSize: 20,
-            textAlign: 'center',
-          },
-        },
-      },
-    },
     MuiAccordion: {
       styleOverrides: {
         root: {
