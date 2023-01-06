@@ -9,10 +9,7 @@ import Button from '@mui/material/Button/Button';
 import IconButton from '@mui/material/IconButton/IconButton';
 import { Builder } from '../../../../../../types';
 import useStyles from './styles';
-import {
-  selectFilter,
-  selectOpenedBuilder,
-} from '../../../../../store/builder/selectors';
+import { selectFilter } from '../../../../../store/builder/selectors';
 import { setSearch } from '../../../../../store/builder/slice';
 
 type SearchBarProps = {
@@ -24,9 +21,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ builder }) => {
 
   const dispatch = useDispatch();
 
-  const openedBuilder = useSelector(selectOpenedBuilder);
-
-  const savedFilter = useSelector(selectFilter(openedBuilder));
+  const savedFilter = useSelector(selectFilter(builder.categoryName));
 
   const [searchValue, setSearchValue] = useState<string>(
     (savedFilter?.searchValue as string) || '',
