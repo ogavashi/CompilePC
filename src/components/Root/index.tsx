@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
   useFirebaseApp,
   useFirestore,
@@ -11,6 +11,7 @@ import BuildScreen from '../BuildScreen';
 import NotFoundScreen from '../NotFoundScreen';
 import ProductScreen from '../ProductScreen';
 import AuthenticationLayout from '../AuthenticationLayout';
+import RegisterScreen from '../RegisterScreen';
 
 const Root: React.FC = () => {
   const functions = useFirebaseApp().functions(DEFAULT_REGION);
@@ -40,7 +41,7 @@ const Root: React.FC = () => {
       </Route>
       <Route element={<AuthenticationLayout />}>
         <Route path="/login" element={<div>Sign In</div>} />
-        <Route path="/register" element={<div>Sign Up</div>} />
+        <Route path="/register" element={<RegisterScreen />} />
       </Route>
       {/* Protected route */}
       <Route path="/assemblies" element={<div>Assemblies</div>} />

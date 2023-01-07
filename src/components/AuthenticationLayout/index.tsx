@@ -31,7 +31,13 @@ const AuthenticationLayout = () => {
           </Typography>
         </Box>
       </Box>
-      <Box>
+      <Box
+        display="flex"
+        flexDirection="column"
+        justifyContent="center"
+        alignItems="center"
+        className={styles.rightWrapper}
+      >
         <Outlet />
       </Box>
     </Box>

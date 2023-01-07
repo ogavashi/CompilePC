@@ -9,6 +9,11 @@ const useStyles = makeStyles((theme: Theme) =>
       height: '100vh',
       padding: theme.spacing(10),
     },
+    rightWrapper: {
+      width: '50%',
+      height: '100vh',
+      padding: theme.spacing(10),
+    },
     title: {
       color: theme.palette.green,
     },

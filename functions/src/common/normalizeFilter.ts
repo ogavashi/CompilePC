@@ -62,8 +62,6 @@ const naormalizeFilter = (params: Record<string, string | string[]>) => {
     });
   }
 
-  console.log(properFilter);
-
   return properFilter;
 };
 
