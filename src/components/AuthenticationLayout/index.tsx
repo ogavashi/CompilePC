@@ -2,12 +2,18 @@ import React from 'react';
 
 import { Typography } from '@mui/material';
 import { Box } from '@mui/system';
-import { Outlet } from 'react-router-dom';
+import { Navigate, Outlet } from 'react-router-dom';
 import { AuthIcon, BigLogo } from '../Icons';
 import useStyles from './styles';
 
 const AuthenticationLayout = () => {
   const styles = useStyles();
+
+  // Only for testing purposes
+  const user = false;
+  if (user) {
+    return <Navigate to="/" replace />;
+  }
 
   return (
     <Box display="flex" alignItems="center">

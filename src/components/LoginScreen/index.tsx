@@ -7,7 +7,7 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { Link } from 'react-router-dom';
 import useStyles from './styles';
 
-const RegisterScreen = () => {
+const LoginScreen = () => {
   const styles = useStyles();
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -38,7 +38,7 @@ const RegisterScreen = () => {
       width="100%"
     >
       <Typography className={styles.title} variant="h2">
-        Sign Up
+        Sign In
       </Typography>
       <Box component="form" className={styles.card}>
         <TextField
@@ -46,16 +46,6 @@ const RegisterScreen = () => {
           id="email"
           type="email"
           label="Email"
-          variant="outlined"
-          color="secondary"
-          InputProps={{
-            classes: { input: styles.autoInport },
-          }}
-        />
-        <TextField
-          className={styles.input}
-          id="fullName"
-          label="Full Name"
           variant="outlined"
           color="secondary"
           InputProps={{
@@ -74,34 +64,26 @@ const RegisterScreen = () => {
             endAdornment: <EyeIcon />,
           }}
         />
-        <TextField
-          className={styles.input}
-          id="confirmPassword"
-          label="Confirm password"
-          variant="outlined"
-          color="secondary"
-          type={showPassword ? 'text' : 'password'}
-        />
         <Button
           sx={{ marginBottom: 4 }}
           variant="contained"
           color="secondary"
           fullWidth
         >
-          Sign Up
+          Sign In
         </Button>
         <Button
           variant="contained"
           color="primary"
           fullWidth
           component={Link}
-          to="/login"
+          to="/register"
         >
-          Sign In
+          Sign Up
         </Button>
       </Box>
     </Box>
   );
 };
 
-export default RegisterScreen;
+export default LoginScreen;

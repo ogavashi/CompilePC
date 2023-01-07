@@ -12,6 +12,8 @@ import NotFoundScreen from '../NotFoundScreen';
 import ProductScreen from '../ProductScreen';
 import AuthenticationLayout from '../AuthenticationLayout';
 import RegisterScreen from '../RegisterScreen';
+import ProtectedRoute from '../ProtectedRoute';
+import LoginScreen from '../LoginScreen';
 
 const Root: React.FC = () => {
   const functions = useFirebaseApp().functions(DEFAULT_REGION);
@@ -40,11 +42,18 @@ const Root: React.FC = () => {
         <Route path="/*" element={<NotFoundScreen />} />
       </Route>
       <Route element={<AuthenticationLayout />}>
-        <Route path="/login" element={<div>Sign In</div>} />
+        <Route path="/login" element={<LoginScreen />} />
         <Route path="/register" element={<RegisterScreen />} />
       </Route>
       {/* Protected route */}
-      <Route path="/assemblies" element={<div>Assemblies</div>} />
+      <Route
+        path="/assemblies"
+        element={
+          <ProtectedRoute>
+            <div>Assemblies</div>
+          </ProtectedRoute>
+        }
+      />
     </Routes>
   );
 };
