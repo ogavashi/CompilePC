@@ -60,7 +60,7 @@ const defaultTheme = createTheme({
   },
   typography: {
     h1: {
-      fontSize: 40,
+      fontSize: 50,
       fontWeight: 600,
     },
     h2: {

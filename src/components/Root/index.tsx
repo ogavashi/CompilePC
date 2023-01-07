@@ -6,10 +6,11 @@ import {
 } from 'reactfire';
 import { Routes, Route } from 'react-router-dom';
 import { DEFAULT_REGION } from '../../common/constants';
-import Layout from '../Layout';
+import MainLayout from '../MainLayout';
 import BuildScreen from '../BuildScreen';
 import NotFoundScreen from '../NotFoundScreen';
 import ProductScreen from '../ProductScreen';
+import AuthenticationLayout from '../AuthenticationLayout';
 
 const Root: React.FC = () => {
   const functions = useFirebaseApp().functions(DEFAULT_REGION);
@@ -31,17 +32,19 @@ const Root: React.FC = () => {
   // console.log(data);
 
   return (
-    <Layout>
-      <Routes>
+    <Routes>
+      <Route element={<MainLayout />}>
         <Route path="/" element={<BuildScreen />} />
+        <Route path="/product/:category/:id/*" element={<ProductScreen />} />
+        <Route path="/*" element={<NotFoundScreen />} />
+      </Route>
+      <Route element={<AuthenticationLayout />}>
         <Route path="/login" element={<div>Sign In</div>} />
         <Route path="/register" element={<div>Sign Up</div>} />
-        <Route path="/product/:category/:id/*" element={<ProductScreen />} />
-        {/* Protected route */}
-        <Route path="/assemblies" element={<div>Assemblies</div>} />
-        <Route path="/*" element={<NotFoundScreen />} />
-      </Routes>
-    </Layout>
+      </Route>
+      {/* Protected route */}
+      <Route path="/assemblies" element={<div>Assemblies</div>} />
+    </Routes>
   );
 };
 
