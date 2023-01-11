@@ -4,8 +4,10 @@ import { Box } from '@mui/system';
 import InputAdornment from '@mui/material/InputAdornment';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import { useFormik } from 'formik';
 import { Link } from 'react-router-dom';
 import useStyles from './styles';
+import { loginSchema } from '../../common/schemas';
 
 const LoginScreen = () => {
   const styles = useStyles();
@@ -17,6 +19,16 @@ const LoginScreen = () => {
     [],
   );
 
+  const formik = useFormik({
+    initialValues: {
+      email: '',
+      password: '',
+    },
+    validationSchema: loginSchema,
+    onSubmit: (values) => {
+      alert(JSON.stringify(values, null, 2));
+    },
+  });
   const EyeIcon = () => (
     <InputAdornment position="start">
       <IconButton sx={{ padding: 0 }} onClick={handleShowPassword}>
@@ -40,7 +52,11 @@ const LoginScreen = () => {
       <Typography className={styles.title} variant="h2">
         Sign In
       </Typography>
-      <Box component="form" className={styles.card}>
+      <Box
+        component="form"
+        className={styles.card}
+        onSubmit={formik.handleSubmit}
+      >
         <TextField
           className={styles.input}
           id="email"
@@ -48,6 +64,10 @@ const LoginScreen = () => {
           label="Email"
           variant="outlined"
           color="secondary"
+          value={formik.values.email}
+          onChange={formik.handleChange}
+          error={formik.touched.email && Boolean(formik.errors.email)}
+          helperText={formik.touched.email && formik.errors.email}
           InputProps={{
             classes: { input: styles.autoInport },
           }}
@@ -59,6 +79,10 @@ const LoginScreen = () => {
           variant="outlined"
           type={showPassword ? 'text' : 'password'}
           color="secondary"
+          value={formik.values.password}
+          onChange={formik.handleChange}
+          error={formik.touched.password && Boolean(formik.errors.password)}
+          helperText={formik.touched.password && formik.errors.password}
           InputProps={{
             classes: { input: styles.autoInport },
             endAdornment: <EyeIcon />,
@@ -69,6 +93,7 @@ const LoginScreen = () => {
           variant="contained"
           color="secondary"
           fullWidth
+          type="submit"
         >
           Sign In
         </Button>

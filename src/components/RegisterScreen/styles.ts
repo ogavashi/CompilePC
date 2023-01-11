@@ -7,10 +7,6 @@ const useStyles = makeStyles((theme: Theme) =>
       color: theme.palette.green,
     },
     card: {
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
       margin: theme.spacing(4),
       padding: theme.spacing(4),
       backgroundColor: theme.palette.backgroundGrey,
@@ -20,18 +16,22 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     input: {
       width: '100%',
-      marginBottom: `${theme.spacing(4)} !important`,
       border: 'none',
       borderRadius: theme.shape.borderRadius,
-      backgroundColor: theme.palette.backgroundBlack,
+      minHeight: '84px !important',
 
       '& .MuiOutlinedInput-root': {
+        backgroundColor: theme.palette.backgroundBlack,
         '& fieldset': {
           borderColor: theme.palette.backgroundBlack,
+          color: 'white',
         },
         '&:hover fieldset': {
           borderColor: theme.palette.green,
         },
+      },
+      '& .MuiFormHelperText-root': {
+        backgroundColor: theme.palette.backgroundGrey,
       },
     },
     // FIX LATER

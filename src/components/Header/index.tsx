@@ -19,10 +19,20 @@ const Header: React.FC = () => {
             <AppLogo />
           </Link>
           <Box display="flex" gap={4}>
-            <Button color="primary" variant="contained">
+            <Button
+              color="primary"
+              variant="contained"
+              component={Link}
+              to="/login"
+            >
               Log In
             </Button>
-            <Button color="secondary" variant="contained">
+            <Button
+              color="secondary"
+              variant="contained"
+              component={Link}
+              to="/register"
+            >
               Sign Up
             </Button>
           </Box>
