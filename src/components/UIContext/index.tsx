@@ -1,18 +1,14 @@
-import React, { createContext, useState } from 'react';
-import { AlertColor } from '@mui/lab/Alert';
+import React, { createContext, useEffect, useState } from 'react';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
+import { useSelector } from 'react-redux';
+import { selectNotification } from '../../store/notification/selectors';
+import { AlertProps } from '../../../types';
 
 export const UIContext = createContext<UIContextProps>({} as UIContextProps);
 
 interface UIContextProps {
   setAlert: React.Dispatch<React.SetStateAction<AlertProps>>;
-}
-
-interface AlertProps {
-  show: boolean;
-  severity?: AlertColor;
-  message?: string;
 }
 
 type UIContextProviderProps = {
@@ -27,6 +23,13 @@ export const UIContextProvider: React.FC<UIContextProviderProps> = ({
     severity: 'info',
     message: '',
   });
+
+  const notification = useSelector(selectNotification);
+
+  useEffect(() => {
+    setAlert(notification);
+  }, [notification]);
+
   const handleClose = () => setAlert((prev) => ({ ...prev, show: false }));
 
   return (

@@ -1,3 +1,4 @@
+import { AlertColor } from '@mui/lab/Alert';
 import { ProductCategories } from '../src/common/constants';
 
 // collection categories
@@ -339,3 +340,9 @@ export type User = {
   email: string;
   username: string;
 };
+
+export interface AlertProps {
+  show: boolean;
+  severity?: AlertColor;
+  message?: string;
+}
