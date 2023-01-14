@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useState, useMemo } from 'react';
+import React, { useCallback, useState, useMemo } from 'react';
 import { Button, IconButton, TextField, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import LoadingButton from '@mui/lab/LoadingButton';
@@ -7,23 +7,18 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { useFormik } from 'formik';
 import { Link } from 'react-router-dom';
-import { useAuth } from 'reactfire';
 import { useDispatch, useSelector } from 'react-redux';
 import useStyles from './styles';
 import { registerSchema } from '../../common/schemas';
-import { setLoadingState, setUser } from '../../store/user/slice';
-import { UIContext } from '../UIContext';
+import { register } from '../../store/user/slice';
 import { selectLoadingState } from '../../store/user/selectors';
 import { LoadingState, ROUTES } from '../../common/constants';
+import { AppDispatch } from '../../store';
 
 const RegisterScreen = () => {
   const styles = useStyles();
 
-  const { setAlert } = useContext(UIContext);
-
-  const dispatch = useDispatch();
-
-  const auth = useAuth();
+  const dispatch = useDispatch<AppDispatch>();
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
@@ -42,34 +37,8 @@ const RegisterScreen = () => {
       passwordConfirmation: '',
     },
     validationSchema: registerSchema,
-    onSubmit: async (values) => {
-      dispatch(setLoadingState(LoadingState.LOADING));
-      const { email, password, username } = values;
-      try {
-        const userCredentials = await auth.createUserWithEmailAndPassword(
-          email,
-          password,
-        );
-        await userCredentials.user?.updateProfile({ displayName: username });
-        const user = userCredentials?.user;
-
-        if (user?.email && user?.displayName && user?.uid) {
-          const { email: userEmail, displayName, uid } = user;
-          dispatch(
-            setUser({ email: userEmail, username: displayName, id: uid }),
-          );
-          dispatch(setLoadingState(LoadingState.LOADED));
-        }
-      } catch (error) {
-        dispatch(setLoadingState(LoadingState.IDLE));
-        if (error instanceof Error) {
-          setAlert({
-            show: true,
-            severity: 'error',
-            message: error.message,
-          });
-        }
-      }
+    onSubmit: (values) => {
+      dispatch(register(values));
     },
   });
 

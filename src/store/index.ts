@@ -13,11 +13,14 @@ import {
 
 import builderReducer from './builder/slice';
 import userDataReducer from './user/slice';
+import notificationReducer from './notification/slice';
+
+import handleError from './middleware/handleError';
 
 const persistConfig = {
   key: 'root',
   storage: storageSession,
-  blacklist: ['userData'],
+  blacklist: ['userData', 'notification'],
 };
 
 const builderPersistConfig = {
@@ -28,6 +31,7 @@ const builderPersistConfig = {
 const rootReducer = combineReducers({
   builder: persistReducer(builderPersistConfig, builderReducer),
   userData: userDataReducer,
+  notification: notificationReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -39,7 +43,7 @@ export const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }),
+    }).concat([handleError]),
 });
 
 export const persistor = persistStore(store);

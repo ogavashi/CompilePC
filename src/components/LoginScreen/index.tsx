@@ -7,24 +7,19 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import LoadingButton from '@mui/lab/LoadingButton/LoadingButton';
 import { useFormik } from 'formik';
 import { Link } from 'react-router-dom';
-import { useAuth } from 'reactfire';
 import { useDispatch, useSelector } from 'react-redux';
 import Button from '@mui/material/Button';
 import useStyles from './styles';
 import { loginSchema } from '../../common/schemas';
-import { setUser, setLoadingState } from '../../store/user/slice';
-import { UIContext } from '../UIContext';
+import { login } from '../../store/user/slice';
 import { LoadingState, ROUTES } from '../../common/constants';
 import { selectLoadingState } from '../../store/user/selectors';
+import { AppDispatch } from '../../store';
 
 const LoginScreen = () => {
   const styles = useStyles();
 
-  const { setAlert } = useContext(UIContext);
-
-  const dispatch = useDispatch();
-
-  const auth = useAuth();
+  const dispatch = useDispatch<AppDispatch>();
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
@@ -46,34 +41,8 @@ const LoginScreen = () => {
       password: '',
     },
     validationSchema: loginSchema,
-    onSubmit: async (values) => {
-      const { email, password } = values;
-      try {
-        dispatch(setLoadingState(LoadingState.LOADING));
-        const userCredentials = await auth.signInWithEmailAndPassword(
-          email,
-          password,
-        );
-
-        const user = userCredentials?.user;
-
-        if (user?.email && user?.displayName && user?.uid) {
-          const { email: userEmail, displayName, uid } = user;
-          dispatch(
-            setUser({ email: userEmail, username: displayName, id: uid }),
-          );
-          dispatch(setLoadingState(LoadingState.LOADED));
-        }
-      } catch (error) {
-        dispatch(setLoadingState(LoadingState.IDLE));
-        if (error instanceof Error) {
-          setAlert({
-            show: true,
-            severity: 'error',
-            message: error.message,
-          });
-        }
-      }
+    onSubmit: (values) => {
+      dispatch(login(values));
     },
   });
   const EyeIcon = () => (
