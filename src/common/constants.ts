@@ -84,9 +84,21 @@ const ProductPageTabs = [
 ];
 
 const ROUTES = {
+  MAIN: '/',
   PRODUCT: '/product/:category/:id/',
   ASSEMBLY: '/assembly/:id',
+  ASSEMBLIES: '/assembies',
+  LOGIN: '/login',
+  REGISTER: '/register',
+  PROFILE: '/profile',
 };
+
+enum LoadingState {
+  LOADED = 'LOADED',
+  LOADING = 'LOADING',
+  ERROR = 'ERROR',
+  IDLE = 'IDLE',
+}
 
 const NUMERIC_FORMAT = /^[0-9]*$/;
 
@@ -97,6 +109,7 @@ export {
   IconByCategory,
   ProductCategories,
   ProductPageTabs,
+  LoadingState,
   MIN_PRICE_SLIDER_DISTANCE,
   NUMERIC_FORMAT,
   ROUTES,

@@ -9,7 +9,7 @@ const NotFoundScreen: React.FC = () => {
 
   return (
     <Box
-      height="calc(100vh - 64px)"
+      height="calc(100vh - 100px)"
       width="100%"
       display="flex"
       flexDirection="column"

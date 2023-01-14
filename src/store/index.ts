@@ -1,4 +1,4 @@
-import { configureStore } from '@reduxjs/toolkit';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import storageSession from 'redux-persist/lib/storage/session';
 import {
   FLUSH,
@@ -12,13 +12,25 @@ import {
 } from 'redux-persist';
 
 import builderReducer from './builder/slice';
+import userDataReducer from './user/slice';
 
 const persistConfig = {
   key: 'root',
   storage: storageSession,
+  blacklist: ['userData'],
 };
 
-const persistedReducer = persistReducer(persistConfig, builderReducer);
+const builderPersistConfig = {
+  key: 'builder',
+  storage: storageSession,
+};
+
+const rootReducer = combineReducers({
+  builder: persistReducer(builderPersistConfig, builderReducer),
+  userData: userDataReducer,
+});
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
   reducer: persistedReducer,

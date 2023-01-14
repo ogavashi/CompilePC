@@ -1,11 +1,30 @@
-import React from 'react';
+import React, { useCallback, useMemo } from 'react';
 import AppBar from '@mui/material/AppBar';
-import { Button } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 import { Box, Container } from '@mui/system';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { useAuth } from 'reactfire';
 import { AppLogo } from '../Icons';
+import { selectLoadingState, selectUser } from '../../store/user/selectors';
+import { LoadingState, ROUTES } from '../../common/constants';
 
 const Header: React.FC = () => {
+  const user = useSelector(selectUser);
+
+  const auth = useAuth();
+
+  const loadingState = useSelector(selectLoadingState);
+
+  const isLoading = useMemo(
+    () => loadingState === LoadingState.LOADING,
+    [loadingState],
+  );
+
+  const handleLogOut = useCallback(async () => {
+    await auth.signOut();
+  }, [auth]);
+
   return (
     <AppBar position="sticky">
       <Container maxWidth="xl">
@@ -15,17 +34,44 @@ const Header: React.FC = () => {
           justifyContent="space-between"
           paddingY={2}
         >
-          <Link to="/">
+          <Link to={ROUTES.MAIN}>
             <AppLogo />
           </Link>
-          <Box display="flex" gap={4}>
-            <Button color="primary" variant="contained">
-              Log In
-            </Button>
-            <Button color="secondary" variant="contained">
-              Sign Up
-            </Button>
-          </Box>
+          {!isLoading && (
+            <Box display="flex" gap={4} alignItems="center">
+              {user ? (
+                <>
+                  <Typography>{user.username}</Typography>
+                  <Button
+                    color="secondary"
+                    variant="outlined"
+                    onClick={handleLogOut}
+                  >
+                    Log Out
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Button
+                    color="primary"
+                    variant="contained"
+                    component={Link}
+                    to="/login"
+                  >
+                    Log In
+                  </Button>
+                  <Button
+                    color="secondary"
+                    variant="contained"
+                    component={Link}
+                    to="/register"
+                  >
+                    Sign Up
+                  </Button>
+                </>
+              )}
+            </Box>
+          )}
         </Box>
       </Container>
     </AppBar>

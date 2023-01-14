@@ -10,6 +10,8 @@ import { ReactComponent as PSUIcon } from './psu-icon.svg';
 import { ReactComponent as RAMIcon } from './ram-icon.svg';
 import { ReactComponent as SSDIcon } from './ssd-icon.svg';
 import { ReactComponent as ErrorLoading } from './error-loading.svg';
+import { ReactComponent as BigLogo } from './big-logo.svg';
+import { ReactComponent as AuthIcon } from './auth-icon.svg';
 
 export {
   AppLogo,
@@ -24,4 +26,6 @@ export {
   RAMIcon,
   SSDIcon,
   ErrorLoading,
+  BigLogo,
+  AuthIcon,
 };

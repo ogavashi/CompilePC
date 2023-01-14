@@ -11,9 +11,9 @@ import { RootState } from '../index';
 type Selector<S> = (state: RootState) => S;
 
 const selectOpenedBuilder = (state: RootState): CategoryName | null =>
-  state.openedBuilder;
+  state.builder.openedBuilder;
 
-const selectBuilders = (state: RootState): Builder[] => state.builders;
+const selectBuilders = (state: RootState): Builder[] => state.builder.builders;
 
 const selectBuilder = (
   category: CategoryName | null,
@@ -24,7 +24,7 @@ const selectBuilder = (
       builders.find(({ categoryName }) => categoryName === category) || null,
   );
 
-const selectAssembly = (state: RootState): Assembly => state.assembly;
+const selectAssembly = (state: RootState): Assembly => state.builder.assembly;
 
 const selectAssemblyPart = (category: CategoryName): Selector<Part | null> =>
   createSelector(selectAssembly, (assembly: Assembly) => assembly[category]);
