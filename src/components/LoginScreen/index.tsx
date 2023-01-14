@@ -6,11 +6,15 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { useFormik } from 'formik';
 import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import useStyles from './styles';
 import { loginSchema } from '../../common/schemas';
+import { setUser } from '../../store/user/slice';
 
 const LoginScreen = () => {
   const styles = useStyles();
+
+  const dispatch = useDispatch();
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
