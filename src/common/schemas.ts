@@ -5,7 +5,7 @@ const registerSchema = yup.object({
     .string()
     .email('Enter a valid email')
     .required('Email is required'),
-  fullName: yup.string().required('Full Name is required'),
+  username: yup.string().required('username is required'),
   password: yup
     .string()
     .required('Password is required')

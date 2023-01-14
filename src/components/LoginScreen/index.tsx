@@ -1,20 +1,28 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useContext, useState } from 'react';
 import { Button, IconButton, TextField, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import InputAdornment from '@mui/material/InputAdornment';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { useFormik } from 'formik';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from 'reactfire';
 import { useDispatch } from 'react-redux';
 import useStyles from './styles';
 import { loginSchema } from '../../common/schemas';
 import { setUser } from '../../store/user/slice';
+import { UIContext } from '../UIContext';
 
 const LoginScreen = () => {
   const styles = useStyles();
 
+  const { setAlert } = useContext(UIContext);
+
   const dispatch = useDispatch();
+
+  const navigate = useNavigate();
+
+  const auth = useAuth();
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
@@ -29,8 +37,32 @@ const LoginScreen = () => {
       password: '',
     },
     validationSchema: loginSchema,
-    onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
+    onSubmit: async (values) => {
+      const { email, password } = values;
+      try {
+        const userCredentials = await auth.signInWithEmailAndPassword(
+          email,
+          password,
+        );
+
+        const user = userCredentials?.user;
+
+        if (user?.email && user?.displayName && user?.uid) {
+          const { email: userEmail, displayName, uid } = user;
+          dispatch(
+            setUser({ email: userEmail, username: displayName, id: uid }),
+          );
+          navigate('/');
+        }
+      } catch (error) {
+        if (error instanceof Error) {
+          setAlert({
+            show: true,
+            severity: 'error',
+            message: error.message,
+          });
+        }
+      }
     },
   });
   const EyeIcon = () => (

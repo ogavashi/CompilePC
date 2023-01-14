@@ -1,19 +1,25 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { Typography } from '@mui/material';
 import { Box } from '@mui/system';
-import { Navigate, Outlet } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { Navigate, Outlet, useNavigate } from 'react-router-dom';
 import { AuthIcon, BigLogo } from '../Icons';
 import useStyles from './styles';
+import selectUser from '../../store/user/selectors';
 
 const AuthenticationLayout = () => {
   const styles = useStyles();
 
-  // Only for testing purposes
-  const user = false;
-  if (user) {
-    return <Navigate to="/" replace />;
-  }
+  const user = useSelector(selectUser);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user) {
+      navigate('/');
+    }
+  }, [navigate, user]);
 
   return (
     <Box display="flex" alignItems="center">

@@ -1,29 +1,65 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useContext, useState } from 'react';
 import { Button, IconButton, TextField, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import InputAdornment from '@mui/material/InputAdornment';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { useFormik } from 'formik';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from 'reactfire';
+import { useDispatch } from 'react-redux';
 import useStyles from './styles';
 import { registerSchema } from '../../common/schemas';
+import { setUser } from '../../store/user/slice';
+import { UIContext } from '../UIContext';
 
 const RegisterScreen = () => {
   const styles = useStyles();
+
+  const { setAlert } = useContext(UIContext);
+
+  const dispatch = useDispatch();
+
+  const navigate = useNavigate();
+
+  const auth = useAuth();
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
   const formik = useFormik({
     initialValues: {
       email: '',
-      fullName: '',
+      username: '',
       password: '',
       passwordConfirmation: '',
     },
     validationSchema: registerSchema,
-    onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
+    onSubmit: async (values) => {
+      const { email, password, username } = values;
+      try {
+        const userCredentials = await auth.createUserWithEmailAndPassword(
+          email,
+          password,
+        );
+        await userCredentials.user?.updateProfile({ displayName: username });
+        const user = userCredentials?.user;
+
+        if (user?.email && user?.displayName && user?.uid) {
+          const { email: userEmail, displayName, uid } = user;
+          dispatch(
+            setUser({ email: userEmail, username: displayName, id: uid }),
+          );
+          navigate('/');
+        }
+      } catch (error) {
+        if (error instanceof Error) {
+          setAlert({
+            show: true,
+            severity: 'error',
+            message: error.message,
+          });
+        }
+      }
     },
   });
 
@@ -74,14 +110,14 @@ const RegisterScreen = () => {
           />
           <TextField
             className={styles.input}
-            id="fullName"
+            id="username"
             label="Full Name"
             variant="outlined"
             color="secondary"
-            value={formik.values.fullName}
+            value={formik.values.username}
             onChange={formik.handleChange}
-            error={formik.touched.fullName && Boolean(formik.errors.fullName)}
-            helperText={formik.touched.fullName && formik.errors.fullName}
+            error={formik.touched.username && Boolean(formik.errors.username)}
+            helperText={formik.touched.username && formik.errors.username}
             InputProps={{
               classes: { input: styles.autoInport },
             }}

@@ -337,5 +337,5 @@ export type Builder = {
 export type User = {
   id: string;
   email: string;
-  fullName: string;
+  username: string;
 };
