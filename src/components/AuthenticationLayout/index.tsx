@@ -3,10 +3,11 @@ import React, { useEffect } from 'react';
 import { Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import { useSelector } from 'react-redux';
-import { Navigate, Outlet, useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { AuthIcon, BigLogo } from '../Icons';
 import useStyles from './styles';
-import selectUser from '../../store/user/selectors';
+import { selectUser } from '../../store/user/selectors';
+import { ROUTES } from '../../common/constants';
 
 const AuthenticationLayout = () => {
   const styles = useStyles();
@@ -17,7 +18,7 @@ const AuthenticationLayout = () => {
 
   useEffect(() => {
     if (user) {
-      navigate('/');
+      navigate(ROUTES.MAIN);
     }
   }, [navigate, user]);
 

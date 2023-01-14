@@ -1,17 +1,20 @@
-import React, { useCallback, useContext, useState } from 'react';
+import React, { useCallback, useContext, useState, useMemo } from 'react';
 import { Button, IconButton, TextField, Typography } from '@mui/material';
 import { Box } from '@mui/system';
+import LoadingButton from '@mui/lab/LoadingButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { useFormik } from 'formik';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useAuth } from 'reactfire';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import useStyles from './styles';
 import { registerSchema } from '../../common/schemas';
-import { setUser } from '../../store/user/slice';
+import { setLoadingState, setUser } from '../../store/user/slice';
 import { UIContext } from '../UIContext';
+import { selectLoadingState } from '../../store/user/selectors';
+import { LoadingState, ROUTES } from '../../common/constants';
 
 const RegisterScreen = () => {
   const styles = useStyles();
@@ -20,11 +23,16 @@ const RegisterScreen = () => {
 
   const dispatch = useDispatch();
 
-  const navigate = useNavigate();
-
   const auth = useAuth();
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
+
+  const loadingState = useSelector(selectLoadingState);
+
+  const isLoading = useMemo(
+    () => loadingState === LoadingState.LOADING,
+    [loadingState],
+  );
 
   const formik = useFormik({
     initialValues: {
@@ -35,6 +43,7 @@ const RegisterScreen = () => {
     },
     validationSchema: registerSchema,
     onSubmit: async (values) => {
+      dispatch(setLoadingState(LoadingState.LOADING));
       const { email, password, username } = values;
       try {
         const userCredentials = await auth.createUserWithEmailAndPassword(
@@ -49,9 +58,10 @@ const RegisterScreen = () => {
           dispatch(
             setUser({ email: userEmail, username: displayName, id: uid }),
           );
-          navigate('/');
+          dispatch(setLoadingState(LoadingState.LOADED));
         }
       } catch (error) {
+        dispatch(setLoadingState(LoadingState.IDLE));
         if (error instanceof Error) {
           setAlert({
             show: true,
@@ -156,21 +166,23 @@ const RegisterScreen = () => {
               formik.errors.passwordConfirmation
             }
           />
-          <Button
+          <LoadingButton
             sx={{ marginBottom: 4 }}
             variant="contained"
             color="secondary"
             type="submit"
             fullWidth
+            loading={isLoading}
           >
             Sign Up
-          </Button>
+          </LoadingButton>
           <Button
             variant="contained"
             color="primary"
             fullWidth
             component={Link}
-            to="/login"
+            to={ROUTES.LOGIN}
+            disabled={isLoading}
           >
             Sign In
           </Button>

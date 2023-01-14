@@ -1,17 +1,21 @@
-import React, { useCallback, useContext, useState } from 'react';
-import { Button, IconButton, TextField, Typography } from '@mui/material';
+import React, { useCallback, useContext, useState, useMemo } from 'react';
+import { IconButton, TextField, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import InputAdornment from '@mui/material/InputAdornment';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import LoadingButton from '@mui/lab/LoadingButton/LoadingButton';
 import { useFormik } from 'formik';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useAuth } from 'reactfire';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import Button from '@mui/material/Button';
 import useStyles from './styles';
 import { loginSchema } from '../../common/schemas';
-import { setUser } from '../../store/user/slice';
+import { setUser, setLoadingState } from '../../store/user/slice';
 import { UIContext } from '../UIContext';
+import { LoadingState, ROUTES } from '../../common/constants';
+import { selectLoadingState } from '../../store/user/selectors';
 
 const LoginScreen = () => {
   const styles = useStyles();
@@ -20,11 +24,16 @@ const LoginScreen = () => {
 
   const dispatch = useDispatch();
 
-  const navigate = useNavigate();
-
   const auth = useAuth();
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
+
+  const loadingState = useSelector(selectLoadingState);
+
+  const isLoading = useMemo(
+    () => loadingState === LoadingState.LOADING,
+    [loadingState],
+  );
 
   const handleShowPassword = useCallback(
     () => setShowPassword((prev) => !prev),
@@ -40,6 +49,7 @@ const LoginScreen = () => {
     onSubmit: async (values) => {
       const { email, password } = values;
       try {
+        dispatch(setLoadingState(LoadingState.LOADING));
         const userCredentials = await auth.signInWithEmailAndPassword(
           email,
           password,
@@ -52,9 +62,10 @@ const LoginScreen = () => {
           dispatch(
             setUser({ email: userEmail, username: displayName, id: uid }),
           );
-          navigate('/');
+          dispatch(setLoadingState(LoadingState.LOADED));
         }
       } catch (error) {
+        dispatch(setLoadingState(LoadingState.IDLE));
         if (error instanceof Error) {
           setAlert({
             show: true,
@@ -124,21 +135,23 @@ const LoginScreen = () => {
             endAdornment: <EyeIcon />,
           }}
         />
-        <Button
+        <LoadingButton
           sx={{ marginBottom: 4 }}
           variant="contained"
           color="secondary"
           fullWidth
           type="submit"
+          loading={isLoading}
         >
           Sign In
-        </Button>
+        </LoadingButton>
         <Button
           variant="contained"
           color="primary"
           fullWidth
           component={Link}
-          to="/register"
+          to={ROUTES.REGISTER}
+          disabled={isLoading}
         >
           Sign Up
         </Button>
