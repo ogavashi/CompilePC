@@ -85,12 +85,13 @@ const ProductPageTabs = [
 
 const ROUTES = {
   MAIN: '/',
-  PRODUCT: '/product/:category/:id/',
+  PRODUCT: '/product/:category/:id/*',
   ASSEMBLY: '/assembly/:id',
-  ASSEMBLIES: '/assembies',
+  ASSEMBLIES: '/assemblies',
   LOGIN: '/login',
   REGISTER: '/register',
   PROFILE: '/profile',
+  NOT_FOUND: '/*',
 };
 
 enum LoadingState {
