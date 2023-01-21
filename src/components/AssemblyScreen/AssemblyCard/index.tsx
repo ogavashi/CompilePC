@@ -13,7 +13,11 @@ import { getAverageSum, isEmpty } from '../../../utils/assembly';
 import AssemblyPart from '../../BuildScreen/Assembly/AssemblyPart';
 import AssemblyCardItem from './AssemblyCardItem';
 
-const AssemblyCard = () => {
+type AssemblyCardProps = {
+  handleShare: () => void;
+};
+
+const AssemblyCard: React.FC<AssemblyCardProps> = ({ handleShare }) => {
   const styles = useStyles();
 
   const dispatch = useDispatch();
@@ -50,6 +54,7 @@ const AssemblyCard = () => {
               variant="contained"
               fullWidth
               className={styles.button}
+              onClick={handleShare}
             >
               Share
             </Button>

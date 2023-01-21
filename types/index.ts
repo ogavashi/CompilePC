@@ -346,3 +346,10 @@ export interface AlertProps {
   severity?: AlertColor;
   message?: string;
 }
+
+export type CarouselItem = {
+  id: string;
+  mainImage: string;
+  name: string;
+  category: CategoryName;
+};

@@ -1,4 +1,10 @@
-import { Assembly, CategoryName, Part } from '../../types';
+import {
+  Assembly,
+  CarouselItem,
+  CategoryName,
+  Part,
+  Product,
+} from '../../types';
 
 const getAverageSum = (assembly: Assembly): number => {
   const minPrice = Object.keys(assembly).reduce((sum, key) => {
@@ -24,4 +30,21 @@ const getAveragePrice = (part: Part): number => {
 const isEmpty = (assembly: Assembly): boolean =>
   Object.values(assembly).every((part) => !part);
 
-export { getAverageSum, getAveragePrice, isEmpty };
+const getCarouselData = (assembly: Assembly): CarouselItem[] => {
+  const assemblyParts = Object.entries(assembly)
+    .filter(([, v]) => v)
+    .map((part) => {
+      const specs = part[1] as Product;
+      const category = part[0] as CategoryName;
+      return {
+        id: specs.id,
+        mainImage: specs.mainImage,
+        name: specs.name,
+        category,
+      };
+    });
+
+  return assemblyParts;
+};
+
+export { getAverageSum, getAveragePrice, isEmpty, getCarouselData };
