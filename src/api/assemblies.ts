@@ -1,4 +1,4 @@
-import { Assembly, User, UserAssembly } from '../../types/index';
+import { SaveAssemblyDto, User, UserAssembly } from '../../types/index';
 import functions from '../common/firebaseFunctons';
 
 const Assemblies = {
@@ -16,9 +16,15 @@ const Assemblies = {
     });
     return assemblies;
   },
-  save: async (user: User, assembly: Assembly): Promise<string> => {
+  save: async (
+    title: string,
+    user: User,
+    assembly: SaveAssemblyDto,
+  ): Promise<string> => {
     const saveAssembly = functions.httpsCallable('saveAssembly');
+
     const { data: assemblyId }: { data: string } = await saveAssembly({
+      title,
       user,
       assembly,
     });

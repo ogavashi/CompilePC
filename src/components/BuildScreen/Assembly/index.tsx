@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { Box } from '@mui/system';
 import Button from '@mui/material/Button/Button';
 import Divider from '@mui/material/Divider';
@@ -11,6 +11,7 @@ import { selectAssembly } from '../../../store/builder/selectors';
 import { eraseAssembly } from '../../../store/builder/slice';
 import { getAverageSum, isEmpty } from '../../../utils/assembly';
 import AssemblyPart from './AssemblyPart';
+import SaveModal from './SaveModal';
 
 const Assembly = () => {
   const styles = useStyles();
@@ -22,6 +23,12 @@ const Assembly = () => {
   const isAssemblyEmpty = useMemo(() => isEmpty(assembly), [assembly]);
 
   const totalSum = useMemo(() => getAverageSum(assembly), [assembly]);
+
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  const handleOpen = useCallback(() => setIsOpen(true), []);
+
+  const handleClose = useCallback(() => setIsOpen(false), []);
 
   return (
     <Box className={styles.sideSection}>
@@ -61,6 +68,7 @@ const Assembly = () => {
               fullWidth
               className={styles.button}
               disabled={isAssemblyEmpty}
+              onClick={handleOpen}
             >
               Save
             </Button>
@@ -77,6 +85,7 @@ const Assembly = () => {
           </Box>
         </Box>
       </Paper>
+      <SaveModal isOpen={isOpen} handleClose={handleClose} />
     </Box>
   );
 };

@@ -23,4 +23,11 @@ const loginSchema = yup.object({
   password: yup.string().required('Password is required'),
 });
 
-export { registerSchema, loginSchema };
+const saveAssemblySchema = yup.object({
+  title: yup
+    .string()
+    .required('Title is required')
+    .matches(/^[A-Za-z\s]*$/, 'Only characters are allowed'),
+});
+
+export { registerSchema, loginSchema, saveAssemblySchema };
