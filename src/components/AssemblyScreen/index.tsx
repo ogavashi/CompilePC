@@ -91,10 +91,7 @@ const AssemblyScreen = () => {
         <Box className={styles.leftWrapper}>
           <ImageCarousel items={items} />
         </Box>
-        <AssemblyCard
-          assembly={userAssembly.assembly}
-          handleShare={handleShare}
-        />
+        <AssemblyCard userAssembly={userAssembly} handleShare={handleShare} />
       </Box>
     </Box>
   );

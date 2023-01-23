@@ -101,6 +101,11 @@ enum LoadingState {
   IDLE = 'IDLE',
 }
 
+enum BuilderMode {
+  NEW = 'NEW',
+  EDIT = 'EDIT',
+}
+
 const NUMERIC_FORMAT = /^[0-9]*$/;
 
 const MIN_PRICE_SLIDER_DISTANCE = 1000;
@@ -111,6 +116,7 @@ export {
   ProductCategories,
   ProductPageTabs,
   LoadingState,
+  BuilderMode,
   MIN_PRICE_SLIDER_DISTANCE,
   NUMERIC_FORMAT,
   ROUTES,
