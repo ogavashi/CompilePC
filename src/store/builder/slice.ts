@@ -85,6 +85,9 @@ export const builderSlice = createSlice({
         [action.payload.category]: action.payload.part,
       };
     },
+    setAssembly: (state, action: PayloadAction<Assembly>) => {
+      state.assembly = action.payload;
+    },
     removeAssemblyPart: (state, action: PayloadAction<CategoryName>) => {
       state.assembly = {
         ...state.assembly,
@@ -105,6 +108,7 @@ export const {
   addAssemblyPart,
   removeAssemblyPart,
   eraseAssembly,
+  setAssembly,
 } = builderSlice.actions;
 
 export default builderSlice.reducer;

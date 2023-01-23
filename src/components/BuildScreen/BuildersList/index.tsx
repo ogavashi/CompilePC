@@ -32,12 +32,6 @@ const BuildersList = () => {
         </Typography>
         <MainBuilder />
       </Box>
-      <Box>
-        <Typography gutterBottom variant="h2">
-          Periphery
-        </Typography>
-        <Paper>biba</Paper>
-      </Box>
     </Box>
   );
 };

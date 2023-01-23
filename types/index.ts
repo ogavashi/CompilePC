@@ -326,6 +326,14 @@ export type Assembly = {
   HDD: HardDrive | null;
 };
 
+export type UserAssembly = {
+  id: string;
+  title: string;
+  userId: string;
+  username: string;
+  assembly: Assembly;
+};
+
 export type SelectedFilter = { [k: string]: string | string[] };
 
 export type Builder = {
@@ -346,3 +354,10 @@ export interface AlertProps {
   severity?: AlertColor;
   message?: string;
 }
+
+export type CarouselItem = {
+  id: string;
+  mainImage: string;
+  name: string;
+  category: CategoryName;
+};
