@@ -6,12 +6,15 @@ import {
   CategoryName,
   SelectedFilter,
 } from '../../../types/index';
-import { ProductCategories } from '../../common/constants';
+import { BuilderMode, ProductCategories } from '../../common/constants';
 
 export interface BuilderState {
   builders: Builder[];
   openedBuilder: CategoryName | null;
   assembly: Assembly;
+  mode: BuilderMode;
+  updateAssemblyId: string | null;
+  assemblyTitle: string | null;
 }
 
 const builders: Builder[] = Object.values(ProductCategories).map(
@@ -37,6 +40,9 @@ const initialState: BuilderState = {
   builders,
   openedBuilder: null,
   assembly: emptyAssembly,
+  mode: BuilderMode.NEW,
+  updateAssemblyId: null,
+  assemblyTitle: null,
 };
 
 export const builderSlice = createSlice({
@@ -88,6 +94,18 @@ export const builderSlice = createSlice({
     setAssembly: (state, action: PayloadAction<Assembly>) => {
       state.assembly = action.payload;
     },
+    setMode: (
+      state,
+      action: PayloadAction<{
+        builderMode: BuilderMode;
+        id: string | null;
+        assemblyTitle: string | null;
+      }>,
+    ) => {
+      state.mode = action.payload.builderMode;
+      state.updateAssemblyId = action.payload.id;
+      state.assemblyTitle = action.payload.assemblyTitle;
+    },
     removeAssemblyPart: (state, action: PayloadAction<CategoryName>) => {
       state.assembly = {
         ...state.assembly,
@@ -109,6 +127,7 @@ export const {
   removeAssemblyPart,
   eraseAssembly,
   setAssembly,
+  setMode,
 } = builderSlice.actions;
 
 export default builderSlice.reducer;

@@ -35,6 +35,61 @@ const saveAssembly = functions
     }
   });
 
+const updateAssembly = functions
+  .region(DEFAULT_REGION)
+  .https.onCall(async (data): Promise<string> => {
+    const { assemblyId, user, assembly, title } = data;
+
+    const db = await getDB();
+
+    try {
+      const mongofiedId = new ObjectId(assemblyId);
+
+      await db
+        .collection('assemblies')
+        .updateOne(
+          { _id: mongofiedId },
+          { $set: { title, assembly, userId: user.id } },
+        );
+
+      return assemblyId;
+    } catch (error) {
+      if (error instanceof Error) {
+        console.log(error.message);
+      }
+      throw new functions.https.HttpsError(
+        'internal',
+        'Something went wrong. Please try again later.',
+      );
+    }
+  });
+
+const removeAssembly = functions
+  .region(DEFAULT_REGION)
+  .https.onCall(async (data) => {
+    const { userId, assemblyId } = data;
+
+    const db = await getDB();
+
+    try {
+      const mongofiedAssemblyId = new ObjectId(assemblyId);
+
+      await db.collection('assemblies').deleteOne({ _id: mongofiedAssemblyId });
+
+      await db
+        .collection('users')
+        .updateOne(
+          { id: userId },
+          { $pull: { assemblies: mongofiedAssemblyId } },
+        );
+    } catch (error) {
+      throw new functions.https.HttpsError(
+        'internal',
+        'Something went wrong. Please try again later.',
+      );
+    }
+  });
+
 interface RawAssembly {
   _id: ObjectId;
   title: string;
@@ -101,4 +156,4 @@ const getAssembly = functions
     }
   });
 
-export { saveAssembly, getAssembly };
+export { saveAssembly, getAssembly, updateAssembly, removeAssembly };

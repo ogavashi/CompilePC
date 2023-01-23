@@ -3,17 +3,23 @@ import { Box } from '@mui/system';
 import { generatePath, useNavigate } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
 import { useFormik } from 'formik';
-import React, { useContext } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useContext, useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { SaveAssemblyDto, User } from '../../../../../types';
 import Assemblies from '../../../../api/assemblies';
-import { ROUTES } from '../../../../common/constants';
+import { BuilderMode, ROUTES } from '../../../../common/constants';
 import { saveAssemblySchema } from '../../../../common/schemas';
-import { selectAssembly } from '../../../../store/builder/selectors';
+import {
+  selectAssembly,
+  selectMode,
+  selectTitle,
+  selectUpdateAssemblyId,
+} from '../../../../store/builder/selectors';
 import { selectUser } from '../../../../store/user/selectors';
 import { UIContext } from '../../../UIContext';
 
 import useStyles from './styles';
+import { eraseAssembly, setMode } from '../../../../store/builder/slice';
 
 type SaveModalProps = {
   isOpen: boolean;
@@ -27,9 +33,17 @@ const SaveModal: React.FC<SaveModalProps> = ({ isOpen, handleClose }) => {
 
   const assembly = useSelector(selectAssembly);
 
+  const mode = useSelector(selectMode);
+
+  const oldTitle = useSelector(selectTitle);
+
+  const assemblyId = useSelector(selectUpdateAssemblyId);
+
   const { setAlert } = useContext(UIContext);
 
   const navigate = useNavigate();
+
+  const dispatch = useDispatch();
 
   const { mutate, isLoading } = useMutation(
     ({
@@ -40,7 +54,12 @@ const SaveModal: React.FC<SaveModalProps> = ({ isOpen, handleClose }) => {
       title: string;
       userData: User;
       userAssembly: SaveAssemblyDto;
-    }) => Assemblies.save(title, userData, userAssembly),
+    }) => {
+      if (mode === BuilderMode.EDIT && assemblyId) {
+        return Assemblies.update(assemblyId, title, userData, userAssembly);
+      }
+      return Assemblies.save(title, userData, userAssembly);
+    },
     {
       onError: () =>
         setAlert({
@@ -55,13 +74,21 @@ const SaveModal: React.FC<SaveModalProps> = ({ isOpen, handleClose }) => {
           message: `Successfully saved assembly.`,
         });
         navigate(generatePath(ROUTES.ASSEMBLY, { id: data }));
+        dispatch(
+          setMode({
+            builderMode: BuilderMode.NEW,
+            id: null,
+            assemblyTitle: null,
+          }),
+        );
+        dispatch(eraseAssembly());
       },
     },
   );
 
   const formik = useFormik({
     initialValues: {
-      title: '',
+      title: oldTitle || '',
     },
     validationSchema: saveAssemblySchema,
     onSubmit: async (values) => {
@@ -92,6 +119,21 @@ const SaveModal: React.FC<SaveModalProps> = ({ isOpen, handleClose }) => {
     },
   });
 
+  const title = useMemo(() => {
+    let value;
+    switch (mode) {
+      case BuilderMode.EDIT:
+        value = 'Edit';
+        break;
+      case BuilderMode.NEW:
+        value = 'Save';
+        break;
+      default:
+        break;
+    }
+    return value;
+  }, [mode]);
+
   return (
     <Modal
       open={isOpen}
@@ -105,7 +147,7 @@ const SaveModal: React.FC<SaveModalProps> = ({ isOpen, handleClose }) => {
         onSubmit={formik.handleSubmit}
       >
         <Typography gutterBottom variant="h2">
-          Save assembly
+          {title} assembly
         </Typography>
         <TextField
           className={styles.input}
@@ -129,7 +171,7 @@ const SaveModal: React.FC<SaveModalProps> = ({ isOpen, handleClose }) => {
             type="submit"
             disabled={isLoading}
           >
-            Save
+            {title}
           </Button>
           <Button
             color="secondary"

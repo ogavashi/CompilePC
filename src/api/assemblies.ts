@@ -30,6 +30,30 @@ const Assemblies = {
     });
     return assemblyId;
   },
+  update: async (
+    assemblyId: string,
+    title: string,
+    user: User,
+    assembly: SaveAssemblyDto,
+  ): Promise<string> => {
+    const updateAssembly = functions.httpsCallable('updateAssembly');
+
+    const { data: updatedId }: { data: string } = await updateAssembly({
+      assemblyId,
+      title,
+      user,
+      assembly,
+    });
+    return updatedId;
+  },
+  delete: async (assemblyId: string, userId: string) => {
+    const removeAssembly = functions.httpsCallable('removeAssembly');
+
+    await removeAssembly({
+      assemblyId,
+      userId,
+    });
+  },
 };
 
 export default Assemblies;

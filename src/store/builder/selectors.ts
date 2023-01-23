@@ -6,6 +6,7 @@ import {
   CategoryName,
   Part,
 } from '../../../types/index';
+import { BuilderMode } from '../../common/constants';
 import { RootState } from '../index';
 
 type Selector<S> = (state: RootState) => S;
@@ -26,6 +27,14 @@ const selectBuilder = (
 
 const selectAssembly = (state: RootState): Assembly => state.builder.assembly;
 
+const selectMode = (state: RootState): BuilderMode => state.builder.mode;
+
+const selectTitle = (state: RootState): string | null =>
+  state.builder.assemblyTitle;
+
+const selectUpdateAssemblyId = (state: RootState): string | null =>
+  state.builder.updateAssemblyId;
+
 const selectAssemblyPart = (category: CategoryName): Selector<Part | null> =>
   createSelector(selectAssembly, (assembly: Assembly) => assembly[category]);
 
@@ -41,4 +50,7 @@ export {
   selectAssemblyPart,
   selectBuilder,
   selectFilter,
+  selectMode,
+  selectUpdateAssemblyId,
+  selectTitle,
 };

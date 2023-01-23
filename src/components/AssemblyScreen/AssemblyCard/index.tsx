@@ -1,51 +1,114 @@
-import React, { useMemo, useCallback } from 'react';
+import React, { useMemo, useCallback, useContext } from 'react';
 import { Box } from '@mui/system';
 import Button from '@mui/material/Button/Button';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Paper } from '@mui/material';
-import { Assembly, CategoryName } from '../../../../types';
+import { useMutation } from '@tanstack/react-query';
+import { CategoryName, UserAssembly } from '../../../../types';
 import useStyles from './styles';
 import { getAverageSum } from '../../../utils/assembly';
 import AssemblyCardItem from './AssemblyCardItem';
-import { setAssembly } from '../../../store/builder/slice';
-import { ROUTES } from '../../../common/constants';
+import { setAssembly, setMode } from '../../../store/builder/slice';
+import { BuilderMode, ROUTES } from '../../../common/constants';
+import { selectUser } from '../../../store/user/selectors';
+import Assemblies from '../../../api/assemblies';
+import { UIContext } from '../../UIContext';
 
 type AssemblyCardProps = {
-  assembly: Assembly;
+  userAssembly: UserAssembly;
   handleShare: () => void;
 };
 
 const AssemblyCard: React.FC<AssemblyCardProps> = ({
-  assembly,
+  userAssembly,
   handleShare,
 }) => {
   const styles = useStyles();
 
-  const totalSum = useMemo(() => getAverageSum(assembly), [assembly]);
+  const totalSum = useMemo(
+    () => getAverageSum(userAssembly.assembly),
+    [userAssembly.assembly],
+  );
 
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
 
+  const user = useSelector(selectUser);
+
+  const { setAlert } = useContext(UIContext);
+
+  const { mutate, isLoading } = useMutation(
+    ({ assemblyId, userId }: { assemblyId: string; userId: string }) => {
+      return Assemblies.delete(assemblyId, userId);
+    },
+    {
+      onError: () =>
+        setAlert({
+          show: true,
+          severity: 'error',
+          message: `Could not delete assembly. Try again later.`,
+        }),
+      onSuccess: () => {
+        setAlert({
+          show: true,
+          severity: 'success',
+          message: `Successfully deleted assembly.`,
+        });
+        navigate(ROUTES.MAIN);
+      },
+    },
+  );
+
   const handleEdit = useCallback(() => {
-    dispatch(setAssembly(assembly));
+    dispatch(setAssembly(userAssembly.assembly));
+    dispatch(
+      setMode({
+        builderMode: BuilderMode.EDIT,
+        id: userAssembly.id,
+        assemblyTitle: userAssembly.title,
+      }),
+    );
     navigate(ROUTES.MAIN);
-  }, [assembly, dispatch, navigate]);
+  }, [
+    dispatch,
+    userAssembly.assembly,
+    userAssembly.id,
+    userAssembly.title,
+    navigate,
+  ]);
+
+  const handleCopy = useCallback(() => {
+    dispatch(setAssembly(userAssembly.assembly));
+    dispatch(
+      setMode({ builderMode: BuilderMode.NEW, id: null, assemblyTitle: null }),
+    );
+    navigate(ROUTES.MAIN);
+  }, [dispatch, navigate, userAssembly.assembly]);
+
+  const handleDelete = useCallback(() => {
+    mutate({ assemblyId: userAssembly.id, userId: userAssembly.userId });
+  }, [mutate, userAssembly.id, userAssembly.userId]);
+
+  const madeByUser = useMemo(
+    () => user?.id === userAssembly.userId,
+    [user?.id, userAssembly.userId],
+  );
 
   return (
     <Box className={styles.mainWrapper}>
       <Paper>
         <Box className={styles.wrapper}>
-          {Object.keys(assembly).map(
+          {Object.keys(userAssembly.assembly).map(
             (category) =>
-              assembly[category as CategoryName] && (
+              userAssembly.assembly[category as CategoryName] && (
                 <AssemblyCardItem
                   category={category as CategoryName}
                   key={category}
-                  part={assembly[category as CategoryName]}
+                  part={userAssembly.assembly[category as CategoryName]}
                 />
               ),
           )}
@@ -65,6 +128,7 @@ const AssemblyCard: React.FC<AssemblyCardProps> = ({
               fullWidth
               className={styles.button}
               onClick={handleShare}
+              disabled={isLoading}
             >
               Share
             </Button>
@@ -73,10 +137,23 @@ const AssemblyCard: React.FC<AssemblyCardProps> = ({
               variant="outlined"
               fullWidth
               className={styles.button}
-              onClick={handleEdit}
+              disabled={isLoading}
+              onClick={() => (madeByUser ? handleEdit() : handleCopy())}
             >
-              Edit
+              {madeByUser ? 'Edit' : 'Copy'}
             </Button>
+            {madeByUser && (
+              <Button
+                variant="outlined"
+                color="error"
+                fullWidth
+                disabled={isLoading}
+                className={styles.button}
+                onClick={handleDelete}
+              >
+                Delete
+              </Button>
+            )}
           </Box>
         </Box>
       </Paper>
