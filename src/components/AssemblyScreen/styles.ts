@@ -14,6 +14,10 @@ const useStyles = makeStyles((theme: Theme) =>
     rightWrapper: {
       width: '50%',
     },
+    image: {
+      width: theme.spacing(140),
+      marginBottom: theme.spacing(2),
+    },
   }),
 );
 

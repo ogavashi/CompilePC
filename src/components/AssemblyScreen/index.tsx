@@ -1,39 +1,31 @@
-import React, { useContext, useCallback, useMemo } from 'react';
-import { Typography } from '@mui/material';
+import React, { useContext, useCallback } from 'react';
+import { CircularProgress, Typography } from '@mui/material';
 import { Box } from '@mui/system';
-import { useLocation } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { ErrorLoading } from '../Icons';
 import AssemblyCard from './AssemblyCard';
 import ImageCarousel from './ImageCarousel';
 import useStyles from './styles';
 import { UIContext } from '../UIContext';
-import { selectAssembly } from '../../store/builder/selectors';
 import { getCarouselData } from '../../utils/assembly';
-
-const mockItems = [
-  {
-    name: 'Random Name #1',
-    description: 'Probably the most random thing you have ever seen!',
-    imageUrl: 'https://s.ek.ua/jpg/2069418.jpg',
-  },
-  {
-    name: 'Random Name #2',
-    description: 'Probably the most random thing you have ever seen!',
-    imageUrl: 'https://s.ek.ua/jpg/2069418.jpg',
-  },
-  {
-    name: 'Random Name #3',
-    description: 'Probably the most random thing you have ever seen!',
-    imageUrl: 'https://s.ek.ua/jpg/2069418.jpg',
-  },
-];
+import useGetAssembly from '../../hooks/useGetAssembly';
+import { selectUser } from '../../store/user/selectors';
 
 const AssemblyScreen = () => {
   const { setAlert } = useContext(UIContext);
 
-  const assembly = useSelector(selectAssembly);
+  const { id } = useParams();
 
   const styles = useStyles();
+
+  const user = useSelector(selectUser);
+
+  const {
+    data: userAssembly,
+    isError,
+    isLoading,
+  } = useGetAssembly(id as string);
 
   const handleShare = useCallback(() => {
     setAlert({
@@ -41,24 +33,68 @@ const AssemblyScreen = () => {
       severity: 'success',
       message: `Copied link to clipboard.`,
     });
-    // TODO: Fix later
+
     const link = window.location.href;
 
     navigator.clipboard.writeText(link);
   }, [setAlert]);
 
-  const items = getCarouselData(assembly);
+  if (isLoading) {
+    return (
+      <Box
+        sx={{
+          display: 'flex',
+          width: '100%',
+          height: '90vh',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <CircularProgress color="secondary" size="5rem" />
+      </Box>
+    );
+  }
+
+  if (isError) {
+    return (
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          width: '100%',
+          height: '90vh',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <ErrorLoading className={styles.image} />
+        <Typography variant="h2">Couldn&#39;t load assembly</Typography>
+      </Box>
+    );
+  }
+
+  const items = getCarouselData(userAssembly.assembly);
 
   return (
     <Box className={styles.wrapper}>
-      <Typography variant="h2" gutterBottom>
-        Assembly name
-      </Typography>
+      <Box display="flex" flexDirection="column">
+        <Typography variant="h2" gutterBottom>
+          {userAssembly.title}
+        </Typography>
+        {userAssembly.userId !== user?.id && (
+          <Typography variant="h3" gutterBottom sx={{ fontWeight: '400' }}>
+            Author: {userAssembly.username}
+          </Typography>
+        )}
+      </Box>
       <Box display="flex" justifyContent="center">
         <Box className={styles.leftWrapper}>
           <ImageCarousel items={items} />
         </Box>
-        <AssemblyCard handleShare={handleShare} />
+        <AssemblyCard
+          assembly={userAssembly.assembly}
+          handleShare={handleShare}
+        />
       </Box>
     </Box>
   );

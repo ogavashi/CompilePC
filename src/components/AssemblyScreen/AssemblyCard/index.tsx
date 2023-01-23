@@ -1,30 +1,39 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useCallback } from 'react';
 import { Box } from '@mui/system';
 import Button from '@mui/material/Button/Button';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
-import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { Paper } from '@mui/material';
-import { CategoryName } from '../../../../types';
+import { Assembly, CategoryName } from '../../../../types';
 import useStyles from './styles';
-import { selectAssembly } from '../../../store/builder/selectors';
-import { eraseAssembly } from '../../../store/builder/slice';
-import { getAverageSum, isEmpty } from '../../../utils/assembly';
-import AssemblyPart from '../../BuildScreen/Assembly/AssemblyPart';
+import { getAverageSum } from '../../../utils/assembly';
 import AssemblyCardItem from './AssemblyCardItem';
+import { setAssembly } from '../../../store/builder/slice';
+import { ROUTES } from '../../../common/constants';
 
 type AssemblyCardProps = {
+  assembly: Assembly;
   handleShare: () => void;
 };
 
-const AssemblyCard: React.FC<AssemblyCardProps> = ({ handleShare }) => {
+const AssemblyCard: React.FC<AssemblyCardProps> = ({
+  assembly,
+  handleShare,
+}) => {
   const styles = useStyles();
+
+  const totalSum = useMemo(() => getAverageSum(assembly), [assembly]);
 
   const dispatch = useDispatch();
 
-  const assembly = useSelector(selectAssembly);
+  const navigate = useNavigate();
 
-  const totalSum = useMemo(() => getAverageSum(assembly), [assembly]);
+  const handleEdit = useCallback(() => {
+    dispatch(setAssembly(assembly));
+    navigate(ROUTES.MAIN);
+  }, [assembly, dispatch, navigate]);
 
   return (
     <Box className={styles.mainWrapper}>
@@ -36,6 +45,7 @@ const AssemblyCard: React.FC<AssemblyCardProps> = ({ handleShare }) => {
                 <AssemblyCardItem
                   category={category as CategoryName}
                   key={category}
+                  part={assembly[category as CategoryName]}
                 />
               ),
           )}
@@ -57,6 +67,15 @@ const AssemblyCard: React.FC<AssemblyCardProps> = ({ handleShare }) => {
               onClick={handleShare}
             >
               Share
+            </Button>
+            <Button
+              color="secondary"
+              variant="outlined"
+              fullWidth
+              className={styles.button}
+              onClick={handleEdit}
+            >
+              Edit
             </Button>
           </Box>
         </Box>

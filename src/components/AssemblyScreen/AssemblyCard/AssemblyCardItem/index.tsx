@@ -1,26 +1,22 @@
 import clsx from 'clsx';
 import React, { useMemo } from 'react';
-import ClearIcon from '@mui/icons-material/Clear';
 import { generatePath, Link } from 'react-router-dom';
-import { IconButton, Typography, Paper } from '@mui/material';
-import { useDispatch, useSelector } from 'react-redux';
+import { Typography, Paper } from '@mui/material';
 import { IconByCategory, ROUTES } from '../../../../common/constants';
-import { CategoryName } from '../../../../../types';
+import { CategoryName, Part } from '../../../../../types';
 import useStyles from './styles';
-import { selectAssemblyPart } from '../../../../store/builder/selectors';
-import { removeAssemblyPart } from '../../../../store/builder/slice';
 import { getAveragePrice } from '../../../../utils/assembly';
 
 type AssemblyCardItemProps = {
+  part: Part | null;
   category: CategoryName;
 };
 
-const AssemblyCardItem: React.FC<AssemblyCardItemProps> = ({ category }) => {
+const AssemblyCardItem: React.FC<AssemblyCardItemProps> = ({
+  part,
+  category,
+}) => {
   const styles = useStyles();
-
-  const dispatch = useDispatch();
-
-  const part = useSelector(selectAssemblyPart(category));
 
   const averagePrice = useMemo(() => part && getAveragePrice(part), [part]);
 
