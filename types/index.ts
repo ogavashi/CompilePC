@@ -361,3 +361,15 @@ export type CarouselItem = {
   name: string;
   category: CategoryName;
 };
+
+export type SaveAssemblyDto = {
+  CPU?: string;
+  GPU?: string;
+  PSU?: string;
+  RAM?: string;
+  case?: string;
+  cooling?: string;
+  motherboard?: string;
+  SSD?: string;
+  HDD?: string;
+};

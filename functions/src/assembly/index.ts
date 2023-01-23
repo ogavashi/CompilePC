@@ -9,14 +9,14 @@ import getParts from '../common/getParts';
 const saveAssembly = functions
   .region(DEFAULT_REGION)
   .https.onCall(async (data): Promise<string> => {
-    const { user, assembly } = data;
+    const { user, assembly, title } = data;
 
     const db = await getDB();
 
     try {
       const { insertedId } = await db
         .collection('assemblies')
-        .insertOne({ assembly, userId: user.id });
+        .insertOne({ title, assembly, userId: user.id });
 
       await db
         .collection('users')
