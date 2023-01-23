@@ -326,6 +326,13 @@ export type Assembly = {
   HDD: HardDrive | null;
 };
 
+export type UserAssembly = Assembly & {
+  id: string;
+  title: string;
+  userId: string;
+  username: string;
+};
+
 export type SelectedFilter = { [k: string]: string | string[] };
 
 export type Builder = {

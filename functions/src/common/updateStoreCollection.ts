@@ -25,8 +25,6 @@ const updateStoresCollection = async (stores: ParsedStore[]) => {
 
   const storeNames = stores.map((store: ParsedStore) => store.name);
 
-  // TODO: will be fixed by @vitalyacode
-  // You should do it with bulk
   const rawStoreIds = await Promise.all(
     storeNames.map(
       async (storeName: string) =>
