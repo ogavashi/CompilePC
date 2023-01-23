@@ -31,3 +31,51 @@ export const regexes: Record<string, RegExp> = {
   fansInCase: /fans\(.*\)/i,
   liquidFansInCase: /liquidCooling\(.*\)/i,
 };
+
+export const ProductCategories = {
+  CPU: {
+    categoryName: 'CPU',
+    builderTitle: 'CPU',
+    collectionName: 'CPUs',
+  },
+  GPU: {
+    categoryName: 'GPU',
+    builderTitle: 'Graphic card',
+    collectionName: 'graphicsCards',
+  },
+  PSU: {
+    categoryName: 'PSU',
+    builderTitle: 'Power suply unit',
+    collectionName: 'PSUs',
+  },
+  RAM: {
+    categoryName: 'RAM',
+    builderTitle: 'RAM',
+    collectionName: 'RAM',
+  },
+  case: {
+    categoryName: 'case',
+    builderTitle: 'Case',
+    collectionName: 'cases',
+  },
+  cooling: {
+    categoryName: 'cooling',
+    builderTitle: 'Cooling',
+    collectionName: 'coolings',
+  },
+  motherboard: {
+    categoryName: 'motherboard',
+    builderTitle: 'Motherboard',
+    collectionName: 'motherboards',
+  },
+  SSD: {
+    categoryName: 'SSD',
+    builderTitle: 'SSD',
+    collectionName: 'SSD',
+  },
+  HDD: {
+    categoryName: 'HDD',
+    builderTitle: 'HDD',
+    collectionName: 'HDD',
+  },
+} as const;

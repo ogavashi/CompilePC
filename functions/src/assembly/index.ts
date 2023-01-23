@@ -1,9 +1,10 @@
-import { Assembly } from './../../../types/index';
+import { UserAssembly } from './../../../types/index';
 import { getDB } from '../bootstrap';
 import { DEFAULT_REGION } from '../common/constants';
 import * as functions from 'firebase-functions';
-import { User, UserAssembly } from '../../../types';
+import { User } from '../../../types';
 import { ObjectId } from 'mongodb';
+import getParts from '../common/getParts';
 
 const saveAssembly = functions
   .region(DEFAULT_REGION)
@@ -15,7 +16,7 @@ const saveAssembly = functions
     try {
       const { insertedId } = await db
         .collection('assemblies')
-        .insertOne({ ...assembly, userId: user.id });
+        .insertOne({ assembly, userId: user.id });
 
       await db
         .collection('users')
@@ -34,10 +35,21 @@ const saveAssembly = functions
     }
   });
 
-interface RawAssembly extends Assembly {
+interface RawAssembly {
   _id: ObjectId;
   title: string;
   userId: string;
+  assembly: {
+    CPU?: string;
+    GPU?: string;
+    PSU?: string;
+    RAM?: string;
+    case?: string;
+    cooling?: string;
+    motherboard?: string;
+    SSD?: string;
+    HDD?: string;
+  };
 }
 
 const getAssembly = functions
@@ -58,6 +70,8 @@ const getAssembly = functions
 
       const { userId } = rawAssembly;
 
+      const parts = await getParts(rawAssembly.assembly);
+
       const user = (await db
         .collection<User>('users')
         .findOne({ id: userId })) as User;
@@ -68,13 +82,14 @@ const getAssembly = functions
 
       const { username } = user;
 
-      const assembly: UserAssembly = {
+      const result = {
         id: rawAssembly._id.toString(),
         ...rawAssembly,
         username,
+        assembly: parts,
       };
 
-      return assembly;
+      return result;
     } catch (error) {
       if (error instanceof Error) {
         throw new functions.https.HttpsError('not-found', error.message);

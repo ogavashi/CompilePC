@@ -1,6 +1,7 @@
 import { getDB } from '../bootstrap';
 import { DEFAULT_REGION } from '../common/constants';
 import * as functions from 'firebase-functions';
+import getParts from '../common/getParts';
 
 const getAssemblies = functions
   .region(DEFAULT_REGION)
@@ -12,12 +13,23 @@ const getAssemblies = functions
     const cursor = await db.collection('assemblies').find({ userId });
     const rawAssemblies = await cursor.toArray();
 
-    const assemblies = rawAssemblies.map((rawAssembly) => ({
-      id: rawAssembly._id.toString(),
-      ...rawAssembly,
-    }));
+    const assemblies = await Promise.all(
+      rawAssemblies.map(async (rawAssembly) => {
+        const parts = await getParts(rawAssembly.assembly);
 
-    return assemblies;
+        const assembly = {
+          id: rawAssembly._id.toString(),
+          ...rawAssembly,
+          assembly: parts,
+        };
+
+        return assembly;
+      }),
+    );
+
+    const result = assemblies;
+
+    return result;
   });
 
 export default getAssemblies;

@@ -326,11 +326,12 @@ export type Assembly = {
   HDD: HardDrive | null;
 };
 
-export type UserAssembly = Assembly & {
+export type UserAssembly = {
   id: string;
   title: string;
   userId: string;
   username: string;
+  assembly: Assembly;
 };
 
 export type SelectedFilter = { [k: string]: string | string[] };
