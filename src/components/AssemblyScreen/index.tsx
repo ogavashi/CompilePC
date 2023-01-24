@@ -1,16 +1,17 @@
 import React, { useContext, useCallback } from 'react';
-import { CircularProgress, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { ErrorLoading } from '../Icons';
 import AssemblyCard from './AssemblyCard';
-import ImageCarousel from './ImageCarousel';
+import ImageCarousel from '../ImageCarousel';
 import useStyles from './styles';
 import { UIContext } from '../UIContext';
 import { getCarouselData } from '../../utils/assembly';
 import useGetAssembly from '../../hooks/useGetAssembly';
 import { selectUser } from '../../store/user/selectors';
+import Loader from '../Loader';
+import ErrorScreen from '../ErrorScreen';
 
 const AssemblyScreen = () => {
   const { setAlert } = useContext(UIContext);
@@ -40,37 +41,11 @@ const AssemblyScreen = () => {
   }, [setAlert]);
 
   if (isLoading) {
-    return (
-      <Box
-        sx={{
-          display: 'flex',
-          width: '100%',
-          height: '90vh',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <CircularProgress color="secondary" size="5rem" />
-      </Box>
-    );
+    return <Loader />;
   }
 
   if (isError) {
-    return (
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          width: '100%',
-          height: '90vh',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <ErrorLoading className={styles.image} />
-        <Typography variant="h2">Couldn&#39;t load assembly</Typography>
-      </Box>
-    );
+    return <ErrorScreen />;
   }
 
   const items = getCarouselData(userAssembly.assembly);
