@@ -17,10 +17,22 @@ type BuilderProps = {
 const BuilderModule: React.FC<BuilderProps> = ({ builder }) => {
   const { data: products, isLoading, isError } = useProducts(builder);
 
-  const BuilderProducts = () => (
-    <>
-      {(isLoading ? Array.from(new Array(5)) : products || []).map(
-        (product, index) =>
+  const BuilderProducts = () => {
+    let data = products;
+
+    if (!isLoading && !data?.length) {
+      return (
+        <Typography gutterBottom textAlign="center">
+          Nothing found
+        </Typography>
+      );
+    }
+    if (isLoading) {
+      data = Array.from(new Array(5));
+    }
+    return (
+      <>
+        {(data || []).map((product, index) =>
           product ? (
             <BuilderProduct
               product={product}
@@ -31,9 +43,10 @@ const BuilderModule: React.FC<BuilderProps> = ({ builder }) => {
             // eslint-disable-next-line react/no-array-index-key
             <SkeletonProduct key={index} />
           ),
-      )}
-    </>
-  );
+        )}
+      </>
+    );
+  };
 
   return (
     <ProductAccordion

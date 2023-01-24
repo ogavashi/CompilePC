@@ -11,6 +11,7 @@ import ProtectedRoute from '../ProtectedRoute';
 import LoginScreen from '../LoginScreen';
 import useAuthState from '../../hooks/useAuthState';
 import AssemblyScreen from '../AssemblyScreen';
+import AssembliesScreen from '../AssembliesScreen';
 
 const Root: React.FC = () => {
   useAuthState();
@@ -24,7 +25,7 @@ const Root: React.FC = () => {
           path={ROUTES.ASSEMBLIES}
           element={
             <ProtectedRoute>
-              <div>Assemblies</div>
+              <AssembliesScreen />
             </ProtectedRoute>
           }
         />

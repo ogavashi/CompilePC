@@ -45,6 +45,14 @@ const Header: React.FC = () => {
                   <Button
                     color="secondary"
                     variant="outlined"
+                    component={Link}
+                    to={ROUTES.ASSEMBLIES}
+                  >
+                    My assemblies
+                  </Button>
+                  <Button
+                    color="warning"
+                    variant="outlined"
                     onClick={handleLogOut}
                   >
                     Log Out
