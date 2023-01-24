@@ -1,4 +1,5 @@
-import { SpecBlock, GraphicsCard, Part, CategoryName } from '../../types';
+import { SpecBlock, GraphicsCard, Part, CategoryName, CPU } from '../../types';
+import formCPUSpecs from './cpuSpecs';
 import formGPUSpecs from './gpuSpecs';
 
 const getSpecsTable = (
@@ -8,7 +9,7 @@ const getSpecsTable = (
   if (!product) return null;
   switch (category) {
     case 'CPU':
-      return null;
+      return formCPUSpecs(product as CPU);
     case 'GPU':
       return formGPUSpecs(product as GraphicsCard);
     case 'HDD':

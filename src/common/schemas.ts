@@ -27,10 +27,7 @@ const saveAssemblySchema = yup.object({
   title: yup
     .string()
     .required('Title is required')
-    .matches(
-      /^(?=.*[a-zA-Z])(?=.*[0-9])/,
-      'Only characters and numbers are allowed',
-    ),
+    .matches(/^[a-zA-Z0-9_ .-]*$/, 'Title has forbidden characters'),
 });
 
 export { registerSchema, loginSchema, saveAssemblySchema };
