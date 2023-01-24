@@ -1,6 +1,6 @@
 import { InputBase, Slider, Typography } from '@mui/material';
 import { Box } from '@mui/system';
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { PriceRange, SelectedFilter } from '../../../../../types';
 import { NUMERIC_FORMAT } from '../../../../common/constants';
 import useDebounce from '../../../../hooks/useDebounce';

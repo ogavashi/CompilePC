@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useMemo } from 'react';
-import { Typography, Button } from '@mui/material';
+import { Typography, Button, Backdrop, CircularProgress } from '@mui/material';
 import { Box } from '@mui/system';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -74,6 +74,9 @@ const AssembliesScreen = () => {
 
   return (
     <Box className={styles.wrapper}>
+      <Backdrop sx={{ color: '#fff' }} open={isDeleting}>
+        <CircularProgress color="error" size="large" />
+      </Backdrop>
       <Box display="flex" flexDirection="column">
         <Box
           display="flex"

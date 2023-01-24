@@ -1,5 +1,5 @@
 import React from 'react';
-import { Paper, Typography, Button, Skeleton } from '@mui/material';
+import { Paper, Typography, Skeleton } from '@mui/material';
 import Divider from '@mui/material/Divider';
 import { Box } from '@mui/system';
 import useStyles from './styles';

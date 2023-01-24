@@ -68,7 +68,7 @@ const ProductCategories = {
   SSD: {
     categoryName: 'SSD',
     builderTitle: 'SSD',
-    collectionName: 'SSD',
+    collectionName: 'solidStateDrives',
   },
   HDD: {
     categoryName: 'HDD',

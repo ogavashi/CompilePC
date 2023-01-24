@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Button, Divider, Modal, TextField, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import { generatePath, useNavigate } from 'react-router-dom';
@@ -105,7 +106,7 @@ const SaveModal: React.FC<SaveModalProps> = ({ isOpen, handleClose }) => {
       }
 
       const normalizedAssembly = Object.fromEntries(
-        Object.entries(assembly).filter(([_, value]) => value),
+        Object.entries(assembly).filter(([, value]) => value),
       );
 
       const assemblyParts = Object.fromEntries(
