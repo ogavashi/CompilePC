@@ -3,7 +3,10 @@ import React from 'react';
 import CheckIcon from '@mui/icons-material/Check';
 import useStyles from './styles';
 
-export type Spec = { title: string; value: string | boolean | number };
+export type Spec = {
+  title: string;
+  value: string | boolean | number | undefined;
+};
 
 type TableRowProps = {
   spec: Spec;
@@ -11,6 +14,10 @@ type TableRowProps = {
 
 const TableRow: React.FC<TableRowProps> = ({ spec }) => {
   const styles = useStyles();
+
+  if (!spec.value) {
+    return null;
+  }
 
   return (
     <Paper className={styles.tableRow}>

@@ -295,7 +295,10 @@ export type Part =
   | Cooling
   | PSU;
 
-export type Spec = { title: string; value: string | boolean | number };
+export type Spec = {
+  title: string;
+  value: string | boolean | number | undefined;
+};
 
 export type SpecBlock = {
   name: string;

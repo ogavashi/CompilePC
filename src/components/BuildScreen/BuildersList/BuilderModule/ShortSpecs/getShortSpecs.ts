@@ -1,5 +1,26 @@
-import { CategoryName, CPU, Part, ShortSpec } from '../../../../../../types';
+import {
+  CategoryName,
+  GraphicsCard,
+  CPU,
+  Part,
+  ShortSpec,
+  HardDrive,
+  SolidStateDrive,
+  PSU,
+  RAM,
+  Motherboard,
+  Case,
+  Cooling,
+} from '../../../../../../types';
+import CaseFormer from './CaseFormer';
+import CoolingFormer from './CoolingForer';
 import CPUFormer from './CPUformer';
+import GPUFormer from './GPUformer';
+import HDDFormer from './HDDformer';
+import MBFormer from './MBFormer';
+import PSUFormer from './PSUformer';
+import RAMFormer from './RAMformer';
+import SSDFormer from './SSDformer';
 
 const getShortSpecs = (
   product: Part | null,
@@ -10,21 +31,21 @@ const getShortSpecs = (
     case 'CPU':
       return CPUFormer(product as CPU);
     case 'GPU':
-      return null;
+      return GPUFormer(product as GraphicsCard);
     case 'HDD':
-      return null;
+      return HDDFormer(product as HardDrive);
     case 'SSD':
-      return null;
+      return SSDFormer(product as SolidStateDrive);
     case 'PSU':
-      return null;
+      return PSUFormer(product as PSU);
     case 'RAM':
-      return null;
+      return RAMFormer(product as RAM);
     case 'motherboard':
-      return null;
+      return MBFormer(product as Motherboard);
     case 'case':
-      return null;
+      return CaseFormer(product as Case);
     case 'cooling':
-      return null;
+      return CoolingFormer(product as Cooling);
     default:
       return null;
   }

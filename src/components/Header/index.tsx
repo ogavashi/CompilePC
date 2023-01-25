@@ -51,7 +51,7 @@ const Header: React.FC = () => {
                     My assemblies
                   </Button>
                   <Button
-                    color="warning"
+                    color="error"
                     variant="outlined"
                     onClick={handleLogOut}
                   >
