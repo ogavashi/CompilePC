@@ -1,4 +1,4 @@
-import React, { useMemo, useCallback, useContext } from 'react';
+import React, { useMemo, useCallback } from 'react';
 import { Box } from '@mui/system';
 import Button from '@mui/material/Button/Button';
 import Divider from '@mui/material/Divider';
@@ -6,7 +6,6 @@ import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Paper } from '@mui/material';
-import { useMutation } from '@tanstack/react-query';
 import { CategoryName, UserAssembly } from '../../../../types';
 import useStyles from './styles';
 import { getAverageSum } from '../../../utils/assembly';
@@ -14,8 +13,7 @@ import AssemblyCardItem from './AssemblyCardItem';
 import { setAssembly, setMode } from '../../../store/builder/slice';
 import { BuilderMode, ROUTES } from '../../../common/constants';
 import { selectUser } from '../../../store/user/selectors';
-import Assemblies from '../../../api/assemblies';
-import { UIContext } from '../../UIContext';
+import useDeleteAssembly from '../../../hooks/useDeleteAssembly';
 
 type AssemblyCardProps = {
   userAssembly: UserAssembly;
@@ -39,29 +37,7 @@ const AssemblyCard: React.FC<AssemblyCardProps> = ({
 
   const user = useSelector(selectUser);
 
-  const { setAlert } = useContext(UIContext);
-
-  const { mutate, isLoading } = useMutation(
-    ({ assemblyId, userId }: { assemblyId: string; userId: string }) => {
-      return Assemblies.delete(assemblyId, userId);
-    },
-    {
-      onError: () =>
-        setAlert({
-          show: true,
-          severity: 'error',
-          message: `Could not delete assembly. Try again later.`,
-        }),
-      onSuccess: () => {
-        setAlert({
-          show: true,
-          severity: 'success',
-          message: `Successfully deleted assembly.`,
-        });
-        navigate(ROUTES.MAIN);
-      },
-    },
-  );
+  const { mutate, isLoading } = useDeleteAssembly();
 
   const handleEdit = useCallback(() => {
     dispatch(setAssembly(userAssembly.assembly));
