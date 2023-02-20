@@ -1,60 +1,36 @@
-# Getting Started with Create React App
+# CompilePC
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+CompilePC is a web-application that enables users to easily create, save, and share custom PC assemblies using real parts with specifications and prices from various Ukrainian stores. Users can easily browse and select parts from a variety of categories, including processors, motherboards, graphics cards, memory, storage, power supplies, and more. The application provides the ability to create and save assemblies, and to share those assemblies with other users.
 
-## Getting started
+![TC Preview](https://i.ibb.co/2sDMXZq/1.png)
 
-0. Login via firebase CLI `firebase login`
+# Technologies Used
 
-1. In the files `.firebaserc` and `firebase.json` replace `test-project-20210119` with **your** Firebase project name 
+The CompilePC web-application is built using the following technologies:
+ - React
+ - React Query
+ - Redux-Toolkit
+ - Redux-Persist
+ - MaterialUI
+ - Firebase
+ - MongoDB
+ - Formik
+ - yup
 
-2. In the file `src/common/firebaseConfig.ts` replace the `firebaseConfig` value with the config of the web app you created inside **your** firebase Project
+The application uses React as its front-end framework, along with several other libraries such as React Query, Redux-Toolkit, and MaterialUI. React Query is used for handling data-fetching and caching, while Redux-Toolkit and Redux-Persist are used for state management and data persistence respectively. MaterialUI is used for building the application's UI components.
+For the back-end, the application uses MongoDB for data storage, Formik and yup for form validation, and Firebase for backend.
 
-3. Ensure that email authentication is enabled inside Firebase Auth
+# Features
+Some of the key features of the CompilePC web-application include:
+ - Part selection
+ - Assembly creation
+ - Assembly sharing
+ - Assembly modification
+ - Assembly management
+ - User authentication
+ - Data persistence
+ - Form validation
 
-4. Install dependencies:
+![TC Preview](https://i.ibb.co/v4Yg9FK/image.png)
 
-```sh
-yarn
-```
-
-5. Deploy Firestore rules:
-
-```sh
-yarn deploy-rules
-```
-
-6. Run the project:
-
-```sh
-yarn start
-```
-
-7. Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-## Running the app locally
-
-```sh
-yarn start
-```
-
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-## Code quality standards
-
-Before committing your code, always run `yarn lint:fix` (inside the root and `functions` folders) to fix the code style. Ensure that your code has **0 errors** after running that command (warnings are acceptable, but not recommended too).
-
-## How to deploy my app to Firebase Hosting?
-
-```sh
-yarn build
-yarn deploy-hosting
-```
-
-## How to deploy my app functions?
-
-```sh
-cd functions
-yarn build
-yarn deploy
-```
+![TC Preview](https://i.ibb.co/J706s0Y/image.png)
