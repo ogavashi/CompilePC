@@ -1,9 +1,8 @@
-import React, { useCallback, useContext, useMemo } from 'react';
-import { Typography, Button, Backdrop, CircularProgress } from '@mui/material';
+import React, { useCallback, useMemo } from 'react';
+import { Typography, Button } from '@mui/material';
 import { Box } from '@mui/system';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { selectAssembly } from '../../store/builder/selectors';
 import { isEmpty } from '../../utils/assembly';
 import { ROUTES } from '../../common/constants';
@@ -13,9 +12,7 @@ import { selectUser } from '../../store/user/selectors';
 import Loader from '../Loader';
 import ErrorScreen from '../ErrorScreen';
 import Assembly from './Assembly';
-import Assemblies from '../../api/assemblies';
-import { UIContext } from '../UIContext';
-import QUERY_KEY_FACTORIES from '../../common/queryKeyFactories';
+import useDeleteAssembly from '../../hooks/useDeleteAssembly';
 
 const AssembliesScreen = () => {
   const styles = useStyles();
@@ -26,33 +23,7 @@ const AssembliesScreen = () => {
 
   const isAssemblyEmpty = useMemo(() => isEmpty(assembly), [assembly]);
 
-  const { setAlert } = useContext(UIContext);
-
-  const queryClient = useQueryClient();
-
-  const { mutate, isLoading: isDeleting } = useMutation(
-    ({ assemblyId, userId }: { assemblyId: string; userId: string }) => {
-      return Assemblies.delete(assemblyId, userId);
-    },
-    {
-      onError: () =>
-        setAlert({
-          show: true,
-          severity: 'error',
-          message: `Could not delete assembly. Try again later.`,
-        }),
-      onSuccess: (_, variables) => {
-        setAlert({
-          show: true,
-          severity: 'success',
-          message: `Successfully deleted assembly.`,
-        });
-        queryClient.invalidateQueries({
-          queryKey: QUERY_KEY_FACTORIES.ASSEMBLIES.list(variables.userId),
-        });
-      },
-    },
-  );
+  const { mutate, isLoading: isDeleting } = useDeleteAssembly();
 
   const handleDelete = useCallback(
     (assemblyId: string) => mutate({ assemblyId, userId: user?.id as string }),
@@ -74,9 +45,6 @@ const AssembliesScreen = () => {
 
   return (
     <Box className={styles.wrapper}>
-      <Backdrop sx={{ color: '#fff' }} open={isDeleting}>
-        <CircularProgress color="error" size="large" />
-      </Backdrop>
       <Box display="flex" flexDirection="column">
         <Box
           display="flex"

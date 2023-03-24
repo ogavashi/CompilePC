@@ -1,13 +1,10 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Button, Divider, Modal, TextField, Typography } from '@mui/material';
 import { Box } from '@mui/system';
-import { generatePath, useNavigate } from 'react-router-dom';
-import { useMutation } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import React, { useContext, useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { SaveAssemblyDto, User } from '../../../../../types';
-import Assemblies from '../../../../api/assemblies';
+import { useSelector } from 'react-redux';
 import { BuilderMode, ROUTES } from '../../../../common/constants';
 import { saveAssemblySchema } from '../../../../common/schemas';
 import {
@@ -18,9 +15,8 @@ import {
 } from '../../../../store/builder/selectors';
 import { selectUser } from '../../../../store/user/selectors';
 import { UIContext } from '../../../UIContext';
-
 import useStyles from './styles';
-import { eraseAssembly, setMode } from '../../../../store/builder/slice';
+import useUpdateAssembly from '../../../../hooks/useUpdateAssembly';
 
 type SaveModalProps = {
   isOpen: boolean;
@@ -44,48 +40,7 @@ const SaveModal: React.FC<SaveModalProps> = ({ isOpen, handleClose }) => {
 
   const navigate = useNavigate();
 
-  const dispatch = useDispatch();
-
-  const { mutate, isLoading } = useMutation(
-    ({
-      title,
-      userData,
-      userAssembly,
-    }: {
-      title: string;
-      userData: User;
-      userAssembly: SaveAssemblyDto;
-    }) => {
-      if (mode === BuilderMode.EDIT && assemblyId) {
-        return Assemblies.update(assemblyId, title, userData, userAssembly);
-      }
-      return Assemblies.save(title, userData, userAssembly);
-    },
-    {
-      onError: () =>
-        setAlert({
-          show: true,
-          severity: 'error',
-          message: `Could not save assembly. Try again later.`,
-        }),
-      onSuccess: (data) => {
-        setAlert({
-          show: true,
-          severity: 'success',
-          message: `Successfully saved assembly.`,
-        });
-        navigate(generatePath(ROUTES.ASSEMBLY, { id: data }));
-        dispatch(
-          setMode({
-            builderMode: BuilderMode.NEW,
-            id: null,
-            assemblyTitle: null,
-          }),
-        );
-        dispatch(eraseAssembly());
-      },
-    },
-  );
+  const { mutate, isLoading } = useUpdateAssembly(mode, assemblyId);
 
   const formik = useFormik({
     initialValues: {
